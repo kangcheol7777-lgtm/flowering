@@ -33,24 +33,6 @@ jobs:
         run: |
           echo "::warning::FTP_SERVER, FTP_USERNAME, FTP_PASSWORD 시크릿이 아직 없어 업로드를 건너뜁니다. 저장소 Settings → Secrets and variables → Actions에서 등록해 주세요."
 
-      # 한 번만 쓰는 정리 단계: 첫 업로드 때 잘못 생긴 /www/www 폴더와 점검용 파일을 지웁니다.
-      - name: 잘못 올라간 폴더 정리 (1회용)
-        if: env.HAS_SECRETS == 'true'
-        env:
-          S: ${{ secrets.FTP_SERVER }}
-          U: ${{ secrets.FTP_USERNAME }}
-          P: ${{ secrets.FTP_PASSWORD }}
-        run: |
-          HOST="${S#ftp://}"; HOST="${HOST%/}"
-          START=$(curl -sS -v --user "$U:$P" "ftp://$HOST/" --list-only 2>&1 | grep -m1 '^< 257' | tr -d '\r' || true)
-          echo "::notice title=FTP 시작 위치::$START"
-          if ! echo "$START" | grep -q '"/www" is the current directory'; then
-            echo "::notice::시작 위치가 /www가 아니라 정리를 건너뜁니다."; exit 0
-          fi
-          sudo apt-get install -y -qq lftp >/dev/null
-          lftp -u "$U,$P" "ftp://$HOST" -e "set ftp:ssl-allow no; set cmd:fail-exit no; rm -r www; rm deploy-test.txt; rm -r deploy-test-dir; cls -1; bye" > /tmp/after.txt 2>&1 || true
-          echo "::notice title=정리 후 웹사이트 폴더::$(tr '\n' ' ' < /tmp/after.txt | cut -c1-400)"
-
       - name: 저장소 내려받기
         if: env.HAS_SECRETS == 'true'
         uses: actions/checkout@v4
