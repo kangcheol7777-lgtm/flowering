@@ -65,13 +65,13 @@
       return '<a href="'+m[0]+'"'+(m[0]===page?' aria-current="page"':'')+'>'+m[1]+'</a>';
     }).join("");
   }
-  var logo = '<svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><g fill="none" stroke="#6E4327" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.8H28" stroke-width="1.8"/><circle cx="4" cy="6.8" r="1.3" stroke-width="1.2"/><circle cx="28" cy="6.8" r="1.3" stroke-width="1.2"/><path d="M5.6 7.6V27H16C12.6 24.6 9.6 21.4 10.4 18.9C11.8 15.8 17.6 13 19.8 7.6" stroke-width="1.5"/><path d="M9 7.6C8.9 11.8 8.3 15.6 7.9 18.9C7.7 21.8 7.9 24.6 8.3 27M12.6 7.6C11.6 11.6 10.1 15.4 9.2 18.9C9 21.7 10 24.5 11.4 27M16.2 7.6C14.6 11.4 12 14.6 10.3 17.6M10.4 20.6C11 23 12.4 25.2 13.9 27" stroke-width="1.05"/><path d="M5.6 18.9H10.6" stroke-width="1.6"/></g></svg>';
+  var logo = '<img class="logo" src="img/logo.png" alt="꽃피는 커튼" width="77" height="48">';
 
   var h = document.getElementById("site-header");
   if (h) {
     h.outerHTML =
       '<header class="top"><div class="wrap">'
-      + '<a class="brand" href="index.html">'+logo+SITE.name+'</a>'
+      + '<a class="brand" href="index.html" aria-label="'+SITE.name+' 홈">'+logo+'<span class="brand-sub">커튼 &amp; 블라인드</span></a>'
       + '<nav class="menu" aria-label="주요 메뉴">'+links()+'</nav>'
       + '<a class="tel tnum" href="'+SITE.telHref+'">📞 '+SITE.tel+'</a>'
       + '<button class="burger" type="button" id="burger" aria-expanded="false" aria-controls="mnav" aria-label="메뉴 열기">☰</button>'
@@ -104,7 +104,7 @@
   if (f) {
     f.outerHTML =
       '<footer><div class="wrap">'
-      + '<div><h4>'+SITE.name+'</h4><p style="margin-bottom:12px">창가에 피어나는 편안함을 만듭니다.</p>'
+      + '<div><img class="flogo" src="img/logo-light.png" alt="꽃피는 커튼" width="103" height="64"><h4 style="margin-top:10px">'+SITE.name+'</h4><p style="margin-bottom:12px">창가에 피어나는 편안함을 만듭니다.</p>'
       + '<p class="tnum">📞 '+SITE.tel+'</p>'
       + (SITE.hours ? '<p>🕘 '+esc(SITE.hours)+'</p>' : '')
       + (SITE.kakao ? '<p><a href="'+SITE.kakao+'" target="_blank" rel="noopener">💬 카카오톡 채널</a></p>' : '')
