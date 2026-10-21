@@ -67,7 +67,7 @@
         <div class="feat"><span>🛠️</span>1년 무상 A/S</div>
       </div>
     </div>
-    <div class="window closed" id="win"><img id="heroImg" src="img/works/w18.jpg" alt="꽃피는 커튼 블라인드 시공 사진"><div class="rod"></div><div class="drape l" aria-hidden="true"></div><div class="drape r" aria-hidden="true"></div><a class="cap" id="heroCap" href="gallery.html">실제 시공 사진 보기 →</a></div>
+    <div class="window closed" id="win"><img id="heroImg" src="img/works/w03.jpg" alt="거실 쉬폰 커튼 시공 사진"><div class="rod"></div><div class="drape l" aria-hidden="true"></div><div class="drape r" aria-hidden="true"></div><a class="cap" id="heroCap" href="gallery.html">실제 시공 사진 보기 →</a></div>
   </div>
 </section>
 
@@ -165,7 +165,8 @@
     var c=window.randomCase(el.getAttribute("data-cat"));
     el.querySelector(".fabric").innerHTML='<img src="'+window.casePhoto(c,true)+'" alt="'+c.product+' 시공 사진" loading="lazy">';
   });
-  var hero=window.randomCase(), hi=document.getElementById("heroImg");
+  /* 메인 사진 고정: 시공 사례 3번 (우드 가구와 어울리는 거실 쉬폰 커튼) — 바꾸려면 숫자만 바꾸세요 */
+  var hero=window.CASES.filter(function(c){return c.id===3;})[0]||window.CASES[0], hi=document.getElementById("heroImg");
   hi.src=window.casePhoto(hero); hi.alt=hero.room+" "+hero.product+" 시공 사진";
   var cap=document.getElementById("heroCap"); cap.textContent=hero.room+" · "+hero.product+" →"; cap.href="gallery.html#case-"+hero.id;
   var w=document.getElementById("win");
