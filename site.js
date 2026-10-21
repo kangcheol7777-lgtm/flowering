@@ -65,9 +65,7 @@
       return '<a href="'+m[0]+'"'+(m[0]===page?' aria-current="page"':'')+'>'+m[1]+'</a>';
     }).join("");
   }
-  var logo = '<svg width="28" height="28" viewBox="0 0 30 30" aria-hidden="true"><g transform="translate(15 15)" fill="#8A5A36">'
-    + [0,72,144,216,288].map(function(r,i){return '<ellipse rx="5" ry="9" cy="-6" transform="rotate('+r+')" opacity="'+(i%2?'.7':'.95')+'"/>';}).join("")
-    + '</g><circle cx="15" cy="15" r="3.4" fill="#F7F1E6"/></svg>';
+  var logo = '<svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><g fill="#6E4327"><rect x="5" y="5.5" width="22" height="2.6" rx="1.3"/><path d="M6 8.1H15C13.6 13.5 10.4 16.5 10.4 19.5C10.4 22.3 12 24.6 13.2 27H6Z"/><path d="M26 8.1H17C18.4 13.5 21.6 16.5 21.6 19.5C21.6 22.3 20 24.6 18.8 27H26Z"/></g></svg>';
 
   var h = document.getElementById("site-header");
   if (h) {
