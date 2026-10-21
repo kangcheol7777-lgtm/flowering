@@ -102,7 +102,26 @@ $("#form").addEventListener("submit",e=>{
   rules.forEach(([id,ok])=>{const el=$("#"+id);if(!ok(el.value)){el.classList.add("bad");$("#e-"+id).hidden=false;first=first||el;}});
   if(!$("#agree").checked){$("#e-agree").hidden=false;first=first||$("#agree");}
   if(first){first.focus();first.scrollIntoView({block:"center",behavior:"smooth"});return;}
-  $("#form").hidden=true;$("#done").hidden=false;$("#done").scrollIntoView({block:"center",behavior:"smooth"});
+  /* 접수 내용을 이메일로 보내기 (FormSubmit) — 받는 주소를 바꾸려면 FORM_TO만 바꾸세요 */
+  const FORM_TO="kangcheol7777@gmail.com";
+  const prods=[...document.querySelectorAll(".checks input:checked")].map(c=>c.value).join(", ");
+  const v=id=>$("#"+id).value.trim();
+  const data={
+    "_subject":"[홈페이지 견적 문의] "+v("name")+" / "+v("region")+" / "+v("space"),
+    "_template":"table","_captcha":"false",
+    "성함":v("name"),"연락처":v("phone"),"이메일":v("email")||"-",
+    "거주 지역":v("region"),"공간 종류":v("space"),"창문 개수":v("windows")||"-",
+    "희망 제품":prods||"-","방문 희망일":v("date")||"-","추가 문의사항":v("memo")||"-",
+    "개인정보 동의":"동의함","접수 시각":new Date().toLocaleString("ko-KR",{timeZone:"Asia/Seoul"})
+  };
+  if(v("email")) data["_replyto"]=v("email");
+  const btn=$("#form button[type=submit]"),label=btn.textContent;
+  btn.disabled=true;btn.textContent="접수 중…";
+  fetch("https://formsubmit.co/ajax/"+FORM_TO,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(data)})
+    .then(r=>r.json().then(j=>{if(!r.ok||String(j.success)!=="true")throw new Error(j.message||r.status);}))
+    .then(()=>{$("#form").hidden=true;$("#done").hidden=false;$("#done").scrollIntoView({block:"center",behavior:"smooth"});})
+    .catch(()=>{btn.disabled=false;btn.textContent=label;
+      alert("접수 중 문제가 생겼어요. 잠시 후 다시 시도하시거나 070-8098-8555로 전화 주세요.");});
 });
 })();
 </script>
