@@ -65,7 +65,7 @@
       return '<a href="'+m[0]+'"'+(m[0]===page?' aria-current="page"':'')+'>'+m[1]+'</a>';
     }).join("");
   }
-  var logo = '<svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><g fill="#6E4327"><rect x="4.5" y="5.5" width="23" height="2.6" rx="1.3"/><path d="M5.5 8.1H19.5C17.6 13.2 11.6 15.8 10.2 18.9C9.4 21.4 12.4 24.6 15.8 27H5.5Z"/></g><path d="M9.3 8.1C9.2 12 8.7 15.5 8.3 18.6M13.3 8.1C12.6 11.6 11.2 14.2 9.9 16.6" stroke="#FFFCF6" stroke-width="1" stroke-linecap="round" fill="none"/></svg>';
+  var logo = '<svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><g fill="none" stroke="#6E4327" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.8H28" stroke-width="1.8"/><circle cx="4" cy="6.8" r="1.3" stroke-width="1.2"/><circle cx="28" cy="6.8" r="1.3" stroke-width="1.2"/><path d="M5.6 7.6V27H16C12.6 24.6 9.6 21.4 10.4 18.9C11.8 15.8 17.6 13 19.8 7.6" stroke-width="1.5"/><path d="M9 7.6C8.9 11.8 8.3 15.6 7.9 18.9C7.7 21.8 7.9 24.6 8.3 27M12.6 7.6C11.6 11.6 10.1 15.4 9.2 18.9C9 21.7 10 24.5 11.4 27M16.2 7.6C14.6 11.4 12 14.6 10.3 17.6M10.4 20.6C11 23 12.4 25.2 13.9 27" stroke-width="1.05"/><path d="M5.6 18.9H10.6" stroke-width="1.6"/></g></svg>';
 
   var h = document.getElementById("site-header");
   if (h) {
