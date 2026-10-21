@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 Sitemap: https://floweringds.kr/sitemap.xml
 Sitemap: https://floweringds.kr/curtain/sitemap.xml
+
+#DaumWebMasterTool:82d0361d480a9d76ed5d74b1246b7eff861217f291c02bbb2104f70ec60dd578:sgQJn+c4WOkeYlgoF2KRow==
