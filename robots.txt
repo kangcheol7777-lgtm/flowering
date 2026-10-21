@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://curtain.floweringds.kr/sitemap.xml
+Sitemap: https://floweringds.kr/sitemap.xml
+Sitemap: https://floweringds.kr/curtain/sitemap.xml

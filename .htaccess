@@ -1,0 +1,16 @@
+# 꽃피는디자인스튜디오 주소 정리
+RewriteEngine On
+
+# 1) 예전 주소 curtain.floweringds.kr → https://floweringds.kr/curtain/ (페이지 경로 유지)
+RewriteCond %{HTTP_HOST} ^curtain\.floweringds\.kr$ [NC]
+RewriteRule ^(.*)$ https://floweringds.kr/curtain/$1 [R=301,L]
+
+# 2) www.floweringds.kr → floweringds.kr
+RewriteCond %{HTTP_HOST} ^www\.floweringds\.kr$ [NC]
+RewriteRule ^(.*)$ https://floweringds.kr/$1 [R=301,L]
+
+# 3) http → https (floweringds.kr)
+RewriteCond %{HTTP_HOST} ^floweringds\.kr$ [NC]
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://floweringds.kr/$1 [R=301,L]

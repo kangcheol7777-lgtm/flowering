@@ -1,6 +1,8 @@
 # 카페24 자동 업로드
 # main 브랜치에 변경 사항이 올라오면 사이트 파일을 카페24 웹호스팅 웹사이트 폴더(/www)로 FTP 업로드합니다.
 # 카페24 FTP는 접속하면 바로 /www 폴더에서 시작하므로 업로드 위치는 ./ 입니다.
+# 폴더 구성: / = 꽃피는디자인스튜디오 첫 화면, /curtain/ = 커튼·블라인드 사이트, /media/ = 미디어 콘텐츠
+# .htaccess(주소 이동 규칙)도 함께 올라갑니다.
 # 바뀐 파일만 올리고, 저장소에서 지운 파일은 서버에서도 지웁니다.
 #
 # 필요한 설정 (GitHub 저장소 → Settings → Secrets and variables → Actions → New repository secret)
@@ -49,8 +51,8 @@ jobs:
           local-dir: ./
           server-dir: ./
           exclude: |
-            **/.git*
-            **/.git*/**
+            **/.git/**
+            **/.gitignore
             **/.github/**
             README.md
 
