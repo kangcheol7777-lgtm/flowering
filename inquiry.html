@@ -51,7 +51,7 @@
         <select id="region">
           <option value="">선택해주세요</option>
         </select><div class="err" id="e-region" hidden>거주 지역을 선택해주세요.</div></div>
-      <div class="f"><label for="addr">상세 주소 (선택)</label><input type="text" id="addr" autocomplete="street-address" placeholder="아파트명, 동·호수 (예: 무지개마을삼성건영 501동 1203호)"></div>
+      <div class="f"><label for="addr">상세 주소 <span class="req">*</span></label><input type="text" id="addr" autocomplete="street-address" placeholder="나머지 주소, 아파트나 건물 명, 동호수"><p class="hint" style="margin:6px 2px 0;font-size:13px;color:var(--umber)">예: 양재대로 1300, 올림픽파크포레온 120동 502호</p><div class="err" id="e-addr" hidden>상세 주소를 입력해주세요.</div></div>
       <div class="f"><label for="space">공간 종류 <span class="req">*</span></label>
         <select id="space"><option value="">선택해주세요</option><option>거실</option><option>침실</option><option>주방</option><option>사무실</option><option>매장</option><option>기타</option></select>
         <div class="err" id="e-space" hidden>공간 종류를 선택해주세요.</div></div>
@@ -95,7 +95,7 @@ window.areaOptions().forEach(g=>{const og=document.createElement("optgroup");og.
 {const o=document.createElement("option");o.value=o.textContent="기타 지역";$("#region").appendChild(o);}
 const pre=new URLSearchParams(location.search).get("region");
 if(pre&&[...$("#region").options].some(o=>o.value===pre))$("#region").value=pre;
-const rules=[["name",v=>v.trim()!==""],["phone",v=>/^0\d{1,2}-\d{3,4}-\d{4}$/.test(v)],["email",v=>!v||/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())],["region",v=>v!==""],["space",v=>v!==""]];
+const rules=[["name",v=>v.trim()!==""],["phone",v=>/^0\d{1,2}-\d{3,4}-\d{4}$/.test(v)],["email",v=>!v||/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())],["region",v=>v!==""],["addr",v=>v.trim()!==""],["space",v=>v!==""]];
 rules.forEach(([id])=>{const el=$("#"+id);el.addEventListener(el.tagName==="SELECT"?"change":"input",()=>{el.classList.remove("bad");$("#e-"+id).hidden=true;});});
 $("#agree").addEventListener("change",()=>$("#e-agree").hidden=true);
 $("#form").addEventListener("submit",e=>{
