@@ -1,0 +1,53 @@
+# 카페24 자동 업로드
+# main 브랜치에 변경 사항이 올라오면 사이트 파일을 카페24 웹호스팅의 www 폴더로 FTP 업로드합니다.
+# 바뀐 파일만 올리고, 저장소에서 지운 파일은 서버에서도 지웁니다.
+#
+# 필요한 설정 (GitHub 저장소 → Settings → Secrets and variables → Actions → New repository secret)
+#   FTP_SERVER    : 카페24 FTP 호스트 주소  (카페24 나의 서비스 관리 → 서비스 접속 정보)
+#   FTP_USERNAME  : 카페24 FTP 아이디
+#   FTP_PASSWORD  : 카페24 FTP 비밀번호
+#
+# 수동 실행: 저장소 → Actions → "카페24 자동 업로드" → Run workflow
+
+name: 카페24 자동 업로드
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-cafe24
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      HAS_SECRETS: ${{ secrets.FTP_SERVER != '' && secrets.FTP_USERNAME != '' && secrets.FTP_PASSWORD != '' }}
+    steps:
+      - name: FTP 설정 확인
+        if: env.HAS_SECRETS != 'true'
+        run: |
+          echo "::warning::FTP_SERVER, FTP_USERNAME, FTP_PASSWORD 시크릿이 아직 없어 업로드를 건너뜁니다. 저장소 Settings → Secrets and variables → Actions에서 등록해 주세요."
+
+      - name: 저장소 내려받기
+        if: env.HAS_SECRETS == 'true'
+        uses: actions/checkout@v4
+
+      - name: 카페24 www 폴더로 업로드
+        if: env.HAS_SECRETS == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          local-dir: ./
+          server-dir: ./www/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            README.md
