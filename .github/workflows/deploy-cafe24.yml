@@ -1,11 +1,13 @@
 # 카페24 자동 업로드
-# main 브랜치에 변경 사항이 올라오면 사이트 파일을 카페24 웹호스팅의 www 폴더로 FTP 업로드합니다.
+# main 브랜치에 변경 사항이 올라오면 사이트 파일을 카페24 웹호스팅 웹사이트 폴더(/www)로 FTP 업로드합니다.
+# 카페24 FTP는 접속하면 바로 /www 폴더에서 시작하므로 업로드 위치는 ./ 입니다.
 # 바뀐 파일만 올리고, 저장소에서 지운 파일은 서버에서도 지웁니다.
 #
 # 필요한 설정 (GitHub 저장소 → Settings → Secrets and variables → Actions → New repository secret)
 #   FTP_SERVER    : 카페24 FTP 호스트 주소  (카페24 나의 서비스 관리 → 서비스 접속 정보)
 #   FTP_USERNAME  : 카페24 FTP 아이디
 #   FTP_PASSWORD  : 카페24 FTP 비밀번호
+# 카페24에서 FTP 해외 접속 허용이 켜져 있어야 합니다 (GitHub 업로드 서버가 해외에 있음).
 #
 # 수동 실행: 저장소 → Actions → "카페24 자동 업로드" → Run workflow
 
@@ -31,7 +33,8 @@ jobs:
         run: |
           echo "::warning::FTP_SERVER, FTP_USERNAME, FTP_PASSWORD 시크릿이 아직 없어 업로드를 건너뜁니다. 저장소 Settings → Secrets and variables → Actions에서 등록해 주세요."
 
-      - name: 카페24 서버 폴더 확인
+      # 한 번만 쓰는 정리 단계: 첫 업로드 때 잘못 생긴 /www/www 폴더와 점검용 파일을 지웁니다.
+      - name: 잘못 올라간 폴더 정리 (1회용)
         if: env.HAS_SECRETS == 'true'
         env:
           S: ${{ secrets.FTP_SERVER }}
@@ -39,28 +42,20 @@ jobs:
           P: ${{ secrets.FTP_PASSWORD }}
         run: |
           HOST="${S#ftp://}"; HOST="${HOST%/}"
-          ROOTPWD=$(curl -sS -v --user "$U:$P" "ftp://$HOST/" --list-only 2>&1 | grep -m1 '^< 257' | tr -d '\r' || true)
-          ROOT=$(curl -sS --user "$U:$P" "ftp://$HOST/" --list-only 2>&1 | tr -d '\r' | tr '\n' ' ' | cut -c1-400)
-          WWW=$(curl -sS --user "$U:$P" "ftp://$HOST/www/" --list-only 2>&1 | tr -d '\r' | tr '\n' ' ' | cut -c1-400)
-          echo "::notice title=FTP 시작 위치::${ROOTPWD:-확인 안 됨}"
-          echo "::notice title=FTP 최상위 폴더 목록::${ROOT:-비어 있음}"
-          echo "::notice title=www 폴더 목록::${WWW:-비어 있음}"
-          PWDL=$(curl -sS -v --user "$U:$P" "ftp://$HOST/" --list-only 2>&1 | grep -E '^< (2[0-9][0-9]|5[0-9][0-9])' | tr -d '\r' | tr '\n' ' ' | cut -c1-600 || true)
-          echo "::notice title=FTP 서버 응답::${PWDL:-응답 없음}"
-          echo test > /tmp/t.txt
-          R1=$(curl -sS --user "$U:$P" -T /tmp/t.txt "ftp://$HOST/deploy-test.txt" 2>&1 && echo OK || echo "실패(코드 $?)")
-          echo "::notice title=최상위에 파일 올리기::${R1}"
-          R2=$(curl -sS --user "$U:$P" --ftp-create-dirs -T /tmp/t.txt "ftp://$HOST/deploy-test-dir/t.txt" 2>&1 && echo OK || echo "실패(코드 $?)")
-          echo "::notice title=최상위에 폴더 만들기::${R2}"
-          AFTER=$(curl -sS --user "$U:$P" "ftp://$HOST/" --list-only 2>&1 | tr -d '\r' | tr '\n' ' ' | cut -c1-300)
-          echo "::notice title=시험 후 최상위 목록::${AFTER:-비어 있음}"
-          curl -sS --user "$U:$P" "ftp://$HOST/" -Q "-DELE deploy-test.txt" -Q "-DELE deploy-test-dir/t.txt" -Q "-RMD deploy-test-dir" --list-only >/dev/null 2>&1 || true
+          START=$(curl -sS -v --user "$U:$P" "ftp://$HOST/" --list-only 2>&1 | grep -m1 '^< 257' | tr -d '\r' || true)
+          echo "::notice title=FTP 시작 위치::$START"
+          if ! echo "$START" | grep -q '"/www" is the current directory'; then
+            echo "::notice::시작 위치가 /www가 아니라 정리를 건너뜁니다."; exit 0
+          fi
+          sudo apt-get install -y -qq lftp >/dev/null
+          lftp -u "$U,$P" "ftp://$HOST" -e "set ftp:ssl-allow no; set cmd:fail-exit no; rm -r www; rm deploy-test.txt; rm -r deploy-test-dir; cls -1; bye" > /tmp/after.txt 2>&1 || true
+          echo "::notice title=정리 후 웹사이트 폴더::$(tr '\n' ' ' < /tmp/after.txt | cut -c1-400)"
 
       - name: 저장소 내려받기
         if: env.HAS_SECRETS == 'true'
         uses: actions/checkout@v4
 
-      - name: 카페24 www 폴더로 업로드
+      - name: 카페24 웹사이트 폴더로 업로드
         if: env.HAS_SECRETS == 'true'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -70,10 +65,20 @@ jobs:
           protocol: ftp
           port: 21
           local-dir: ./
-          server-dir: ./www/
-          log-level: verbose
+          server-dir: ./
           exclude: |
             **/.git*
             **/.git*/**
             **/.github/**
             README.md
+
+      - name: 업로드 결과 확인
+        if: env.HAS_SECRETS == 'true'
+        env:
+          S: ${{ secrets.FTP_SERVER }}
+          U: ${{ secrets.FTP_USERNAME }}
+          P: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          HOST="${S#ftp://}"; HOST="${HOST%/}"
+          LIST=$(curl -sS --user "$U:$P" "ftp://$HOST/" --list-only 2>&1 | tr -d '\r' | tr '\n' ' ' | cut -c1-500)
+          echo "::notice title=웹사이트 폴더 파일::$LIST"
