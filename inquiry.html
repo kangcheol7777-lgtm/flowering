@@ -103,7 +103,7 @@ $("#form").addEventListener("submit",e=>{
   if(!$("#agree").checked){$("#e-agree").hidden=false;first=first||$("#agree");}
   if(first){first.focus();first.scrollIntoView({block:"center",behavior:"smooth"});return;}
   /* 접수 내용을 이메일로 보내기 (FormSubmit) — 받는 주소를 바꾸려면 FORM_TO만 바꾸세요 */
-  const FORM_TO="kangcheol7777@gmail.com";
+  const FORM_TO="kkangcheol777@naver.com";
   const prods=[...document.querySelectorAll(".checks input:checked")].map(c=>c.value).join(", ");
   const v=id=>$("#"+id).value.trim();
   const data={
