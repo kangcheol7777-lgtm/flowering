@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>시공 사례 | 꽃피는 커튼 블라인드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+.filters{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:28px}
+.filters button{border:1.5px solid var(--sand);background:var(--paper);border-radius:999px;padding:9px 18px;min-height:44px;cursor:pointer;font-size:15px}
+.filters button[aria-pressed="true"]{background:var(--walnut);border-color:var(--walnut);color:var(--on-walnut);font-weight:700}
+.notice{font-size:13px;color:var(--umber);text-align:center;margin-top:10px}
+.empty{text-align:center;color:var(--umber);padding:40px 0}
+.dlg-body{padding:22px}
+.dlg-body h2{font-size:22px}
+.kv{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 16px;margin:16px 0;font-size:14px}
+.kv dt{color:var(--umber)}.kv dd{margin:0;font-weight:600}
+.kv div{min-width:0}
+.txt h3{font-size:15px;margin-top:14px;font-family:var(--f-body)}
+.txt p{color:var(--umber);font-size:15px;margin-top:4px}
+.close{position:absolute;top:10px;right:10px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,252,246,.95);cursor:pointer;font-size:18px;z-index:2}
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="phero">
+  <div class="wrap">
+    <span class="eyebrow">Gallery</span>
+    <h1>시공 사례</h1>
+    <p>공간별로 어떤 제품을 어떻게 설치했는지 살펴보세요. 사례를 누르면 자세한 내용이 열립니다.</p>
+    <p class="notice">※ 지금 보이는 사례는 페이지 구성을 보여드리기 위한 예시입니다.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="filters" id="filters" role="group" aria-label="제품별 보기"></div>
+    <div class="grid g3" id="list"></div>
+    <p class="empty" id="empty" hidden>이 제품의 사례는 준비 중입니다.</p>
+  </div>
+</section>
+
+<dialog id="dlg" aria-labelledby="d-title">
+  <div style="position:relative">
+    <button class="close" type="button" id="close" aria-label="닫기">✕</button>
+    <div id="d-media"></div>
+    <div class="dlg-body">
+      <span class="sample">예시</span>
+      <h2 id="d-title" style="margin-top:6px"></h2>
+      <dl class="kv" id="d-kv"></dl>
+      <div class="txt" id="d-txt"></div>
+      <div class="btns" style="margin-top:20px"><a class="btn pri" href="inquiry.html">비슷한 견적 받기</a><a class="btn line tnum" href="tel:07080988555">📞 전화 상담</a></div>
+    </div>
+  </div>
+</dialog>
+
+<div id="site-cta"></div>
+<div id="site-footer"></div>
+
+<script src="site.js"></script>
+<script src="cases.js"></script>
+<script>
+(function(){
+  var cur="all", fl=document.getElementById("filters"), list=document.getElementById("list"), dlg=document.getElementById("dlg");
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+  function renderFilters(){
+    fl.innerHTML="";
+    window.CATS.forEach(function(c){
+      var b=document.createElement("button");b.type="button";b.textContent=c[1];
+      b.setAttribute("aria-pressed",cur===c[0]?"true":"false");
+      b.onclick=function(){cur=c[0];renderFilters();renderList();};
+      fl.appendChild(b);
+    });
+  }
+  function renderList(){
+    list.innerHTML="";
+    var items=window.CASES.filter(function(c){return cur==="all"||c.cat===cur;});
+    document.getElementById("empty").hidden=items.length>0;
+    items.forEach(function(c){
+      var b=document.createElement("button");b.type="button";b.className="case";
+      b.innerHTML=window.caseMedia(c,180)+'<div class="t"><span class="sample">예시</span><h3>'+esc(c.place)+' · '+esc(c.room)+'</h3><span class="meta">'+esc(c.area)+' · '+esc(c.product)+'</span></div>';
+      b.onclick=function(){open(c);};
+      list.appendChild(b);
+    });
+  }
+  function open(c){
+    document.getElementById("d-media").innerHTML=window.caseMedia(c,220);
+    document.getElementById("d-title").textContent=c.place+" · "+c.room+" "+c.product;
+    document.getElementById("d-kv").innerHTML=[["시공 위치",c.place],["공간 유형",c.room],["면적",c.area],["창문 사이즈",c.size],["사용 원단",c.product],["컬러",c.color]]
+      .map(function(r){return '<div><dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd></div>';}).join("");
+    document.getElementById("d-txt").innerHTML=[["고객 요청 사항",c.request],["디자인 포인트",c.point],["시공 메모",c.note]]
+      .map(function(r){return '<h3>'+r[0]+'</h3><p>'+esc(r[1])+'</p>';}).join("");
+    if(dlg.showModal) dlg.showModal(); else dlg.setAttribute("open","");
+  }
+  document.getElementById("close").onclick=function(){dlg.close?dlg.close():dlg.removeAttribute("open");};
+  dlg.addEventListener("click",function(e){if(e.target===dlg)dlg.close();});
+
+  var h=(location.hash||"").slice(1);
+  if(window.CATS.some(function(c){return c[0]===h;})) cur=h;
+  renderFilters();renderList();
+  var m=h.match(/^case-(\d+)$/);
+  if(m){var c=window.CASES.filter(function(x){return x.id===+m[1];})[0];if(c)open(c);}
+})();
+</script>
+</body>
+</html>
