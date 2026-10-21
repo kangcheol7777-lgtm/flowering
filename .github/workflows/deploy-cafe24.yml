@@ -45,12 +45,12 @@ jobs:
           echo "::notice title=FTP 시작 위치::${ROOTPWD:-확인 안 됨}"
           echo "::notice title=FTP 최상위 폴더 목록::${ROOT:-비어 있음}"
           echo "::notice title=www 폴더 목록::${WWW:-비어 있음}"
-          PWDL=$(curl -sS -v --user "$U:$P" "ftp://$HOST/" -Q "PWD" --list-only 2>&1 | grep '257' | tr -d '\r' | tr '\n' ' ' | cut -c1-300)
-          echo "::notice title=FTP 현재 위치(PWD)::${PWDL:-응답 없음}"
+          PWDL=$(curl -sS -v --user "$U:$P" "ftp://$HOST/" --list-only 2>&1 | grep -E '^< (2[0-9][0-9]|5[0-9][0-9])' | tr -d '\r' | tr '\n' ' ' | cut -c1-600 || true)
+          echo "::notice title=FTP 서버 응답::${PWDL:-응답 없음}"
           echo test > /tmp/t.txt
-          R1=$(curl -sS --user "$U:$P" -T /tmp/t.txt "ftp://$HOST/deploy-test.txt" 2>&1 && echo OK)
+          R1=$(curl -sS --user "$U:$P" -T /tmp/t.txt "ftp://$HOST/deploy-test.txt" 2>&1 && echo OK || echo "실패(코드 $?)")
           echo "::notice title=최상위에 파일 올리기::${R1}"
-          R2=$(curl -sS --user "$U:$P" --ftp-create-dirs -T /tmp/t.txt "ftp://$HOST/deploy-test-dir/t.txt" 2>&1 && echo OK)
+          R2=$(curl -sS --user "$U:$P" --ftp-create-dirs -T /tmp/t.txt "ftp://$HOST/deploy-test-dir/t.txt" 2>&1 && echo OK || echo "실패(코드 $?)")
           echo "::notice title=최상위에 폴더 만들기::${R2}"
           AFTER=$(curl -sS --user "$U:$P" "ftp://$HOST/" --list-only 2>&1 | tr -d '\r' | tr '\n' ' ' | cut -c1-300)
           echo "::notice title=시험 후 최상위 목록::${AFTER:-비어 있음}"
