@@ -50,10 +50,6 @@
       <div class="f"><label for="region">거주 지역 <span class="req">*</span></label>
         <select id="region">
           <option value="">선택해주세요</option>
-          <optgroup label="서울"><option>서울 강남구</option><option>서울 서초구</option><option>서울 송파구</option><option>서울 강동구</option><option>서울 구로구</option><option>서울 금천구</option><option>서울 기타 지역</option></optgroup>
-          <optgroup label="경기"><option>경기 광명</option><option>경기 부천</option><option>경기 안양</option><option>경기 시흥</option><option>경기 기타</option></optgroup>
-          <optgroup label="인천"><option>인천 부평구</option><option>인천 계양구</option><option>인천 남동구</option><option>인천 서구</option><option>인천 기타</option></optgroup>
-          <option>기타 지역</option>
         </select><div class="err" id="e-region" hidden>거주 지역을 선택해주세요.</div></div>
       <div class="f"><label for="space">공간 종류 <span class="req">*</span></label>
         <select id="space"><option value="">선택해주세요</option><option>거실</option><option>침실</option><option>주방</option><option>사무실</option><option>매장</option><option>기타</option></select>
@@ -85,6 +81,7 @@
 
 <div id="site-footer"></div>
 <script src="site.js"></script>
+<script src="areas-data.js"></script>
 <script>
 (function(){
 const $=s=>document.querySelector(s);
@@ -93,6 +90,8 @@ function fmt(v){const d=v.replace(/\D/g,"").slice(0,11);
   if(d.startsWith("02")){if(d.length<3)return d;if(d.length<6)return d.slice(0,2)+"-"+d.slice(2);if(d.length<10)return d.slice(0,2)+"-"+d.slice(2,5)+"-"+d.slice(5);return d.slice(0,2)+"-"+d.slice(2,6)+"-"+d.slice(6,10);}
   if(d.length<4)return d;if(d.length<8)return d.slice(0,3)+"-"+d.slice(3);if(d.length<11)return d.slice(0,3)+"-"+d.slice(3,6)+"-"+d.slice(6);return d.slice(0,3)+"-"+d.slice(3,7)+"-"+d.slice(7);}
 $("#phone").addEventListener("input",e=>{e.target.value=fmt(e.target.value);});
+window.areaOptions().forEach(g=>{const og=document.createElement("optgroup");og.label=g.group;g.items.forEach(v=>{const o=document.createElement("option");o.value=o.textContent=v;og.appendChild(o);});$("#region").appendChild(og);});
+{const o=document.createElement("option");o.value=o.textContent="기타 지역";$("#region").appendChild(o);}
 const pre=new URLSearchParams(location.search).get("region");
 if(pre&&[...$("#region").options].some(o=>o.value===pre))$("#region").value=pre;
 const rules=[["name",v=>v.trim()!==""],["phone",v=>/^0\d{1,2}-\d{3,4}-\d{4}$/.test(v)],["email",v=>!v||/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())],["region",v=>v!==""],["space",v=>v!==""]];

@@ -111,8 +111,7 @@
       + '</div>'
       + '<div><h4>바로가기</h4><ul>'+MENU.map(function(m){return '<li><a href="'+m[0]+'">'+m[1]+'</a></li>';}).join("")+'</ul></div>'
       + '<div><h4><a href="areas.html">시공 지역 →</a></h4><p>서울 · 경기 · 인천</p>'
-      + '<p style="margin-top:6px">'+[["gangnam","강남"],["seocho","서초"],["songpa","송파"],["gangdong","강동"],["guro","구로"],["geumcheon","금천"],["gwangmyeong","광명"],["bucheon","부천"],["anyang","안양"],["siheung","시흥"],["bupyeong","부평"],["gyeyang","계양"],["namdong","남동"],["seogu","인천 서구"]]
-          .map(function(x){return '<a href="area.html?a='+x[0]+'">'+x[1]+'</a>';}).join(" · ")+'</p></div>'
+      + '<p style="margin-top:6px"><a href="areas.html#seoul">서울 25개 구</a> · <a href="areas.html#incheon">인천 9개 구</a> · <a href="areas.html#gyeonggi">경기 28개 시</a></p></div>'
       + '<div class="copy">'
       + (biz ? '<p style="margin-bottom:6px">상호 '+SITE.name+' | '+biz+'</p>' : '')
       + '<p><a href="privacy.html" style="font-weight:700">개인정보처리방침</a> · © 2026 '+SITE.name+'. All Rights Reserved.</p></div>'

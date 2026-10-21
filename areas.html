@@ -24,16 +24,30 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="style.css">
 <style>
-.note{background:var(--paper);border:1px solid var(--sand);border-left:4px solid var(--caramel);border-radius:12px;padding:16px 20px;color:var(--umber);margin-bottom:40px}
-.region+.region{margin-top:48px}
-.region h2{font-size:24px;margin-bottom:16px;display:flex;align-items:baseline;gap:10px}
+.note{background:var(--paper);border:1px solid var(--sand);border-left:4px solid var(--caramel);border-radius:12px;padding:16px 20px;color:var(--umber);margin-bottom:28px}
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px}
+.jump a{border:1.5px solid var(--sand);background:var(--paper);border-radius:999px;padding:8px 18px;text-decoration:none;font-weight:600}
+.jump a:hover{border-color:var(--walnut)}
+.region{scroll-margin-top:84px}
+.region+.region{margin-top:56px}
+.region h2{font-size:26px;margin-bottom:6px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .region h2 small{font-family:var(--f-body);font-size:14px;color:var(--umber);font-weight:400}
-.area{display:grid;gap:6px;text-decoration:none;color:inherit;background:var(--paper);border:1px solid var(--sand);border-radius:14px;padding:18px;transition:border-color .2s}
-.area:hover{border-color:var(--walnut)}
-.area h3{font-size:19px}
-.area p{color:var(--umber);font-size:14px}
-.area .go{font-size:14px;font-weight:600;color:var(--walnut)}
-.area.ask{background:transparent;border-style:dashed}
+.region .sub{color:var(--umber);font-size:14px;margin-bottom:16px}
+.tiles{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr))}
+.tile{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:inherit;background:var(--paper);border:1px solid var(--sand);border-radius:12px;padding:12px 14px;transition:border-color .2s,transform .2s;min-width:0}
+.tile:hover{border-color:var(--walnut);transform:translateY(-2px)}
+.tile b{font-size:16px}
+.tile span{font-size:12px;color:var(--umber);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cities{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));margin-bottom:12px}
+.city{background:var(--paper);border:1px solid var(--sand);border-radius:14px;padding:16px;display:grid;gap:10px;align-content:start}
+.city > a{text-decoration:none;color:inherit;font-family:var(--f-display);font-weight:700;font-size:19px}
+.city > a:hover{color:var(--walnut)}
+.city .gus{display:flex;flex-wrap:wrap;gap:6px}
+.city .gus a{font-size:14px;text-decoration:none;border:1px solid var(--sand);border-radius:999px;padding:4px 12px;background:var(--ivory)}
+.city .gus a:hover{border-color:var(--walnut);color:var(--walnut)}
+.ask{margin-top:10px;font-size:14px;color:var(--umber)}
+.ask b{color:var(--walnut)}
+h3.sub-h{font-family:var(--f-body);font-size:15px;color:var(--umber);font-weight:600;margin:18px 0 10px}
 </style>
 </head>
 <body>
@@ -43,13 +57,14 @@
   <div class="wrap">
     <span class="eyebrow">Service area</span>
     <h1>시공 지역</h1>
-    <p>서울 · 경기 · 인천 지역에 무료로 방문해 실측과 견적을 도와드립니다.</p>
+    <p>서울 25개 구, 인천 9개 구, 경기 28개 시 어디든 무료로 방문해 실측과 견적을 도와드립니다.</p>
   </div>
 </div>
 
 <section>
   <div class="wrap">
     <p class="note">목록에 없는 동네도 방문할 수 있는 경우가 많습니다. <b class="tnum">070-8098-8555</b>로 전화 주시거나 온라인 견적 신청에 주소를 남겨주세요.</p>
+    <nav class="jump" id="jump" aria-label="권역 바로가기"></nav>
     <div id="regions"></div>
   </div>
 </section>
@@ -60,14 +75,27 @@
 <script src="areas-data.js"></script>
 <script>
 (function(){
-  var box=document.getElementById("regions");
-  window.AREAS.forEach(function(g){
-    var d=document.createElement("div");d.className="region";
-    d.innerHTML='<h2>'+g.group+' <small>'+g.areas.length+'곳 방문 가능</small></h2><div class="grid g4">'
-      + g.areas.map(function(a){return '<a class="area" href="area.html?a='+a.key+'"><h3>'+a.name+'</h3><p>'+a.dongs+'</p><span class="go">지역 안내 보기 →</span></a>';}).join("")
-      + '<a class="area ask" href="tel:07080988555"><h3>'+g.other+'</h3><p>방문 가능 여부를 전화로 확인해 드립니다.</p><span class="go tnum">📞 070-8098-8555</span></a>'
-      + '</div>';
-    box.appendChild(d);
+  var box=document.getElementById("regions"), jump=document.getElementById("jump");
+  function dong(a){return a.dongs?'<span>'+a.dongs+'</span>':'<span>지역 안내 보기</span>';}
+  window.AREAS.forEach(function(g, gi){
+    var id=["seoul","incheon","gyeonggi"][gi]||("g"+gi);
+    jump.insertAdjacentHTML("beforeend",'<a href="#'+id+'">'+g.group+'</a>');
+    var d=document.createElement("div");d.className="region";d.id=id;
+    var html='';
+    if(g.group==="경기"){
+      var withGu=g.areas.filter(function(a){return a.gu;}), plain=g.areas.filter(function(a){return !a.gu;});
+      var nGu=withGu.reduce(function(n,a){return n+a.gu.length;},0);
+      html+='<h2>경기도 <small>'+g.areas.length+'개 시 · '+nGu+'개 구</small></h2><p class="sub">구가 있는 시는 구별로 안내 페이지가 있습니다.</p>';
+      html+='<h3 class="sub-h">구가 있는 시</h3><div class="cities">'+withGu.map(function(c){
+        return '<div class="city"><a href="area.html?a='+c.key+'">'+c.name+' →</a><div class="gus">'+c.gu.map(function(u){return '<a href="area.html?a='+u.key+'">'+u.name+'</a>';}).join("")+'</div></div>';
+      }).join("")+'</div>';
+      html+='<h3 class="sub-h">그 밖의 시</h3><div class="tiles">'+plain.map(function(a){return '<a class="tile" href="area.html?a='+a.key+'"><b>'+a.name+'</b>'+dong(a)+'</a>';}).join("")+'</div>';
+    } else {
+      html+='<h2>'+(g.group==="서울"?"서울특별시":"인천광역시")+' <small>'+g.areas.length+'개 구</small></h2><p class="sub">'+(g.group==="서울"?"서울 전 지역 무료 방문 실측":"2026년 7월 개편된 9개 구 기준")+'</p>';
+      html+='<div class="tiles">'+g.areas.map(function(a){return '<a class="tile" href="area.html?a='+a.key+'"><b>'+a.name+'</b>'+dong(a)+'</a>';}).join("")+'</div>';
+    }
+    html+='<p class="ask">'+g.other+' · <b class="tnum">📞 070-8098-8555</b></p>';
+    d.innerHTML=html;box.appendChild(d);
   });
 })();
 </script>
