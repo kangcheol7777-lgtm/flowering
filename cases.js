@@ -1,23 +1,130 @@
-/* 시공 사례 데이터 — 지금은 페이지 구성을 보여주기 위한 "예시"입니다.
-   실제 사례로 바꿀 때: 각 항목의 내용을 고치고 photo에 사진 파일 경로(예: "photos/case1.jpg")를 넣으면
-   원단 무늬 대신 사진이 나옵니다. */
+/* 시공 사례 — 꽃피는 커튼 블라인드 실제 시공 사진 (구글 드라이브 '영업용 사진' 폴더에서 가져옴)
+   사진은 img/works/ 폴더에 있습니다. (작은 사진: img/works/t/)
+
+   ▶ 사례 추가 방법
+   1. 사진을 img/works/ 와 img/works/t/ 에 같은 이름(예: w26.jpg)으로 올립니다.
+   2. 아래 목록에 항목을 하나 추가합니다.
+   ▶ cat(분류): linen(린넨·쉬폰 커튼) / blackout(암막 커튼) / wood(우드·알루미늄 블라인드)
+                roll(롤스크린) / combi(콤비 블라인드) / honey(허니콤 블라인드) */
 window.CASES = [
-  {id:1, cat:"linen",    product:"린넨 커튼",     fx:"fx-linen",    photo:"", place:"예시 지역 A", room:"거실",   area:"32평 아파트", size:"가로 320 × 세로 230cm", color:"내추럴 베이지",
-   request:"낮에도 은은하게 빛이 들어오는 거실을 원하셨습니다.", point:"속지 없이 린넨 한 겹으로 가볍게 연출했습니다.", note:"주름 간격을 넉넉히 잡아 열었을 때 창이 넓게 보이도록 했습니다."},
-  {id:2, cat:"blackout", product:"암막 커튼",     fx:"fx-blackout", photo:"", place:"예시 지역 B", room:"침실",   area:"25평 아파트", size:"가로 240 × 세로 220cm", color:"다크 브라운",
-   request:"교대 근무로 낮에 주무셔서 빛 차단이 가장 중요했습니다.", point:"레일 양 끝을 창보다 넓게 빼서 옆 틈으로 새는 빛을 줄였습니다.", note:"커튼 상단을 천장에 붙여 위쪽 빛샘도 막았습니다."},
-  {id:3, cat:"wood",     product:"우드 블라인드", fx:"fx-wood",     photo:"", place:"예시 지역 C", room:"서재",   area:"40평 아파트", size:"가로 180 × 세로 150cm", color:"월넛",
-   request:"원목 가구와 어울리는 따뜻한 분위기를 원하셨습니다.", point:"가구 색에 맞춰 월넛 컬러 50mm 살을 골랐습니다.", note:"책상 쪽 눈부심을 살 각도로 조절할 수 있게 했습니다."},
-  {id:4, cat:"roll",     product:"롤스크린",      fx:"fx-roll",     photo:"", place:"예시 지역 D", room:"주방",   area:"오피스텔",     size:"가로 120 × 세로 110cm", color:"아이보리",
-   request:"주방 창이라 기름때가 덜 타고 관리가 쉬운 제품을 찾으셨습니다.", point:"오염에 강한 원단으로 창틀 안쪽에 딱 맞게 달았습니다.", note:"싱크대 앞이라 조작줄 대신 손잡이로 올리고 내리게 했습니다."},
-  {id:5, cat:"combi",    product:"콤비 블라인드", fx:"fx-combi",    photo:"", place:"예시 지역 E", room:"아이방", area:"34평 아파트", size:"가로 200 × 세로 210cm", color:"샌드 그레이",
-   request:"앞 동과 가까워 낮에도 밖에서 안 보이길 원하셨습니다.", point:"망사와 원단 폭을 조절해 채광은 살리고 시선은 막았습니다.", note:"아이 안전을 위해 줄이 손에 닿지 않게 정리했습니다."},
-  {id:6, cat:"honey",    product:"허니콤",        fx:"fx-honey",    photo:"", place:"예시 지역 F", room:"매장",   area:"상가 1층",     size:"가로 400 × 세로 240cm", color:"크림",
-   request:"통유리 매장이라 여름 열기와 겨울 외풍이 고민이셨습니다.", point:"이중 허니콤으로 단열층을 두껍게 만들었습니다.", note:"위아래 양방향으로 열 수 있게 해 진열대 시야를 확보했습니다."}
+  { id:1,  photo:"w01", cat:"roll",     product:"롤스크린",          room:"매장",   color:"라이트 그레이",
+    title:"보라색 벽 매장의 와이드 롤스크린",
+    point:"넓은 창을 두 폭으로 나눠 롤스크린을 달았습니다. 몰딩 천장 아래 창 전체를 덮도록 길이를 맞춰, 내리면 벽처럼 매끈하게 정리됩니다.",
+    tip:"벽 색이 강한 공간은 블라인드를 무채색으로 고르면 인테리어 색이 더 살아납니다." },
+  { id:2,  photo:"w02", cat:"wood",     product:"알루미늄 블라인드", room:"아이방", color:"베이지 그레이",
+    title:"아이방 창에 꼭 맞춘 알루미늄 블라인드",
+    point:"창틀 바깥으로 넉넉하게 달아 살을 내리면 창이 완전히 가려집니다. 살 각도만 돌려 낮에도 눈부심 없이 빛을 들일 수 있습니다.",
+    tip:"알루미늄 블라인드는 물걸레로 닦을 수 있어 아이방처럼 관리가 잦은 공간에 좋습니다." },
+  { id:3,  photo:"w03", cat:"linen",    product:"쉬폰 커튼",         room:"거실",   color:"화이트",
+    title:"우드 가구와 어울리는 거실 쉬폰 커튼",
+    point:"짙은 원목 가구가 많은 거실이라 흰 쉬폰으로 창을 가볍게 덮었습니다. 낮에는 햇빛이 부드럽게 퍼져 거실 전체가 환해집니다.",
+    tip:"무게감 있는 가구가 많은 공간일수록 얇고 밝은 원단이 균형을 잡아줍니다." },
+  { id:4,  photo:"w04", cat:"combi",    product:"콤비 블라인드",     room:"방",     color:"베이지",
+    title:"큰 창을 한 번에 덮는 콤비 블라인드",
+    point:"창 전체 폭으로 한 장을 제작해 이음매 없이 깔끔합니다. 망사와 원단 줄을 겹쳤다 엇갈렸다 하며 빛과 시선을 조절합니다.",
+    tip:"창이 크고 앞 동과 가까운 집에 특히 잘 맞는 제품입니다." },
+  { id:5,  photo:"w05", cat:"wood",     product:"알루미늄 블라인드", room:"서재",   color:"그레이",
+    title:"모니터 눈부심을 잡은 서재 블라인드",
+    point:"책상 정면에 창이 있는 서재라 살 각도로 빛을 세밀하게 조절할 수 있는 알루미늄 블라인드를 달았습니다.",
+    tip:"모니터를 오래 보는 방은 햇빛이 화면에 직접 닿지 않게 살을 위쪽으로 기울여 두세요." },
+  { id:6,  photo:"w06", cat:"linen",    product:"쉬폰 커튼",         room:"작업실", color:"화이트",
+    title:"통창 작업실을 감싼 화이트 쉬폰",
+    point:"벽 한 면이 모두 창인 공간이라 레일을 끝에서 끝까지 이어 달았습니다. 주름을 넉넉히 잡아 창 전체가 하나의 커튼 벽처럼 보입니다.",
+    tip:"넓은 통창은 쉬폰 한 겹만으로도 직사광선이 부드러워지고 공간이 훨씬 아늑해집니다." },
+  { id:7,  photo:"w07", cat:"wood",     product:"우드 블라인드",     room:"방",     color:"내추럴 우드",
+    title:"따뜻한 원목 결이 살아나는 우드 블라인드",
+    point:"바닥 원목과 같은 계열의 내추럴 우드로 골라 방 전체 톤을 맞췄습니다. 살이 넓어 닫았을 때 빛이 단정하게 차단됩니다.",
+    tip:"우드 블라인드는 바닥이나 가구 색과 맞추면 실패가 없습니다." },
+  { id:8,  photo:"w08", cat:"blackout", product:"암막 커튼",         room:"방",     color:"라이트 그레이",
+    title:"천장부터 바닥까지 떨어지는 그레이 커튼",
+    point:"천장에 레일을 매립하듯 붙여 위쪽 빛샘을 줄이고, 바닥 가까이까지 길게 내려 방이 높아 보이도록 했습니다.",
+    tip:"커튼을 천장에서부터 달면 같은 방도 층고가 더 높아 보입니다." },
+  { id:9,  photo:"w09", cat:"blackout", product:"암막 커튼",         room:"침실",   color:"그레이",
+    title:"숙면을 위한 침실 그레이 암막 커튼",
+    point:"침대 머리맡 창에 벽 끝까지 넓게 커튼을 달아 옆으로 새는 빛을 막았습니다. 차분한 그레이가 흰 침구와 잘 어울립니다.",
+    tip:"침실은 창보다 양옆으로 넓게 커튼을 달수록 아침 햇빛이 덜 들어옵니다." },
+  { id:10, photo:"w10", cat:"linen",    product:"쉬폰 커튼",         room:"아이방", color:"화이트",
+    title:"아이방의 은은한 화이트 쉬폰",
+    point:"책상과 침대가 있는 아이방에 흰 쉬폰을 달아 낮에도 부드러운 빛이 들어오게 했습니다. 주름이 고르게 떨어져 정돈된 느낌입니다.",
+    tip:"아이방은 낮잠 시간을 생각해 쉬폰 뒤에 암막 커튼이나 블라인드를 함께 다는 것도 좋습니다." },
+  { id:11, photo:"w11", cat:"blackout", product:"암막 커튼",         room:"방",     color:"블루 그레이",
+    title:"차분한 블루 그레이 암막 커튼",
+    point:"흰 벽과 대비되는 블루 그레이로 방에 포인트를 줬습니다. 바닥까지 길게 내려 창 아래 벽면까지 함께 가려줍니다.",
+    tip:"한 가지 색으로 포인트를 주고 싶다면 커튼이 가장 손쉬운 방법입니다." },
+  { id:12, photo:"w12", cat:"linen",    product:"쉬폰 커튼",         room:"침실",   color:"화이트",
+    title:"아침 햇살이 부드럽게 드는 침실 쉬폰",
+    point:"침대 옆 큰 창에 흰 쉬폰을 달아 아침 빛이 은은하게 퍼지도록 했습니다. 레일을 천장 가까이 달아 깔끔하게 마감했습니다.",
+    tip:"밤에 빛을 막고 싶다면 같은 레일에 암막 커튼을 함께 다는 이중 레일을 추천합니다." },
+  { id:13, photo:"w13", cat:"blackout", product:"암막 커튼",         room:"공부방", color:"베이지",
+    title:"공부방을 따뜻하게 감싸는 베이지 커튼",
+    point:"책상과 책장이 있는 공부방이라 눈이 편한 베이지로 골랐습니다. 창이 있는 벽 전체를 덮어 공간이 넓고 정돈돼 보입니다.",
+    tip:"공부방은 밝은 베이지나 아이보리처럼 눈이 편안한 색이 잘 맞습니다." },
+  { id:14, photo:"w14", cat:"combi",    product:"콤비 블라인드",     room:"아이방", color:"블랙",
+    title:"블랙 콤비 블라인드로 포인트 준 아이방",
+    point:"흰 벽에 블랙 콤비 블라인드를 달아 방에 또렷한 포인트를 줬습니다. 침대 옆 창이라 빛 조절이 쉬운 제품을 골랐습니다.",
+    tip:"진한 색 블라인드는 낮에도 빛을 많이 줄여 줘서 낮잠 자는 방에 좋습니다." },
+  { id:15, photo:"w15", cat:"wood",     product:"알루미늄 블라인드", room:"사무 공간", color:"그레이",
+    title:"좁고 긴 창마다 맞춘 알루미늄 블라인드",
+    point:"폭이 좁은 창 여러 개에 각각 크기를 재서 따로 제작했습니다. 같은 색으로 맞춰 공간 전체가 통일돼 보입니다.",
+    tip:"창 크기가 제각각인 공간도 창마다 실측해 제작하면 깔끔하게 맞출 수 있습니다." },
+  { id:16, photo:"w16", cat:"linen",    product:"쉬폰 커튼",         room:"아이방", color:"화이트",
+    title:"아이 침대 옆 화이트 쉬폰 커튼",
+    point:"벙커 침대가 있는 아이방에 흰 쉬폰을 달아 방이 답답해 보이지 않게 했습니다. 바닥까지 닿는 길이로 깔끔하게 마감했습니다.",
+    tip:"가구가 많은 작은 방은 밝고 얇은 커튼이 공간을 넓어 보이게 합니다." },
+  { id:17, photo:"w17", cat:"honey",    product:"허니콤 블라인드",   room:"침실",   color:"크림",
+    title:"원룸 침실의 크림색 허니콤 블라인드",
+    point:"창을 두 폭으로 나눠 따로 올리고 내릴 수 있게 했습니다. 벌집 구조 원단이 공기층을 만들어 창가 냉기를 줄여 줍니다.",
+    tip:"창가에 침대가 붙어 있다면 단열이 되는 허니콤 블라인드가 특히 좋습니다." },
+  { id:18, photo:"w18", cat:"linen",    product:"쉬폰 커튼",         room:"거실",   color:"화이트",
+    title:"거실 창 전체를 감싼 쉬폰 커튼",
+    point:"소파 맞은편 창에 천장부터 바닥까지 쉬폰을 달아 거실이 더 높고 밝아 보이게 했습니다.",
+    tip:"거실은 쉬폰과 암막을 함께 다는 이중 커튼이 낮과 밤 모두 편합니다." },
+  { id:19, photo:"w19", cat:"blackout", product:"암막 커튼",         room:"침실",   color:"핑크 베이지",
+    title:"작은 창에 맞춘 핑크 베이지 커튼",
+    point:"침대 머리맡 작은 창에 맞춰 짧은 길이로 제작했습니다. 부드러운 핑크 베이지가 가죽 침대와 따뜻하게 어울립니다.",
+    tip:"창이 작고 아래에 가구가 있다면 창 길이에 맞춘 짧은 커튼이 깔끔합니다." },
+  { id:20, photo:"w20", cat:"honey",    product:"허니콤 블라인드",   room:"베란다", color:"아이보리",
+    title:"화초가 가득한 베란다의 허니콤 블라인드",
+    point:"화분이 많은 베란다 창이라 빛을 은은하게 걸러 주는 허니콤 블라인드를 달았습니다. 창 전체 폭으로 한 장을 제작했습니다.",
+    tip:"허니콤은 빛을 부드럽게 퍼뜨려 식물에게도 직사광선보다 편안한 빛을 줍니다." },
+  { id:21, photo:"w21", cat:"linen",    product:"이중 커튼",         room:"서재",   color:"화이트 · 베이지",
+    title:"쉬폰과 베이지 커튼을 함께 단 서재",
+    point:"안쪽은 흰 쉬폰, 양옆은 베이지 커튼으로 이중 레일을 구성했습니다. 낮에는 쉬폰만, 밤에는 베이지 커튼까지 닫아 쓰시면 됩니다.",
+    tip:"이중 커튼은 계절과 시간에 따라 빛을 조절하기 가장 편한 구성입니다." },
+  { id:22, photo:"w22", cat:"blackout", product:"암막 커튼",         room:"방",     color:"그레이",
+    title:"벽 한 면을 채운 그레이 커튼",
+    point:"창이 있는 벽 전체를 커튼으로 덮어 방이 더 단정해 보이게 했습니다. 바닥 가까이까지 떨어지는 길이로 맞췄습니다.",
+    tip:"창보다 넓게, 벽 전체로 커튼을 달면 방이 훨씬 정돈돼 보입니다." },
+  { id:23, photo:"w23", cat:"linen",    product:"쉬폰 커튼",         room:"서재",   color:"화이트",
+    title:"책장 옆 큰 창의 화이트 쉬폰",
+    point:"책장이 있는 서재 큰 창에 흰 쉬폰을 달아 책 읽기 좋은 부드러운 빛을 만들었습니다.",
+    tip:"쉬폰은 햇빛에 책이 바래는 것도 어느 정도 막아 줍니다." },
+  { id:24, photo:"w24", cat:"linen",    product:"쉬폰 커튼",         room:"거실",   color:"화이트",
+    title:"소파 뒤로 빛이 번지는 거실 쉬폰",
+    point:"거실 큰 창에 쉬폰을 천장부터 달아 낮 동안 빛이 거실 깊숙이 은은하게 들어오도록 했습니다.",
+    tip:"쉬폰은 속이 비치는 정도가 원단마다 달라, 샘플을 창에 대어 보고 고르는 것이 좋습니다." },
+  { id:25, photo:"w25", cat:"linen",    product:"린넨 커튼",         room:"거실",   color:"베이지",
+    title:"화이트 가전과 어울리는 베이지 린넨 커튼",
+    point:"흰 소파와 가전이 있는 거실에 따뜻한 베이지 린넨을 달아 공간에 온기를 더했습니다.",
+    tip:"흰 가구가 많은 거실은 베이지 계열 커튼이 차가운 느낌을 덜어 줍니다." }
 ];
-window.caseMedia = function(c, h){
-  return c.photo
-    ? '<div class="fabric" style="height:'+h+'px;border-radius:0;background:url(\''+c.photo+'\') center/cover"><span class="tag">'+c.product+'</span></div>'
-    : '<div class="fabric '+c.fx+'" style="height:'+h+'px;border-radius:0"><span class="tag">'+c.product+'</span></div>';
+
+window.CATS = [["all","전체"],["linen","린넨·쉬폰 커튼"],["blackout","암막 커튼"],["wood","우드·알루미늄 블라인드"],["roll","롤스크린"],["combi","콤비 블라인드"],["honey","허니콤 블라인드"]];
+
+/* 사진 경로 */
+window.casePhoto = function(c, small){ return "img/works/" + (small ? "t/" : "") + c.photo + ".jpg"; };
+
+/* 무작위 섞기 / 무작위 고르기 */
+window.shuffle = function(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;} return a; };
+window.randomCase = function(cat){
+  var list = window.CASES.filter(function(c){ return !cat || c.cat===cat; });
+  if(!list.length) list = window.CASES;
+  return list[Math.floor(Math.random()*list.length)];
 };
-window.CATS =[["all","전체"],["linen","린넨 커튼"],["blackout","암막 커튼"],["wood","우드 블라인드"],["roll","롤스크린"],["combi","콤비 블라인드"],["honey","허니콤"]];
+
+/* 카드·상세에 쓰는 사진 영역 */
+window.caseMedia = function(c, h, small){
+  return '<div class="fabric photo" style="height:'+h+'px;border-radius:0">'
+    + '<img src="'+window.casePhoto(c, small!==false)+'" alt="'+c.room+' '+c.product+' 시공 사진" loading="lazy">'
+    + '<span class="tag">'+c.product+'</span></div>';
+};

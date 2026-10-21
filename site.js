@@ -42,7 +42,7 @@
     if(!list.length){box.innerHTML='<p style="color:var(--umber);text-align:center">준비 중인 글이 곧 올라옵니다.</p>';return;}
     box.innerHTML=list.map(function(p){
       return '<a class="post" href="post.html?id='+encodeURIComponent(p.id)+'">'
-        +'<div class="fabric '+esc(p.fx||"fx-linen")+'"><span class="tag">'+esc(p.tag)+'</span></div>'
+        +(p.cat&&window.randomCase ? '<div class="fabric photo"><img src="'+window.casePhoto(window.randomCase(p.cat),true)+'" alt="" loading="lazy"><span class="tag">'+esc(p.tag)+'</span></div>' : '<div class="fabric '+esc(p.fx||"fx-linen")+'"><span class="tag">'+esc(p.tag)+'</span></div>')
         +'<div class="t"><h3>'+esc(p.title)+'</h3><p>'+esc(p.summary)+'</p>'
         +'<span class="pm tnum">'+esc(p.date)+' · '+(+p.readMin||3)+'분 읽기</span></div></a>';
     }).join("");

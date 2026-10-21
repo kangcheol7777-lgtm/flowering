@@ -28,7 +28,7 @@
 .ahead .crumb a{text-decoration:none}
 .ahead h1{font-size:clamp(26px,4.6vw,38px);margin-top:12px}
 .ahead .pm{color:var(--umber);font-size:14px;margin-top:12px}
-.cover{height:220px;margin-bottom:36px}
+.cover{height:min(360px,60vw);margin-bottom:36px}
 article.body{font-size:17px;line-height:1.85}
 article.body p{margin-top:16px;color:#4A382B}
 article.body h2{font-size:22px;margin-top:40px}
@@ -43,6 +43,7 @@ article.body h2{font-size:22px;margin-top:40px}
 <div id="site-cta"></div>
 <div id="site-footer"></div>
 <script src="site.js"></script>
+<script src="cases.js"></script>
 <script src="blog-posts.js"></script>
 <script>
 (function(){
@@ -56,7 +57,7 @@ article.body h2{font-size:22px;margin-top:40px}
   page.innerHTML=
     '<div class="wrap narrow ahead"><p class="crumb"><a href="blog.html">블로그</a> › '+esc(p.tag)+'</p>'
     +'<h1>'+esc(p.title)+'</h1><p class="pm tnum">'+esc(p.date)+' · '+(+p.readMin||3)+'분 읽기</p></div>'
-    +'<div class="wrap narrow"><div class="fabric cover '+esc(p.fx||"fx-linen")+'"></div>'
+    +'<div class="wrap narrow">'+(p.cat&&window.randomCase?'<div class="fabric cover photo"><img src="'+window.casePhoto(window.randomCase(p.cat))+'" alt=""></div>':'<div class="fabric cover '+esc(p.fx||"fx-linen")+'"></div>')
     +'<article class="body">'+p.body+'</article>'
     +'<div class="nextposts"><h2>다른 글도 읽어보세요</h2><div class="grid g2" id="more"></div></div></div>';
   window.BLOG=(window.BLOG||[]).filter(function(x){return x.id!==id;});

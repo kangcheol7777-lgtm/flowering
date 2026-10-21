@@ -34,13 +34,14 @@
 .hero .sub{color:var(--umber);font-size:17px;margin-top:16px;max-width:30em}
 .hero .btns{margin-top:28px}
 .window{position:relative;aspect-ratio:4/3.4;max-width:100%;border-radius:20px;background:linear-gradient(180deg,#F4E9D6,#E9D9BE);border:10px solid #FFFCF6;box-shadow:0 30px 60px -30px rgba(58,42,31,.45);overflow:hidden}
-.window::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 49.6%,#FFFCF6 49.6% 50.4%,transparent 50.4%),linear-gradient(180deg,transparent 54%,#FFFCF6 54% 55.2%,transparent 55.2%)}
+.window img{position:absolute;inset:14px 0 0;width:100%;height:calc(100% - 14px);object-fit:cover}
+.window .cap{position:absolute;left:14px;bottom:14px;z-index:2;background:rgba(255,252,246,.94);color:var(--bark);font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px;text-decoration:none}
 .window .rod{position:absolute;left:0;right:0;top:0;height:14px;background:#6E4327}
-.window .drape{position:absolute;top:14px;bottom:0;width:30%;background:repeating-linear-gradient(90deg,#EADFCB 0 18px,#D7C6AA 18px 28px,#E5D8C0 28px 40px);box-shadow:inset -8px 0 20px -10px rgba(58,42,31,.35);transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
+.window .drape{position:absolute;top:14px;bottom:0;width:9%;z-index:1;background:repeating-linear-gradient(90deg,#EADFCB 0 18px,#D7C6AA 18px 28px,#E5D8C0 28px 40px);box-shadow:inset -8px 0 20px -10px rgba(58,42,31,.35);transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
 .window .l{left:0;border-bottom-right-radius:40% 6%}
 .window .r{right:0;border-bottom-left-radius:40% 6%}
 .window.closed .drape{width:50%}
-.window .sun{position:absolute;right:22%;top:24%;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,#FFF4D9,#F3D9A8 60%,transparent 70%)}
+
 .feats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:32px}
 @media (min-width:560px){.feats{grid-template-columns:repeat(4,1fr)}}
 .feat{background:var(--paper);border:1px solid var(--sand);border-radius:12px;padding:12px;text-align:center;font-size:14px;font-weight:600}
@@ -66,7 +67,7 @@
         <div class="feat"><span>🛠️</span>1년 무상 A/S</div>
       </div>
     </div>
-    <div class="window closed" id="win" aria-hidden="true"><div class="sun"></div><div class="rod"></div><div class="drape l"></div><div class="drape r"></div></div>
+    <div class="window closed" id="win"><img id="heroImg" src="img/works/w18.jpg" alt="꽃피는 커튼 블라인드 시공 사진"><div class="rod"></div><div class="drape l" aria-hidden="true"></div><div class="drape r" aria-hidden="true"></div><a class="cap" id="heroCap" href="gallery.html">실제 시공 사진 보기 →</a></div>
   </div>
 </section>
 
@@ -86,19 +87,19 @@
   <div class="wrap">
     <div class="sec-head center"><span class="eyebrow">Products</span><h2>커튼·블라인드 종류</h2><p>공간과 생활 방식에 맞는 제품을 골라보세요.</p></div>
     <div class="grid g3">
-      <a class="prod" href="gallery.html#linen"><div class="fabric fx-linen"></div><div class="t"><h3>린넨 커튼</h3><p>빛을 부드럽게 걸러 주는 자연스러운 질감</p></div></a>
-      <a class="prod" href="gallery.html#blackout"><div class="fabric fx-blackout"></div><div class="t"><h3>암막 커튼</h3><p>햇빛을 막아 깊은 잠과 영화 감상에 좋아요</p></div></a>
-      <a class="prod" href="gallery.html#wood"><div class="fabric fx-wood"></div><div class="t"><h3>우드 블라인드</h3><p>살 각도로 빛을 조절하는 원목의 따뜻함</p></div></a>
-      <a class="prod" href="gallery.html#roll"><div class="fabric fx-roll"></div><div class="t"><h3>롤스크린</h3><p>한 장 원단으로 깔끔하게 말아 올리는 방식</p></div></a>
-      <a class="prod" href="gallery.html#combi"><div class="fabric fx-combi"></div><div class="t"><h3>콤비 블라인드</h3><p>망사와 원단이 겹쳐 채광과 사생활을 함께</p></div></a>
-      <a class="prod" href="gallery.html#honey"><div class="fabric fx-honey"></div><div class="t"><h3>허니콤</h3><p>벌집 구조가 공기층을 만들어 단열에 유리</p></div></a>
+      <a class="prod" href="gallery.html#linen" data-cat="linen"><div class="fabric photo"></div><div class="t"><h3>린넨·쉬폰 커튼</h3><p>빛을 부드럽게 걸러 주는 자연스러운 질감</p></div></a>
+      <a class="prod" href="gallery.html#blackout" data-cat="blackout"><div class="fabric photo"></div><div class="t"><h3>암막 커튼</h3><p>햇빛을 막아 깊은 잠과 영화 감상에 좋아요</p></div></a>
+      <a class="prod" href="gallery.html#wood" data-cat="wood"><div class="fabric photo"></div><div class="t"><h3>우드·알루미늄 블라인드</h3><p>살 각도로 빛을 세밀하게 조절해요</p></div></a>
+      <a class="prod" href="gallery.html#roll" data-cat="roll"><div class="fabric photo"></div><div class="t"><h3>롤스크린</h3><p>한 장 원단으로 깔끔하게 말아 올리는 방식</p></div></a>
+      <a class="prod" href="gallery.html#combi" data-cat="combi"><div class="fabric photo"></div><div class="t"><h3>콤비 블라인드</h3><p>망사와 원단이 겹쳐 채광과 사생활을 함께</p></div></a>
+      <a class="prod" href="gallery.html#honey" data-cat="honey"><div class="fabric photo"></div><div class="t"><h3>허니콤 블라인드</h3><p>벌집 구조가 공기층을 만들어 단열에 유리</p></div></a>
     </div>
   </div>
 </section>
 
 <section class="band">
   <div class="wrap">
-    <div class="sec-head center"><span class="eyebrow">Recent Works</span><h2>최근 시공 사례</h2><p>아래 사례는 페이지 구성을 보여드리기 위한 예시입니다.</p></div>
+    <div class="sec-head center"><span class="eyebrow">Recent Works</span><h2>최근 시공 사례</h2><p>꽃피는 커튼 블라인드가 직접 시공한 현장입니다. 페이지를 열 때마다 다른 사례를 보여드려요.</p></div>
     <div class="grid g3" id="recent"></div>
     <div style="text-align:center"><a class="more" href="gallery.html">전체 사례 보기 →</a></div>
   </div>
@@ -155,11 +156,18 @@
   window.renderPosts(document.getElementById("posts"),3);
   window.renderReviews(document.getElementById("reviews"),6);
   var box=document.getElementById("recent");
-  window.CASES.slice(0,6).forEach(function(c){
+  window.shuffle(window.CASES).slice(0,6).forEach(function(c){
     var a=document.createElement("a");a.className="case";a.href="gallery.html#case-"+c.id;a.style.textDecoration="none";a.style.color="inherit";
-    a.innerHTML=window.caseMedia(c,180)+'<div class="t"><span class="sample">예시</span><h3>'+c.place+' · '+c.room+'</h3><span class="meta">'+c.area+'</span></div>';
+    a.innerHTML=window.caseMedia(c,200)+'<div class="t"><span class="real">실제 시공</span><h3>'+c.title+'</h3><span class="meta">'+c.room+' · '+c.product+'</span></div>';
     box.appendChild(a);
   });
+  Array.prototype.forEach.call(document.querySelectorAll(".prod[data-cat]"),function(el){
+    var c=window.randomCase(el.getAttribute("data-cat"));
+    el.querySelector(".fabric").innerHTML='<img src="'+window.casePhoto(c,true)+'" alt="'+c.product+' 시공 사진" loading="lazy">';
+  });
+  var hero=window.randomCase(), hi=document.getElementById("heroImg");
+  hi.src=window.casePhoto(hero); hi.alt=hero.room+" "+hero.product+" 시공 사진";
+  var cap=document.getElementById("heroCap"); cap.textContent=hero.room+" · "+hero.product+" →"; cap.href="gallery.html#case-"+hero.id;
   var w=document.getElementById("win");
   requestAnimationFrame(function(){setTimeout(function(){w.classList.remove("closed");},150);});
 })();

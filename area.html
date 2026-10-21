@@ -45,6 +45,7 @@
 <div id="site-cta"></div>
 <div id="site-footer"></div>
 <script src="site.js"></script>
+<script src="cases.js"></script>
 <script src="areas-data.js"></script>
 <script>
 (function(){
@@ -100,9 +101,10 @@
     +'<div class="sec-head center"><span class="eyebrow">Process</span><h2>진행 과정</h2></div>'
     +'<ol class="steps"><li><span class="num">01</span><h3>견적 신청</h3><p>전화나 온라인으로 문의해 주세요.</p></li><li><span class="num">02</span><h3>방문 실측</h3><p>'+label+' 댁으로 찾아가 창을 잽니다.</p></li><li><span class="num">03</span><h3>맞춤 제작</h3><p>실측 치수대로 제작합니다.</p></li><li><span class="num">04</span><h3>시공 완료</h3><p>설치와 사용법 안내까지 마칩니다.</p></li></ol>'
     +'</div></section>'
-    +'<section><div class="wrap narrow">'
-    +'<div class="sec-head"><span class="eyebrow">Works</span><h2>'+label+' 시공 사례</h2></div>'
-    +'<div class="pending"><p>'+label+' 시공 사례를 준비하고 있습니다.</p><a class="more" href="gallery.html">다른 지역 사례 보기 →</a></div>'
+    +'<section><div class="wrap">'
+    +'<div class="sec-head"><span class="eyebrow">Works</span><h2>꽃피는 커튼 블라인드 시공 사례</h2><p>저희가 직접 시공한 현장 사진입니다.</p></div>'
+    +'<div class="grid g3">'+window.shuffle(window.CASES).slice(0,3).map(function(c){return '<a class="case" style="text-decoration:none;color:inherit" href="gallery.html#case-'+c.id+'">'+window.caseMedia(c,180)+'<div class="t"><h3>'+c.title+'</h3><span class="meta">'+c.room+' · '+c.product+'</span></div></a>';}).join("")+'</div>'
+    +'<p style="text-align:center"><a class="more" href="gallery.html">시공 사례 전체 보기 →</a></p>'
     +'<div class="sec-head" style="margin:48px 0 16px"><h2 style="font-size:22px">'+nearTitle+'</h2></div>'
     +'<div class="near">'+near+'<a href="areas.html">전체 지역 →</a></div>'
     +'</div></section>';

@@ -10,6 +10,7 @@ window.BLOG = [
     date: "2026-10-21",
     readMin: 4,
     fx: "fx-blackout",
+    cat: "blackout",
     body:
       "<p>침실 창을 고를 때 가장 많이 받는 질문이 '암막 커튼이 나을까, 블라인드가 나을까'입니다. 정답은 집마다 다르지만, 아래 세 가지를 따져보면 대부분 답이 나옵니다.</p>"
     + "<h2>1. 빛을 얼마나 막아야 하나요?</h2>"
@@ -29,6 +30,7 @@ window.BLOG = [
     date: "2026-10-14",
     readMin: 3,
     fx: "fx-linen",
+    cat: "linen",
     body:
       "<p>입주 날짜는 정해졌는데 커튼은 언제 알아봐야 할지 막막하신 분들이 많습니다. 입주일에 맞춰 설치까지 끝내려면 순서가 중요합니다.</p>"
     + "<h2>사전 점검일에 실측하기</h2>"
@@ -46,6 +48,7 @@ window.BLOG = [
     date: "2026-10-07",
     readMin: 3,
     fx: "fx-combi",
+    cat: "linen",
     body:
       "<p>거실은 집에서 가장 큰 창이 있는 곳이라 커튼 하나로 분위기가 크게 달라집니다. 원단을 고를 때 이 세 가지만 기억하세요.</p>"
     + "<h2>빛: 낮과 밤을 나눠 생각하기</h2>"
@@ -65,7 +68,8 @@ window.BLOG = [
     summary: "목록에 보일 한두 줄 요약",
     date: "2026-10-21",
     readMin: 3,                   // 읽는 데 걸리는 시간(분)
-    fx: "fx-linen",               // 대표 무늬: fx-linen, fx-blackout, fx-wood, fx-roll, fx-combi, fx-honey
+    fx: "fx-linen",               // 사진이 없을 때 무늬: fx-linen, fx-blackout, fx-wood, fx-roll, fx-combi, fx-honey
+    cat: "linen",                 // 대표 사진 분류 — 이 분류의 시공 사진 중 하나가 무작위로 나옵니다
     body: "<p>첫 문단</p><h2>소제목</h2><p>문단</p>"
   },
 */

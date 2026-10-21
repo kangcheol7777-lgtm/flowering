@@ -197,6 +197,11 @@ footer .copy{grid-column:1/-1;border-top:1px solid #4A372A;padding-top:18px;font
 @media (min-width:860px){.dock{display:none}}
 
 /* dialog */
-dialog{border:0;border-radius:18px;padding:0;max-width:640px;width:calc(100% - 32px);background:var(--paper);color:var(--bark)}
+dialog{border:0;border-radius:18px;padding:0;max-width:640px;max-height:calc(100% - 32px);overflow:auto;width:calc(100% - 32px);background:var(--paper);color:var(--bark)}
 dialog::backdrop{background:rgba(47,34,25,.55)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* 실제 시공 사진 */
+.fabric.photo{background:var(--linen)}
+.fabric.photo img{width:100%;height:100%;object-fit:cover;display:block}
+.real{font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--leaf,#3E6B52);background:#E6EFE6;padding:2px 8px;border-radius:999px;justify-self:start}
