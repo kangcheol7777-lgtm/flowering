@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>고객 후기 | 꽃피는 커튼 블라인드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+.summary{display:flex;justify-content:center;align-items:center;gap:14px;margin-bottom:28px;color:var(--umber)}
+.summary b{font-family:var(--f-display);font-size:34px;color:var(--bark)}
+.summary .rv-stars{font-size:20px}
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="phero">
+  <div class="wrap">
+    <span class="eyebrow">Reviews</span>
+    <h1>고객 후기</h1>
+    <p>꽃피는 커튼 블라인드와 함께한 고객님들의 이야기입니다.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="summary" id="summary" hidden></div>
+    <div id="reviews"></div>
+  </div>
+</section>
+
+<div id="site-cta"></div>
+<div id="site-footer"></div>
+<script src="site.js"></script>
+<script src="reviews.js"></script>
+<script>
+(function(){
+  var R=window.REVIEWS||[];
+  window.renderReviews(document.getElementById("reviews"));
+  if(R.length){
+    var avg=R.reduce(function(s,r){return s+(+r.rating||0);},0)/R.length, n=Math.round(avg);
+    var s=document.getElementById("summary");
+    s.innerHTML='<b class="tnum">'+avg.toFixed(1)+'</b><div><div class="rv-stars">'+"★".repeat(n)+'<span>'+"★".repeat(5-n)+'</span></div><div class="tnum">후기 '+R.length+'개</div></div>';
+    s.hidden=false;
+  }
+})();
+</script>
+</body>
+</html>

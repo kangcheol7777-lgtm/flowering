@@ -7,14 +7,51 @@
   };
   window.SITE = SITE;
 
+  /* 고객 후기 카드 그리기: renderReviews(담을 요소, 최대 개수) */
+  window.renderReviews = function(box, limit){
+    function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+    function mask(n){n=String(n||"").trim();if(n.length<=1)return n||"고객";if(n.length===2)return n[0]+"*";return n[0]+"*".repeat(n.length-2)+n[n.length-1];}
+    var list=(window.REVIEWS||[]).slice().sort(function(a,b){return String(b.date||"").localeCompare(String(a.date||""));});
+    if(limit) list=list.slice(0,limit);
+    if(!list.length){
+      box.innerHTML='<div class="rv-empty"><p class="rv-empty-t">아직 등록된 후기가 없어요</p><p>시공을 마친 고객님들의 이야기가 곧 이곳에 채워집니다.<br>첫 후기의 주인공이 되어 주세요.</p><a class="btn pri" href="inquiry.html">무료 견적 신청</a></div>';
+      box.classList.remove("grid","g3");return;
+    }
+    box.classList.add("grid","g3");
+    box.innerHTML=list.map(function(r){
+      var n=Math.max(0,Math.min(5,Math.round(+r.rating||0)));
+      return '<article class="rv">'
+        +'<div class="rv-stars" aria-label="별점 '+n+'점">'+"★".repeat(n)+'<span>'+"★".repeat(5-n)+'</span></div>'
+        +'<h3>'+esc(r.title)+'</h3><p class="rv-text">'+esc(r.text)+'</p>'
+        +'<p class="rv-who">'+esc(mask(r.name))+' 고객님 · '+esc(r.region)+(r.product?' · '+esc(r.product):'')+(r.date?'<span class="tnum"> · '+esc(r.date)+'</span>':'')+'</p>'
+        +'</article>';
+    }).join("");
+  };
+
+  /* 블로그 카드 그리기: renderPosts(담을 요소, 최대 개수) */
+  window.renderPosts = function(box, limit){
+    function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+    var list=(window.BLOG||[]).slice().sort(function(a,b){return String(b.date).localeCompare(String(a.date));});
+    if(limit) list=list.slice(0,limit);
+    if(!list.length){box.innerHTML='<p style="color:var(--umber);text-align:center">준비 중인 글이 곧 올라옵니다.</p>';return;}
+    box.innerHTML=list.map(function(p){
+      return '<a class="post" href="post.html?id='+encodeURIComponent(p.id)+'">'
+        +'<div class="fabric '+esc(p.fx||"fx-linen")+'"><span class="tag">'+esc(p.tag)+'</span></div>'
+        +'<div class="t"><h3>'+esc(p.title)+'</h3><p>'+esc(p.summary)+'</p>'
+        +'<span class="pm tnum">'+esc(p.date)+' · '+(+p.readMin||3)+'분 읽기</span></div></a>';
+    }).join("");
+  };
+
   var page = (location.pathname.split("/").pop() || "index.html").replace(/\?.*$/, "");
   if (page === "") page = "index.html";
   var MENU = [
     ["index.html", "홈"],
     ["gallery.html", "시공 사례"],
+    ["reviews.html", "고객 후기"],
     ["about.html", "회사 소개"],
     ["areas.html", "시공 지역"],
     ["faq.html", "자주 묻는 질문"],
+    ["blog.html", "블로그"],
     ["inquiry.html", "견적 문의"]
   ];
   function links(){
@@ -62,7 +99,8 @@
       + '<p class="tnum">📞 '+SITE.tel+'</p></div>'
       + '<div><h4>바로가기</h4><ul>'+MENU.map(function(m){return '<li><a href="'+m[0]+'">'+m[1]+'</a></li>';}).join("")+'</ul></div>'
       + '<div><h4><a href="areas.html">시공 지역 →</a></h4><p>서울 · 경기 · 인천</p>'
-      + '<p style="margin-top:6px">강남 · 서초 · 송파 · 강동 · 구로 · 금천 · 광명 · 부천 · 안양 · 시흥 · 부평 · 계양 · 남동 · 인천 서구</p></div>'
+      + '<p style="margin-top:6px">'+[["gangnam","강남"],["seocho","서초"],["songpa","송파"],["gangdong","강동"],["guro","구로"],["geumcheon","금천"],["gwangmyeong","광명"],["bucheon","부천"],["anyang","안양"],["siheung","시흥"],["bupyeong","부평"],["gyeyang","계양"],["namdong","남동"],["seogu","인천 서구"]]
+          .map(function(x){return '<a href="area.html?a='+x[0]+'">'+x[1]+'</a>';}).join(" · ")+'</p></div>'
       + '<div class="copy">© 2026 '+SITE.name+'. All Rights Reserved.</div>'
       + '</div></footer>'
       + '<nav class="dock" aria-label="빠른 상담"><a class="a tnum" href="'+SITE.telHref+'">📞 전화</a><a class="b" href="inquiry.html">📋 견적</a></nav>';

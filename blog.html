@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>블로그 | 꽃피는 커튼 블라인드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="phero">
+  <div class="wrap">
+    <span class="eyebrow">Journal</span>
+    <h1>인테리어 블로그</h1>
+    <p>커튼과 블라인드를 고를 때 도움이 되는 이야기를 모았습니다.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="grid g3" id="posts"></div>
+  </div>
+</section>
+
+<div id="site-cta"></div>
+<div id="site-footer"></div>
+<script src="site.js"></script>
+<script src="blog-posts.js"></script>
+<script>
+  window.renderPosts(document.getElementById("posts"));
+</script>
+</body>
+</html>

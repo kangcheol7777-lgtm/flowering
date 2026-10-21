@@ -54,7 +54,8 @@ section{padding-block:72px}
 .mnav{border-top:1px solid var(--sand);background:var(--paper)}
 .mnav a{display:block;padding:14px max(18px,env(safe-area-inset-left,0px));text-decoration:none;border-bottom:1px solid var(--linen)}
 .mnav a[aria-current="page"]{color:var(--walnut);font-weight:700}
-@media (min-width:860px){.menu,.top .tel{display:flex}.burger,.mnav{display:none!important}}
+@media (min-width:1000px){.menu{display:flex;gap:22px}.burger,.mnav{display:none!important}}
+@media (min-width:1240px){.top .tel{display:flex}}
 
 /* buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border-radius:999px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font-size:16px}
@@ -110,6 +111,26 @@ section{padding-block:72px}
 .case h3{font-size:17px}
 .case .meta{font-size:14px;color:var(--umber)}
 .sample{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--walnut);background:var(--linen);padding:2px 8px;border-radius:999px;justify-self:start}
+
+/* blog cards */
+.post{display:flex;flex-direction:column;text-decoration:none;background:var(--paper);border:1px solid var(--sand);border-radius:16px;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.post:hover{transform:translateY(-3px);box-shadow:0 14px 30px -18px rgba(58,42,31,.5)}
+.post .fabric{height:140px;border-radius:0}
+.post .t{padding:18px;display:flex;flex-direction:column;gap:6px;flex:1}
+.post h3{font-size:18px}
+.post p{color:var(--umber);font-size:14px;flex:1}
+.post .pm{font-size:13px;color:var(--umber)}
+
+/* reviews */
+.rv{background:var(--paper);border:1px solid var(--sand);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.rv-stars{color:var(--caramel);letter-spacing:2px;font-size:16px}
+.rv-stars span{color:var(--sand)}
+.rv h3{font-size:18px}
+.rv-text{color:var(--umber);font-size:15px;white-space:pre-line;overflow-wrap:anywhere;flex:1}
+.rv-who{font-size:13px;color:var(--umber);border-top:1px solid var(--linen);padding-top:10px}
+.rv-empty{text-align:center;background:var(--paper);border:1.5px dashed var(--sand);border-radius:16px;padding:40px 20px;color:var(--umber);display:grid;gap:10px;justify-items:center}
+.rv-empty .rv-empty-t{font-family:var(--f-display);font-size:20px;color:var(--bark)}
+.rv-empty .btn{margin-top:8px}
 
 /* faq */
 .faq details{background:var(--paper);border:1px solid var(--sand);border-radius:14px;padding:0 20px}

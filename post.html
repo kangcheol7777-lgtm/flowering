@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>블로그 | 꽃피는 커튼 블라인드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+.ahead{padding-block:48px 28px;text-align:center}
+.ahead .crumb{font-size:14px;color:var(--umber)}
+.ahead .crumb a{text-decoration:none}
+.ahead h1{font-size:clamp(26px,4.6vw,38px);margin-top:12px}
+.ahead .pm{color:var(--umber);font-size:14px;margin-top:12px}
+.cover{height:220px;margin-bottom:36px}
+article.body{font-size:17px;line-height:1.85}
+article.body p{margin-top:16px;color:#4A382B}
+article.body h2{font-size:22px;margin-top:40px}
+.nextposts{border-top:1px solid var(--sand);margin-top:56px;padding-top:32px}
+.nextposts h2{font-size:20px;margin-bottom:16px}
+.nf{text-align:center;padding-block:80px}
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+<main id="page"></main>
+<div id="site-cta"></div>
+<div id="site-footer"></div>
+<script src="site.js"></script>
+<script src="blog-posts.js"></script>
+<script>
+(function(){
+  var id=new URLSearchParams(location.search).get("id")||"";
+  var p=(window.BLOG||[]).filter(function(x){return x.id===id;})[0], page=document.getElementById("page");
+  function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+  if(!p){
+    page.innerHTML='<section class="nf wrap"><h1>글을 찾을 수 없습니다</h1><a class="btn pri" style="margin-top:20px" href="blog.html">블로그 목록으로</a></section>';return;
+  }
+  document.title=p.title+" | 꽃피는 커튼 블라인드";
+  page.innerHTML=
+    '<div class="wrap narrow ahead"><p class="crumb"><a href="blog.html">블로그</a> › '+esc(p.tag)+'</p>'
+    +'<h1>'+esc(p.title)+'</h1><p class="pm tnum">'+esc(p.date)+' · '+(+p.readMin||3)+'분 읽기</p></div>'
+    +'<div class="wrap narrow"><div class="fabric cover '+esc(p.fx||"fx-linen")+'"></div>'
+    +'<article class="body">'+p.body+'</article>'
+    +'<div class="nextposts"><h2>다른 글도 읽어보세요</h2><div class="grid g2" id="more"></div></div></div>';
+  window.BLOG=(window.BLOG||[]).filter(function(x){return x.id!==id;});
+  window.renderPosts(document.getElementById("more"),2);
+  document.querySelector(".nextposts").style.marginBottom="64px";
+})();
+</script>
+</body>
+</html>

@@ -88,7 +88,15 @@
   </div>
 </section>
 
-<section class="why">
+<section>
+  <div class="wrap">
+    <div class="sec-head center"><span class="eyebrow">Reviews</span><h2>고객 후기</h2><p>시공을 마친 고객님들이 직접 남겨주신 이야기입니다.</p></div>
+    <div id="reviews"></div>
+    <div style="text-align:center"><a class="more" href="reviews.html">후기 전체 보기 →</a></div>
+  </div>
+</section>
+
+<section class="why band">
   <div class="wrap">
     <div class="sec-head center"><span class="eyebrow">Why us</span><h2>꽃피는 커튼 블라인드를 선택하는 이유</h2></div>
     <div class="grid g4">
@@ -100,7 +108,7 @@
   </div>
 </section>
 
-<section class="band">
+<section>
   <div class="wrap narrow faq">
     <div class="sec-head center"><span class="eyebrow">FAQ</span><h2>자주 묻는 질문</h2></div>
     <details><summary>견적 비용이 있나요?</summary><p>방문 실측과 견적 상담은 무료입니다. 제품을 결정하신 후에만 비용이 발생합니다.</p></details>
@@ -111,13 +119,25 @@
   </div>
 </section>
 
+<section class="band">
+  <div class="wrap">
+    <div class="sec-head center"><span class="eyebrow">Journal</span><h2>인테리어 이야기</h2><p>커튼과 블라인드를 고를 때 알아두면 좋은 내용입니다.</p></div>
+    <div class="grid g3" id="posts"></div>
+    <div style="text-align:center"><a class="more" href="blog.html">블로그 더 보기 →</a></div>
+  </div>
+</section>
+
 <div id="site-cta"></div>
 <div id="site-footer"></div>
 
 <script src="site.js"></script>
 <script src="cases.js"></script>
+<script src="reviews.js"></script>
+<script src="blog-posts.js"></script>
 <script>
 (function(){
+  window.renderPosts(document.getElementById("posts"),3);
+  window.renderReviews(document.getElementById("reviews"),6);
   var box=document.getElementById("recent");
   window.CASES.slice(0,6).forEach(function(c){
     var a=document.createElement("a");a.className="case";a.href="gallery.html#case-"+c.id;a.style.textDecoration="none";a.style.color="inherit";
