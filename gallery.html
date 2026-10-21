@@ -106,7 +106,7 @@
   function open(c){
     document.getElementById("d-media").innerHTML=window.caseMedia(c,320,false);
     document.getElementById("d-title").textContent=c.title;
-    document.getElementById("d-kv").innerHTML=[["공간",c.room],["제품",c.product],["컬러",c.color]]
+    document.getElementById("d-kv").innerHTML=(c.place?[["현장",c.place]]:[]).concat([["공간",c.room],["제품",c.product],["컬러",c.color]])
       .map(function(r){return '<div><dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd></div>';}).join("");
     document.getElementById("d-txt").innerHTML=[["시공 포인트",c.point],["이런 공간에 추천해요",c.tip]]
       .map(function(r){return '<h3>'+r[0]+'</h3><p>'+esc(r[1])+'</p>';}).join("");
