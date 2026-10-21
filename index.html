@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>꽃피는 커튼 블라인드</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+[hidden]{display:none!important}
+body{margin:0}
+img{max-width:100%}
+
+/* Layout: 커튼 주름 밴드 히어로 → 4단계 견적 카드(가운데 한 열) → 진행 과정 → 푸터, 모바일은 하단 고정 전화/견적 바 */
+:root{
+  --bg:#FBF8F9; --surface:#FFFFFF; --sunk:#F4EDF0;
+  --ink:#2A1F2D; --muted:#6E6170; --line:#E6DCE1;
+  --accent:#B83A63; --accent-ink:#FFFFFF; --accent-soft:#F8E4EB;
+  --leaf:#3E6B52; --leaf-soft:#E3EFE7; --danger:#B42318;
+  --pleat-a:#F2D6DF; --pleat-b:#E8C2CF;
+  --f-display:"Gowun Batang","Nanum Myeongjo",serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#18131A; --surface:#221B25; --sunk:#2B232E;
+  --ink:#F3ECF1; --muted:#B4A6B2; --line:#3A3040;
+  --accent:#E8789D; --accent-ink:#2A1020; --accent-soft:#3E2433;
+  --leaf:#8CC7A3; --leaf-soft:#20332A; --danger:#FF8A80;
+  --pleat-a:#3A2532; --pleat-b:#2E1D28; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#18131A; --surface:#221B25; --sunk:#2B232E;
+  --ink:#F3ECF1; --muted:#B4A6B2; --line:#3A3040;
+  --accent:#E8789D; --accent-ink:#2A1020; --accent-soft:#3E2433;
+  --leaf:#8CC7A3; --leaf-soft:#20332A; --danger:#FF8A80;
+  --pleat-a:#3A2532; --pleat-b:#2E1D28; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;word-break:keep-all;padding-bottom:84px}
+@media (min-width:760px){body{padding-bottom:0}}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.3}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:700;font-size:18px;color:var(--ink);text-decoration:none}
+.brand svg{flex:none}
+.top nav{display:none;gap:20px;font-size:15px}
+.top nav a{color:var(--muted);text-decoration:none}
+.top nav a:hover{color:var(--ink)}
+@media (min-width:760px){.top nav{display:flex}}
+.callpill{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-weight:600;font-size:14px;color:var(--ink);text-decoration:none;white-space:nowrap}
+
+/* hero with pleats */
+.hero{position:relative;overflow:hidden;background:var(--sunk);border-bottom:1px solid var(--line)}
+.pleats{position:absolute;inset:0;display:flex;justify-content:space-between;pointer-events:none}
+.panel{width:22%;height:100%;background:repeating-linear-gradient(90deg,var(--pleat-a) 0 14px,var(--pleat-b) 14px 22px,var(--pleat-a) 22px 30px);transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.hero.closed .panel.l{transform:translateX(60%)}
+.hero.closed .panel.r{transform:translateX(-60%)}
+@media (max-width:620px){.panel{width:14%}}
+.hero .wrap{position:relative;padding-block:44px 40px;text-align:center}
+.eyebrow{display:inline-block;font-size:13px;letter-spacing:.08em;color:var(--accent);font-weight:600;margin-bottom:10px}
+.hero h1{font-size:clamp(28px,6vw,42px)}
+.hero p{color:var(--muted);margin:12px auto 0;max-width:30em}
+.hero .alt{margin-top:16px;font-size:15px}
+.hero .alt b{color:var(--ink)}
+
+/* form card */
+main{padding-block:28px 48px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:0 10px 30px -18px rgba(60,20,40,.35)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:18px 20px 0}
+.steps button{all:unset;cursor:pointer;display:grid;gap:6px;font-size:13px;color:var(--muted);text-align:left}
+.steps button[disabled]{cursor:default}
+.steps .bar{height:5px;border-radius:5px;background:var(--line)}
+.steps .done .bar,.steps .cur .bar{background:var(--accent)}
+.steps .cur{color:var(--ink);font-weight:600}
+.steps .num{font-variant-numeric:tabular-nums}
+.pane{padding:22px 20px 8px}
+@media (min-width:560px){.pane{padding:26px 32px 8px}.steps{padding:22px 32px 0}}
+.pane h2{font-size:22px}
+.pane .lead{color:var(--muted);font-size:15px;margin:4px 0 0}
+.field{margin-top:24px}
+.label{display:flex;align-items:baseline;gap:8px;font-weight:600;font-size:15px;margin-bottom:10px}
+.req{color:var(--accent);font-size:13px;font-weight:600}
+.opt{color:var(--muted);font-size:13px;font-weight:400}
+.hint{color:var(--muted);font-size:13px;margin-top:6px}
+.err{color:var(--danger);font-size:14px;margin-top:8px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:9px 16px;cursor:pointer;font-size:15px;min-height:44px;transition:border-color .15s,background .15s}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.chips.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr))}
+.chips.grid .chip{border-radius:10px;padding:8px 6px;text-align:center}
+
+.counter{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:12px;overflow:hidden}
+.counter button{width:48px;height:48px;border:0;background:var(--sunk);cursor:pointer;font-size:22px}
+.counter output{min-width:72px;text-align:center;font-weight:600;font-size:18px}
+
+.prods{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media (min-width:560px){.prods{grid-template-columns:repeat(3,1fr)}}
+.prod{position:relative;text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:var(--r);padding:14px;cursor:pointer;display:grid;gap:4px;align-content:start;min-height:112px}
+.prod:hover{border-color:var(--accent)}
+.prod b{font-size:16px}
+.prod span{font-size:13px;color:var(--muted);line-height:1.45}
+.prod .sw{height:26px;border-radius:6px;margin-bottom:6px}
+.prod[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.prod[aria-pressed="true"]::after{content:"✓";position:absolute;top:10px;right:12px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:13px;display:grid;place-items:center;font-weight:700}
+.rec{position:absolute;top:10px;right:10px;font-size:11px;font-weight:600;color:var(--leaf);background:var(--leaf-soft);padding:2px 7px;border-radius:999px}
+.prod[aria-pressed="true"] .rec{display:none}
+.prod.unsure{grid-column:1/-1;min-height:0;background:var(--sunk)}
+
+input[type=text],input[type=tel],input[type=email],input[type=date],input[type=number],textarea{width:100%;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 14px;min-height:50px}
+input:focus,textarea:focus{border-color:var(--accent);outline:none}
+input.bad{border-color:var(--danger)}
+textarea{min-height:110px;resize:vertical}
+.two{display:grid;gap:12px}
+@media (min-width:560px){.two{grid-template-columns:1fr 1fr}}
+.sizes{display:grid;gap:8px}
+.sizerow{display:grid;grid-template-columns:52px 1fr 14px 1fr;gap:8px;align-items:center;font-size:14px;color:var(--muted)}
+.sizerow input{min-height:44px;padding:8px 10px}
+.toggle{background:none;border:0;color:var(--accent);font-weight:600;cursor:pointer;padding:6px 0;font-size:15px}
+
+.drop{display:flex;align-items:center;gap:12px;border:1.5px dashed var(--line);border-radius:var(--r);padding:14px;cursor:pointer;color:var(--muted);font-size:14px}
+.drop:hover{border-color:var(--accent)}
+.drop input{position:absolute;width:1px;height:1px;opacity:0}
+.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.thumbs figure{margin:0;position:relative;width:76px;height:76px;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.thumbs button{position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;cursor:pointer;font-size:13px;line-height:1}
+
+.consent{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:12px;background:var(--sunk);cursor:pointer}
+.consent input{width:22px;height:22px;accent-color:var(--accent);flex:none;margin-top:2px}
+details{margin-top:8px;font-size:13px;color:var(--muted)}
+details summary{cursor:pointer}
+details table{border-collapse:collapse;margin-top:8px;width:100%}
+details td{border-top:1px solid var(--line);padding:6px 4px;vertical-align:top}
+details td:first-child{white-space:nowrap;color:var(--ink);padding-right:12px}
+
+.review{margin-top:24px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.review h3{font-family:var(--f-body);font-size:14px;font-weight:600;padding:10px 14px;background:var(--sunk)}
+.review dl{margin:0;padding:6px 14px 10px;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}
+.review dt{color:var(--muted)}
+.review dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.review .edit{font-size:13px;color:var(--accent);background:none;border:0;cursor:pointer;padding:0;margin-left:6px}
+
+.nav{display:flex;gap:10px;padding:22px 20px 24px;position:sticky;bottom:0;background:var(--surface);border-top:1px solid var(--line);border-radius:0 0 20px 20px}
+@media (min-width:560px){.nav{padding:22px 32px 28px}}
+.btn{border:0;border-radius:12px;padding:0 22px;min-height:54px;font-weight:700;font-size:16px;cursor:pointer}
+.btn.pri{flex:1;background:var(--accent);color:var(--accent-ink)}
+.btn.pri:hover{filter:brightness(1.06)}
+.btn.sec{background:var(--sunk);color:var(--ink)}
+.saved{font-size:12px;color:var(--muted);text-align:center;padding:0 20px 14px}
+
+/* done */
+.done{padding:36px 20px 28px;text-align:center}
+.done .mark{width:64px;height:64px;border-radius:50%;background:var(--leaf-soft);color:var(--leaf);display:grid;place-items:center;margin:0 auto 14px;font-size:30px}
+.done h2{font-size:26px}
+.done .ticket{display:inline-block;margin-top:12px;padding:6px 14px;border-radius:999px;background:var(--sunk);font-weight:600;letter-spacing:.04em}
+.done .review{text-align:left}
+.done .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px}
+
+/* process */
+section.process{padding-block:20px 56px}
+section.process h2{font-size:24px;margin-bottom:6px}
+section.process > .wrap > p{color:var(--muted);margin:0 0 20px}
+.flow{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+@media (min-width:640px){.flow{grid-template-columns:repeat(4,1fr)}}
+.flow li{border-top:2px solid var(--accent);padding-top:12px}
+.flow .n{font-family:var(--f-display);font-size:22px;color:var(--accent)}
+.flow b{display:block;margin:2px 0 4px}
+.flow span{font-size:14px;color:var(--muted)}
+
+footer{background:var(--sunk);border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+footer .wrap{padding-block:28px;display:grid;gap:6px}
+footer .fname{font-family:var(--f-display);font-size:18px;color:var(--ink);font-weight:700}
+
+/* mobile dock */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:8;display:flex;gap:8px;background:var(--surface);border-top:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.dock a,.dock button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-height:50px;border-radius:12px;font-weight:700;text-decoration:none;font-size:15px;border:0;cursor:pointer}
+.dock .call{background:var(--sunk);color:var(--ink);flex-direction:column;gap:0;line-height:1.2}
+.dock .call small{font-weight:500;font-size:12px;color:var(--muted)}
+.dock .go{background:var(--accent);color:var(--accent-ink)}
+@media (min-width:760px){.dock{display:none}}
+.toast{position:fixed;left:50%;bottom:calc(100px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:14px;z-index:20}
+@media (prefers-reduced-motion:reduce){.panel{transition:none}}
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="꽃피는 커튼 블라인드">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <g transform="translate(15 15)" fill="var(--accent)">
+          <ellipse rx="5" ry="9" cy="-6" opacity=".9"/><ellipse rx="5" ry="9" cy="-6" transform="rotate(72)" opacity=".75"/>
+          <ellipse rx="5" ry="9" cy="-6" transform="rotate(144)" opacity=".9"/><ellipse rx="5" ry="9" cy="-6" transform="rotate(216)" opacity=".75"/>
+          <ellipse rx="5" ry="9" cy="-6" transform="rotate(288)" opacity=".9"/>
+        </g><circle cx="15" cy="15" r="3.4" fill="var(--surface)"/>
+      </svg>
+      꽃피는 커튼 블라인드
+    </a>
+    <nav aria-label="주요 메뉴"><a href="#form">견적 문의</a><a href="#process">진행 과정</a><a href="#contact">연락처</a></nav>
+    <a class="callpill tnum" href="tel:07080988555">☎ 070-8098-8555</a>
+  </div>
+</header>
+
+<section class="hero closed" id="top">
+  <div class="pleats" aria-hidden="true"><div class="panel l"></div><div class="panel r"></div></div>
+  <div class="wrap">
+    <span class="eyebrow">무료 견적 · 방문 실측</span>
+    <h1>창 크기를 몰라도<br>1분이면 견적 신청 끝</h1>
+    <p>공간과 원하는 제품만 골라주세요. 정확한 치수는 방문해서 직접 재 드립니다.</p>
+    <p class="alt">전화가 편하시면 <b class="tnum">070-8098-8555</b></p>
+  </div>
+</section>
+
+<main class="wrap" id="form">
+  <div class="card" id="card">
+    <div class="steps" id="steps" role="list"></div>
+    <form id="f" novalidate>
+      <!-- STEP 1 -->
+      <div class="pane" data-step="0">
+        <h2>어느 공간에 다실 건가요?</h2>
+        <p class="lead">여러 곳을 한 번에 선택할 수 있어요.</p>
+        <div class="field">
+          <div class="label">공간 종류 <span class="req">필수</span></div>
+          <div class="chips" id="space"></div>
+          <div class="err" id="e-space" hidden>공간을 하나 이상 골라주세요.</div>
+        </div>
+        <div class="field">
+          <div class="label">창문 개수 <span class="opt">대략이어도 괜찮아요</span></div>
+          <div class="counter"><button type="button" id="wMinus" aria-label="창문 개수 줄이기">−</button><output id="wCount" class="tnum" aria-live="polite">모름</output><button type="button" id="wPlus" aria-label="창문 개수 늘리기">+</button></div>
+          <div id="sizeWrap" hidden>
+            <button type="button" class="toggle" id="sizeToggle">+ 창 크기를 알고 있어요 (선택)</button>
+            <div class="sizes" id="sizes" hidden></div>
+          </div>
+        </div>
+        <div class="field">
+          <div class="label">창문 사진 <span class="opt">선택 · 있으면 견적이 더 정확해져요</span></div>
+          <label class="drop" for="photos"><span style="font-size:22px">📷</span><span>사진을 고르거나 여기로 끌어다 놓으세요<br><small>창 전체가 보이게 찍어주시면 좋아요 (최대 5장)</small></span><input type="file" id="photos" accept="image/*" multiple></label>
+          <div class="thumbs" id="thumbs"></div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="pane" data-step="1" hidden>
+        <h2>어떤 제품이 궁금하세요?</h2>
+        <p class="lead">여러 개 골라도 되고, 모르시면 방문 때 샘플로 보여드려요.</p>
+        <div class="field">
+          <div class="prods" id="prods"></div>
+          <div class="err" id="e-prod" hidden>제품을 고르거나 '잘 모르겠어요'를 눌러주세요.</div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="pane" data-step="2" hidden>
+        <h2>어디로, 언제 방문할까요?</h2>
+        <p class="lead">실측과 샘플 상담은 무료입니다.</p>
+        <div class="field">
+          <div class="label">거주 지역 <span class="req">필수</span></div>
+          <div class="chips" id="sido"></div>
+          <div class="chips grid" id="gu" style="margin-top:12px" hidden></div>
+          <input type="text" id="etcRegion" placeholder="지역을 적어주세요 (예: 충남 천안시)" style="margin-top:12px" hidden>
+          <div class="err" id="e-region" hidden>지역을 선택해주세요.</div>
+        </div>
+        <div class="field">
+          <label class="label" for="bldg">아파트·건물명 <span class="opt">선택</span></label>
+          <input type="text" id="bldg" placeholder="예: ○○아파트 32평" autocomplete="off">
+          <div class="hint">평형을 알려주시면 대략적인 금액을 미리 안내해 드릴 수 있어요.</div>
+        </div>
+        <div class="field">
+          <div class="label">방문 희망일 <span class="opt">선택</span></div>
+          <div class="chips" id="when"></div>
+          <input type="date" id="date" style="margin-top:12px" hidden>
+        </div>
+        <div class="field">
+          <div class="label">편한 시간대 <span class="opt">선택</span></div>
+          <div class="chips" id="slot"></div>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="pane" data-step="3" hidden>
+        <h2>연락받으실 곳을 알려주세요</h2>
+        <p class="lead">확인 후 바로 연락드립니다.</p>
+        <div class="field two">
+          <div><label class="label" for="name">성함 <span class="req">필수</span></label><input type="text" id="name" autocomplete="name" placeholder="홍길동"><div class="err" id="e-name" hidden>성함을 적어주세요.</div></div>
+          <div><label class="label" for="phone">연락처 <span class="req">필수</span></label><input type="tel" id="phone" class="tnum" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" maxlength="13"><div class="err" id="e-phone" hidden>연락 가능한 번호를 정확히 적어주세요.</div></div>
+        </div>
+        <div class="field">
+          <label class="label" for="email">이메일 <span class="opt">선택 · 견적서를 메일로 받고 싶으시면</span></label>
+          <input type="email" id="email" autocomplete="email" placeholder="name@example.com"><div class="err" id="e-email" hidden>이메일 형식을 확인해주세요.</div>
+        </div>
+        <div class="field">
+          <div class="label">선호 연락 방법</div>
+          <div class="chips" id="how"></div>
+        </div>
+        <div class="field">
+          <label class="label" for="memo">추가 문의사항 <span class="opt">선택</span></label>
+          <textarea id="memo" placeholder="예: 거실은 빛을 살짝 들이고 싶어요 / 아이 방이라 줄 없는 제품이면 좋겠어요"></textarea>
+        </div>
+        <div class="review" id="review"></div>
+        <div class="field">
+          <label class="consent" for="agree"><input type="checkbox" id="agree"><span><b>개인정보 수집·이용에 동의합니다</b> <span class="req">필수</span><br><small style="color:var(--muted)">견적 안내 목적으로만 사용합니다.</small></span></label>
+          <details><summary>수집 내용 자세히 보기</summary>
+            <table><tr><td>수집 항목</td><td>성함, 연락처, 지역 (선택: 이메일, 건물명, 사진)</td></tr>
+            <tr><td>이용 목적</td><td>견적 안내 및 방문 일정 조율</td></tr>
+            <tr><td>보관 기간</td><td>상담 완료 후 1년, 이후 파기</td></tr></table>
+            동의하지 않으실 수 있으며, 이 경우 온라인 견적 신청은 어렵고 전화 상담은 가능합니다.
+          </details>
+          <div class="err" id="e-agree" hidden>개인정보 수집·이용에 동의해주셔야 신청할 수 있어요.</div>
+        </div>
+      </div>
+
+      <div class="nav" id="nav">
+        <button type="button" class="btn sec" id="prev" hidden>이전</button>
+        <button type="submit" class="btn pri" id="next">다음</button>
+      </div>
+      <div class="saved" id="saved">입력하신 내용은 이 기기에 임시 저장돼요. 나중에 이어서 작성할 수 있어요.</div>
+    </form>
+
+    <div class="done" id="done" hidden>
+      <div class="mark">✓</div>
+      <h2>견적 신청이 접수됐어요</h2>
+      <p style="color:var(--muted);margin:8px 0 0">확인 후 남겨주신 번호로 연락드리겠습니다.</p>
+      <div class="ticket tnum" id="ticket"></div>
+      <div class="review" id="review2"></div>
+      <div class="actions">
+        <button type="button" class="btn sec" id="copy">신청 내용 복사</button>
+        <button type="button" class="btn sec" id="again">새로 작성하기</button>
+      </div>
+      <p class="hint" style="margin-top:16px">급하시면 <b class="tnum">070-8098-8555</b>로 전화 주세요.</p>
+    </div>
+  </div>
+</main>
+
+<section class="process" id="process">
+  <div class="wrap">
+    <h2>신청 후에는 이렇게 진행돼요</h2>
+    <p>방문 전까지는 비용이 들지 않습니다.</p>
+    <ol class="flow">
+      <li><div class="n tnum">1</div><b>상담 전화</b><span>신청 내용을 확인하고 방문 일정을 잡아드려요.</span></li>
+      <li><div class="n tnum">2</div><b>방문 실측</b><span>창 폭과 높이를 cm 단위로 재고 설치 방식을 확인해요.</span></li>
+      <li><div class="n tnum">3</div><b>샘플·견적</b><span>원단과 색상을 직접 만져보고 고르신 뒤 최종 견적을 드려요.</span></li>
+      <li><div class="n tnum">4</div><b>제작·시공</b><span>맞춤 제작한 제품을 약속한 날에 설치해 드려요.</span></li>
+    </ol>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="fname">꽃피는 커튼 블라인드</div>
+    <div>전화 <b class="tnum" style="color:var(--ink)">070-8098-8555</b></div>
+    <div>© 2026 꽃피는 커튼 블라인드. All Rights Reserved.</div>
+  </div>
+</footer>
+
+<div class="dock">
+  <a class="call" href="tel:07080988555">☎ 전화 상담<small class="tnum">070-8098-8555</small></a>
+  <button type="button" class="go" id="dockGo">무료 견적 신청</button>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const SPACES=["거실","침실","아이방","주방","드레스룸","사무실","매장","기타"];
+const PRODS=[
+ {k:"린넨 커튼",d:"부드럽게 빛이 스며드는 자연스러운 분위기",c:"linear-gradient(90deg,#E9E1D3,#D9CFBD)",for:["거실","침실"]},
+ {k:"암막 커튼",d:"빛을 거의 막아 숙면·영상 감상에 좋아요",c:"linear-gradient(90deg,#3B3542,#27222D)",for:["침실","아이방"]},
+ {k:"우드 블라인드",d:"각도로 빛 조절, 따뜻한 원목 질감",c:"repeating-linear-gradient(0deg,#A97B52 0 5px,#8D6440 5px 7px)",for:["거실","사무실"]},
+ {k:"롤스크린",d:"깔끔하게 말려 올라가는 한 장 원단",c:"linear-gradient(180deg,#D9DDE2,#C4C9D0)",for:["주방","사무실","매장"]},
+ {k:"콤비 블라인드",d:"망사·원단이 겹쳐 채광과 사생활을 동시에",c:"repeating-linear-gradient(0deg,#E7E3DE 0 6px,#BFB7AE 6px 12px)",for:["거실","침실"]},
+ {k:"허니콤",d:"벌집 구조 단열로 냉난방비 절감",c:"repeating-linear-gradient(0deg,#F1E8E2 0 7px,#E0D2C8 7px 8px)",for:["아이방","드레스룸"]}
+];
+const REG={
+ "서울":["강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구","노원구","도봉구","동대문구","동작구","마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구","중구","중랑구"],
+ "경기":["수원","성남·분당","판교","용인","고양·일산","부천","안산","안양","시흥","광명","군포","의왕","과천","화성","평택","오산","하남","남양주","구리","김포","파주","의정부","기타 경기"],
+ "인천":["중구","동구","미추홀구","연수구·송도","남동구","부평구","계양구","서구","기타 인천"],
+ "그 외 지역":[]
+};
+const WHEN=["가능한 빨리","이번 주","다음 주","날짜 지정"];
+const SLOTS=["오전 (9–12시)","오후 (12–18시)","저녁 (18시 이후)","상관없음"];
+const HOW=["전화","문자"];
+const STEP_NAMES=["공간","제품","방문","연락처"];
+const KEY="flower-curtain-draft-v1";
+
+const S={space:[],windows:0,sizes:[],prod:[],sido:"",gu:"",etc:"",bldg:"",when:"",date:"",slot:"",name:"",phone:"",email:"",how:"전화",memo:"",agree:false};
+let step=0, photos=[];
+
+try{const d=JSON.parse(localStorage.getItem(KEY)||"null"); if(d) Object.assign(S,d);}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+
+function chips(el,list,isOn,onClick,cls){
+  el.innerHTML="";
+  list.forEach(v=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=v;b.setAttribute("aria-pressed",isOn(v)?"true":"false");b.onclick=()=>{onClick(v);};el.appendChild(b);});
+}
+function toggleIn(arr,v){const i=arr.indexOf(v);i<0?arr.push(v):arr.splice(i,1);}
+
+/* step 1 */
+function renderSpace(){chips($("#space"),SPACES,v=>S.space.includes(v),v=>{toggleIn(S.space,v);$("#e-space").hidden=true;renderSpace();renderProds();save();});}
+function renderWindows(){
+  $("#wCount").textContent=S.windows?S.windows+"개":"모름";
+  $("#sizeWrap").hidden=!S.windows;
+  const box=$("#sizes"); box.innerHTML="";
+  for(let i=0;i<Math.min(S.windows,10);i++){
+    const sz=S.sizes[i]||{w:"",h:""};
+    const r=document.createElement("div");r.className="sizerow";
+    r.innerHTML=`<span>창 ${i+1}</span><input type="number" inputmode="numeric" min="0" placeholder="가로 cm" aria-label="창 ${i+1} 가로(cm)" value="${sz.w}"><span>×</span><input type="number" inputmode="numeric" min="0" placeholder="세로 cm" aria-label="창 ${i+1} 세로(cm)" value="${sz.h}">`;
+    const [a,b]=r.querySelectorAll("input");
+    a.id="w"+i;b.id="h"+i;
+    a.oninput=()=>{S.sizes[i]={...(S.sizes[i]||{h:""}),w:a.value};save();};
+    b.oninput=()=>{S.sizes[i]={...(S.sizes[i]||{w:""}),h:b.value};save();};
+    box.appendChild(r);
+  }
+}
+$("#wPlus").onclick=()=>{if(S.windows<30){S.windows++;renderWindows();save();}};
+$("#wMinus").onclick=()=>{if(S.windows>0){S.windows--;S.sizes=S.sizes.slice(0,S.windows);renderWindows();save();}};
+$("#sizeToggle").onclick=()=>{const s=$("#sizes");s.hidden=!s.hidden;$("#sizeToggle").textContent=s.hidden?"+ 창 크기를 알고 있어요 (선택)":"− 창 크기 입력 닫기";};
+
+function addFiles(list){
+  [...list].filter(f=>f.type.startsWith("image/")).slice(0,5-photos.length).forEach(f=>photos.push({f,url:URL.createObjectURL(f)}));
+  renderThumbs();
+}
+function renderThumbs(){
+  const t=$("#thumbs");t.innerHTML="";
+  photos.forEach((p,i)=>{const fg=document.createElement("figure");fg.innerHTML=`<img alt="창문 사진 ${i+1}" src="${p.url}"><button type="button" aria-label="사진 ${i+1} 빼기">×</button>`;fg.querySelector("button").onclick=()=>{URL.revokeObjectURL(p.url);photos.splice(i,1);renderThumbs();};t.appendChild(fg);});
+}
+$("#photos").onchange=e=>{addFiles(e.target.files);e.target.value="";};
+const drop=$(".drop");
+drop.addEventListener("dragover",e=>{e.preventDefault();drop.style.borderColor="var(--accent)";});
+drop.addEventListener("dragleave",()=>drop.style.borderColor="");
+drop.addEventListener("drop",e=>{e.preventDefault();drop.style.borderColor="";addFiles(e.dataTransfer.files);});
+
+/* step 2 */
+function renderProds(){
+  const el=$("#prods");el.innerHTML="";
+  PRODS.forEach(p=>{
+    const b=document.createElement("button");b.type="button";b.className="prod";
+    b.setAttribute("aria-pressed",S.prod.includes(p.k)?"true":"false");
+    const rec=S.space.some(s=>p.for.includes(s));
+    b.innerHTML=`<div class="sw" style="background:${p.c}"></div><b>${p.k}</b><span>${p.d}</span>${rec?'<em class="rec">추천</em>':''}`;
+    b.onclick=()=>{S.prod=S.prod.filter(x=>x!=="잘 모르겠어요");toggleIn(S.prod,p.k);$("#e-prod").hidden=true;renderProds();save();};
+    el.appendChild(b);
+  });
+  const u=document.createElement("button");u.type="button";u.className="prod unsure";
+  u.setAttribute("aria-pressed",S.prod.includes("잘 모르겠어요")?"true":"false");
+  u.innerHTML=`<b>잘 모르겠어요</b><span>공간을 보고 어울리는 제품을 추천해 드릴게요.</span>`;
+  u.onclick=()=>{S.prod=S.prod.includes("잘 모르겠어요")?[]:["잘 모르겠어요"];$("#e-prod").hidden=true;renderProds();save();};
+  el.appendChild(u);
+}
+
+/* step 3 */
+function renderRegion(){
+  chips($("#sido"),Object.keys(REG),v=>S.sido===v,v=>{if(S.sido!==v){S.sido=v;S.gu="";}$("#e-region").hidden=true;renderRegion();save();});
+  const g=$("#gu"),etc=$("#etcRegion");
+  const list=REG[S.sido]||[];
+  g.hidden=!list.length;etc.hidden=S.sido!=="그 외 지역";
+  if(list.length) chips(g,list,v=>S.gu===v,v=>{S.gu=v;$("#e-region").hidden=true;renderRegion();save();});
+  etc.value=S.etc;
+}
+$("#etcRegion").oninput=e=>{S.etc=e.target.value;$("#e-region").hidden=true;save();};
+$("#bldg").oninput=e=>{S.bldg=e.target.value;save();};
+function renderWhen(){
+  chips($("#when"),WHEN,v=>S.when===v,v=>{S.when=S.when===v?"":v;renderWhen();save();});
+  const d=$("#date");d.hidden=S.when!=="날짜 지정";
+  const t=new Date();t.setDate(t.getDate()+1);d.min=t.toISOString().slice(0,10);d.value=S.date;
+  chips($("#slot"),SLOTS,v=>S.slot===v,v=>{S.slot=S.slot===v?"":v;renderWhen();save();});
+}
+$("#date").onchange=e=>{S.date=e.target.value;save();};
+
+/* step 4 */
+function fmtPhone(v){
+  const d=v.replace(/\D/g,"").slice(0,11);
+  if(d.startsWith("02")){ if(d.length<3)return d; if(d.length<6)return d.slice(0,2)+"-"+d.slice(2); if(d.length<10)return d.slice(0,2)+"-"+d.slice(2,5)+"-"+d.slice(5); return d.slice(0,2)+"-"+d.slice(2,6)+"-"+d.slice(6,10);}
+  if(d.length<4)return d; if(d.length<8)return d.slice(0,3)+"-"+d.slice(3); if(d.length<11)return d.slice(0,3)+"-"+d.slice(3,6)+"-"+d.slice(6); return d.slice(0,3)+"-"+d.slice(3,7)+"-"+d.slice(7);
+}
+const okPhone=v=>/^0\d{1,2}-\d{3,4}-\d{4}$/.test(v);
+const okEmail=v=>!v||/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+$("#name").oninput=e=>{S.name=e.target.value;e.target.classList.remove("bad");$("#e-name").hidden=true;save();};
+$("#phone").oninput=e=>{e.target.value=fmtPhone(e.target.value);S.phone=e.target.value;e.target.classList.remove("bad");$("#e-phone").hidden=true;save();};
+$("#phone").onblur=e=>{if(S.phone&&!okPhone(S.phone)){e.target.classList.add("bad");$("#e-phone").hidden=false;}};
+$("#email").oninput=e=>{S.email=e.target.value.trim();e.target.classList.remove("bad");$("#e-email").hidden=true;save();};
+$("#memo").oninput=e=>{S.memo=e.target.value;save();};
+$("#agree").onchange=e=>{S.agree=e.target.checked;$("#e-agree").hidden=true;save();};
+function renderHow(){chips($("#how"),HOW,v=>S.how===v,v=>{S.how=v;renderHow();save();});}
+
+function regionText(){return S.sido==="그 외 지역"?(S.etc||""):(S.sido&&S.gu?S.sido+" "+S.gu:"");}
+function whenText(){let w=S.when==="날짜 지정"?(S.date||"날짜 미정"):S.when;return [w,S.slot].filter(Boolean).join(" · ")||"상담 시 조율";}
+function sizesText(){const s=S.sizes.slice(0,S.windows).map((z,i)=>z&&(z.w||z.h)?`창${i+1} ${z.w||"?"}×${z.h||"?"}cm`:"").filter(Boolean);return s.join(", ");}
+function rows(withEdit){
+  const r=[
+   ["공간",S.space.join(", "),0],
+   ["창문",(S.windows?S.windows+"개":"방문 시 확인")+(sizesText()?" ("+sizesText()+")":""),0],
+   ["사진",photos.length?photos.length+"장 첨부":"없음",0],
+   ["제품",S.prod.join(", "),1],
+   ["지역",regionText()+(S.bldg?" · "+S.bldg:""),2],
+   ["방문",whenText(),2]];
+  if(!withEdit) r.push(["성함",S.name],["연락처",S.phone+(S.email?" · "+S.email:"")],["연락 방법",S.how]);
+  if(!withEdit&&S.memo) r.push(["요청사항",S.memo]);
+  return r;
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function renderReview(el,withEdit){
+  el.innerHTML=`<h3>${withEdit?"신청 내용 확인":"접수된 내용"}</h3><dl>${rows(withEdit).map(([k,v,s])=>`<dt>${k}</dt><dd>${esc(v||"-")}${withEdit&&s!==undefined?` <button type="button" class="edit" data-go="${s}">수정</button>`:""}</dd>`).join("")}</dl>`;
+  el.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(+b.dataset.go));
+}
+
+/* stepper */
+function validate(i){
+  let ok=true;
+  if(i===0&&!S.space.length){$("#e-space").hidden=false;ok=false;}
+  if(i===1&&!S.prod.length){$("#e-prod").hidden=false;ok=false;}
+  if(i===2&&!regionText().trim()){$("#e-region").hidden=false;ok=false;}
+  if(i===3){
+    if(!S.name.trim()){$("#e-name").hidden=false;$("#name").classList.add("bad");ok=false;}
+    if(!okPhone(S.phone)){$("#e-phone").hidden=false;$("#phone").classList.add("bad");ok=false;}
+    if(!okEmail(S.email)){$("#e-email").hidden=false;$("#email").classList.add("bad");ok=false;}
+    if(!S.agree){$("#e-agree").hidden=false;ok=false;}
+  }
+  if(!ok){const e=document.querySelector(`.pane[data-step="${i}"] .err:not([hidden])`);e&&e.scrollIntoView({block:"center",behavior:"smooth"});}
+  return ok;
+}
+function renderSteps(){
+  const el=$("#steps");el.innerHTML="";
+  STEP_NAMES.forEach((n,i)=>{
+    const b=document.createElement("button");b.type="button";
+    b.className=i<step?"done":i===step?"cur":"";
+    b.disabled=i>step;b.setAttribute("role","listitem");
+    if(i===step)b.setAttribute("aria-current","step");
+    b.innerHTML=`<span class="bar"></span><span><span class="num">${i+1}</span>. ${n}</span>`;
+    b.onclick=()=>{if(i<step)go(i);};
+    el.appendChild(b);
+  });
+}
+function go(i,focus=true){
+  step=i;
+  document.querySelectorAll(".pane").forEach(p=>p.hidden=+p.dataset.step!==i);
+  $("#prev").hidden=i===0;
+  $("#next").textContent=i===3?"무료 견적 신청하기":"다음";
+  if(i===3)renderReview($("#review"),true);
+  renderSteps();
+  if(focus){const c=$("#card").getBoundingClientRect();if(c.top<0||c.top>innerHeight*.5)$("#card").scrollIntoView({behavior:"smooth",block:"start"});}
+}
+$("#prev").onclick=()=>go(step-1);
+$("#f").addEventListener("submit",e=>{
+  e.preventDefault();
+  if(!validate(step))return;
+  if(step<3){go(step+1);return;}
+  submit();
+});
+function ticketNo(){const t=new Date();const p=n=>String(n).padStart(2,"0");return "KF-"+p(t.getMonth()+1)+p(t.getDate())+"-"+Math.floor(1000+Math.random()*9000);}
+let summaryText="";
+function submit(){
+  const no=ticketNo();
+  $("#ticket").textContent="접수번호 "+no;
+  renderReview($("#review2"),false);
+  summaryText="[꽃피는 커튼 블라인드 견적 신청] "+no+"\n"+rows(false).map(([k,v])=>k+": "+(v||"-")).join("\n");
+  $("#f").hidden=true;$("#steps").hidden=true;$("#done").hidden=false;
+  try{localStorage.removeItem(KEY);}catch(e){}
+  $("#card").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function toast(m){const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,2200);}
+$("#copy").onclick=()=>{
+  const fallback=()=>{const ta=document.createElement("textarea");ta.value=summaryText;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand("copy");}catch(e){}ta.remove();toast(ok?"신청 내용을 복사했어요":"복사가 안 되면 위 내용을 길게 눌러 복사해주세요");};
+  try{navigator.clipboard.writeText(summaryText).then(()=>toast("신청 내용을 복사했어요"),fallback);}catch(e){fallback();}
+};
+$("#again").onclick=()=>{
+  Object.assign(S,{space:[],windows:0,sizes:[],prod:[],sido:"",gu:"",etc:"",bldg:"",when:"",date:"",slot:"",name:"",phone:"",email:"",how:"전화",memo:"",agree:false});
+  photos.forEach(p=>URL.revokeObjectURL(p.url));photos=[];
+  hydrate();$("#done").hidden=true;$("#f").hidden=false;$("#steps").hidden=false;go(0);
+};
+$("#dockGo").onclick=()=>$("#card").scrollIntoView({behavior:"smooth",block:"start"});
+
+function hydrate(){
+  renderSpace();renderWindows();renderThumbs();renderProds();renderRegion();renderWhen();renderHow();
+  $("#bldg").value=S.bldg;$("#name").value=S.name;$("#phone").value=S.phone;$("#email").value=S.email;$("#memo").value=S.memo;$("#agree").checked=S.agree;
+}
+hydrate();go(0,false);
+requestAnimationFrame(()=>setTimeout(()=>$(".hero").classList.remove("closed"),80));
+})();
+</script>
+
+</body>
+</html>
