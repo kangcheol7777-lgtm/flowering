@@ -1,0 +1,30 @@
+# 사이트 점검 — 검색엔진 로봇처럼 접속해 주요 주소의 응답을 확인합니다. (수동 실행 전용)
+# 저장소 → Actions → "사이트 점검" → Run workflow
+name: 사이트 점검
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 주요 주소 응답 확인
+        run: |
+          UA="Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+          for U in \
+            https://floweringds.kr/robots.txt \
+            https://floweringds.kr/sitemap.xml \
+            https://floweringds.kr/curtain/sitemap.xml \
+            https://floweringds.kr/ \
+            https://floweringds.kr/curtain/ \
+            http://floweringds.kr/sitemap.xml \
+            https://www.floweringds.kr/ \
+            http://curtain.floweringds.kr/ ; do
+            R=$(curl -sS -A "$UA" -o /tmp/body -w "%{http_code} | 최종주소 %{url_effective} | 이동 %{num_redirects}회 | 형식 %{content_type} | 크기 %{size_download}B" -L --max-time 30 "$U" 2>&1 || true)
+            echo "::notice title=$U::$R"
+          done
+          curl -sS -A "$UA" -L --max-time 30 https://floweringds.kr/robots.txt | head -20 | tr '\n' '¶' | sed 's/^/::notice title=robots.txt 내용::/'; echo
+          curl -sS -A "$UA" -L --max-time 30 https://floweringds.kr/sitemap.xml | head -c 400 | tr '\n' ' ' | sed 's/^/::notice title=sitemap.xml 앞부분::/'; echo
+          curl -sS -A "$UA" -L --max-time 30 https://floweringds.kr/curtain/sitemap.xml | head -c 300 | tr '\n' ' ' | sed 's/^/::notice title=curtain sitemap 앞부분::/'; echo
+          echo | openssl s_client -connect floweringds.kr:443 -servername floweringds.kr 2>/dev/null | openssl x509 -noout -subject -ext subjectAltName -enddate 2>/dev/null | tr '\n' ' ' | sed 's/^/::notice title=SSL 인증서::/'; echo
