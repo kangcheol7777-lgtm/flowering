@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kangcheol7777-lgtm.github.io/flowering/sitemap.xml

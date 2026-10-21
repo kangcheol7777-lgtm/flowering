@@ -1,9 +1,16 @@
 /* 꽃피는 커튼 블라인드 — 공통 머리글/바닥글/상담 띠/하단 버튼 */
 (function(){
+  /* ▶ 회사 정보 — 빈칸("")을 채우면 사이트 전체(푸터, 상담 버튼, 회사 소개)에 자동으로 나타납니다. */
   var SITE = {
     name: "꽃피는 커튼 블라인드",
     tel: "070-8098-8555",
-    telHref: "tel:07080988555"
+    telHref: "tel:07080988555",
+    kakao: "",        // 카카오톡 채널 주소 (예: "http://pf.kakao.com/_abcde")
+    email: "",        // 이메일
+    hours: "",        // 상담 시간 (예: "매일 09:00 – 20:00")
+    ceo: "",          // 대표자명
+    bizNo: "",        // 사업자등록번호 (예: "123-45-67890")
+    address: ""       // 사업장 주소
   };
   window.SITE = SITE;
 
@@ -87,22 +94,41 @@
       + '<h2>우리 집 창에 어울리는 커튼, 무료로 상담받으세요</h2>'
       + '<p>방문 실측과 견적은 무료입니다. 편한 방법으로 문의해 주세요.</p>'
       + '<div class="btns"><a class="btn pri tnum" href="'+SITE.telHref+'">📞 '+SITE.tel+'</a>'
+      + (SITE.kakao ? '<a class="btn line" href="'+SITE.kakao+'" target="_blank" rel="noopener">💬 카카오톡 상담</a>' : '')
       + '<a class="btn line" href="inquiry.html">📋 온라인 견적 신청</a></div>'
       + '</div></section>';
   }
+
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+  var biz = [["대표", SITE.ceo],["사업자등록번호", SITE.bizNo],["주소", SITE.address]]
+    .filter(function(x){return x[1];}).map(function(x){return x[0]+' '+esc(x[1]);}).join(" | ");
 
   var f = document.getElementById("site-footer");
   if (f) {
     f.outerHTML =
       '<footer><div class="wrap">'
       + '<div><h4>'+SITE.name+'</h4><p style="margin-bottom:12px">창가에 피어나는 편안함을 만듭니다.</p>'
-      + '<p class="tnum">📞 '+SITE.tel+'</p></div>'
+      + '<p class="tnum">📞 '+SITE.tel+'</p>'
+      + (SITE.email ? '<p>✉️ '+esc(SITE.email)+'</p>' : '')
+      + (SITE.hours ? '<p>🕘 '+esc(SITE.hours)+'</p>' : '')
+      + (SITE.kakao ? '<p><a href="'+SITE.kakao+'" target="_blank" rel="noopener">💬 카카오톡 채널</a></p>' : '')
+      + '</div>'
       + '<div><h4>바로가기</h4><ul>'+MENU.map(function(m){return '<li><a href="'+m[0]+'">'+m[1]+'</a></li>';}).join("")+'</ul></div>'
       + '<div><h4><a href="areas.html">시공 지역 →</a></h4><p>서울 · 경기 · 인천</p>'
       + '<p style="margin-top:6px">'+[["gangnam","강남"],["seocho","서초"],["songpa","송파"],["gangdong","강동"],["guro","구로"],["geumcheon","금천"],["gwangmyeong","광명"],["bucheon","부천"],["anyang","안양"],["siheung","시흥"],["bupyeong","부평"],["gyeyang","계양"],["namdong","남동"],["seogu","인천 서구"]]
           .map(function(x){return '<a href="area.html?a='+x[0]+'">'+x[1]+'</a>';}).join(" · ")+'</p></div>'
-      + '<div class="copy">© 2026 '+SITE.name+'. All Rights Reserved.</div>'
+      + '<div class="copy">'
+      + (biz ? '<p style="margin-bottom:6px">상호 '+SITE.name+' | '+biz+'</p>' : '')
+      + '<p><a href="privacy.html" style="font-weight:700">개인정보처리방침</a> · © 2026 '+SITE.name+'. All Rights Reserved.</p></div>'
       + '</div></footer>'
-      + '<nav class="dock" aria-label="빠른 상담"><a class="a tnum" href="'+SITE.telHref+'">📞 전화</a><a class="b" href="inquiry.html">📋 견적</a></nav>';
+      + '<nav class="dock" aria-label="빠른 상담"><a class="a tnum" href="'+SITE.telHref+'">📞 전화</a>'
+      + (SITE.kakao ? '<a class="a" href="'+SITE.kakao+'" target="_blank" rel="noopener">💬 카톡</a>' : '')
+      + '<a class="b" href="inquiry.html">📋 견적</a></nav>';
   }
+
+  /* data-site="키" 가 붙은 곳에 회사 정보를 채워 넣음 (비어 있으면 원래 안내 문구 유지) */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-site]"), function(el){
+    var v = SITE[el.getAttribute("data-site")];
+    if (v) { el.textContent = v; el.classList.remove("todo"); }
+  });
 })();
