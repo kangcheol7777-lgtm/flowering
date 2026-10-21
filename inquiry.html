@@ -46,7 +46,6 @@
     <form class="form" id="form" novalidate>
       <div class="f"><label for="name">성함 <span class="req">*</span></label><input type="text" id="name" autocomplete="name"><div class="err" id="e-name" hidden>성함을 입력해주세요.</div></div>
       <div class="f"><label for="phone">연락처 <span class="req">*</span></label><input type="tel" id="phone" class="tnum" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" maxlength="13"><div class="err" id="e-phone" hidden>연락처를 정확히 입력해주세요.</div></div>
-      <div class="f"><label for="email">이메일 (선택)</label><input type="email" id="email" autocomplete="email"><div class="err" id="e-email" hidden>이메일 형식을 확인해주세요.</div></div>
       <div class="f"><label for="region">거주 지역 <span class="req">*</span></label>
         <select id="region">
           <option value="">선택해주세요</option>
@@ -95,7 +94,7 @@ window.areaOptions().forEach(g=>{const og=document.createElement("optgroup");og.
 {const o=document.createElement("option");o.value=o.textContent="기타 지역";$("#region").appendChild(o);}
 const pre=new URLSearchParams(location.search).get("region");
 if(pre&&[...$("#region").options].some(o=>o.value===pre))$("#region").value=pre;
-const rules=[["name",v=>v.trim()!==""],["phone",v=>/^0\d{1,2}-\d{3,4}-\d{4}$/.test(v)],["email",v=>!v||/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())],["region",v=>v!==""],["addr",v=>v.trim()!==""],["space",v=>v!==""]];
+const rules=[["name",v=>v.trim()!==""],["phone",v=>/^0\d{1,2}-\d{3,4}-\d{4}$/.test(v)],["region",v=>v!==""],["addr",v=>v.trim()!==""],["space",v=>v!==""]];
 rules.forEach(([id])=>{const el=$("#"+id);el.addEventListener(el.tagName==="SELECT"?"change":"input",()=>{el.classList.remove("bad");$("#e-"+id).hidden=true;});});
 $("#agree").addEventListener("change",()=>$("#e-agree").hidden=true);
 $("#form").addEventListener("submit",e=>{
@@ -110,12 +109,11 @@ $("#form").addEventListener("submit",e=>{
   const data={
     "_subject":"[홈페이지 견적 문의] "+v("name")+" / "+v("region")+" / "+v("space"),
     "_template":"table","_captcha":"false",
-    "성함":v("name"),"연락처":v("phone"),"이메일":v("email")||"-",
+    "성함":v("name"),"연락처":v("phone"),
     "거주 지역":v("region"),"상세 주소":v("addr")||"-","공간 종류":v("space"),"창문 개수":v("windows")||"-",
     "희망 제품":prods||"-","방문 희망일":v("date")||"-","추가 문의사항":v("memo")||"-",
     "개인정보 동의":"동의함","접수 시각":new Date().toLocaleString("ko-KR",{timeZone:"Asia/Seoul"})
   };
-  if(v("email")) data["_replyto"]=v("email");
   const btn=$("#form button[type=submit]"),label=btn.textContent;
   btn.disabled=true;btn.textContent="접수 중…";
   fetch("https://formsubmit.co/ajax/"+FORM_TO,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(data)})
