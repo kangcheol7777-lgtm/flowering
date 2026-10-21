@@ -99,7 +99,7 @@
 
 <section class="band">
   <div class="wrap">
-    <div class="sec-head center"><span class="eyebrow">Recent Works</span><h2>최근 시공 사례</h2><p>꽃피는 커튼 블라인드가 직접 시공한 현장입니다. 페이지를 열 때마다 다른 사례를 보여드려요.</p></div>
+    <div class="sec-head center"><span class="eyebrow">Recent Works</span><h2>최근 시공 사례</h2><p>꽃피는 커튼 블라인드가 직접 시공한 현장입니다. 가장 최근에 시공한 현장부터 보여드려요.</p></div>
     <div class="grid g3" id="recent"></div>
     <div style="text-align:center"><a class="more" href="gallery.html">전체 사례 보기 →</a></div>
   </div>
@@ -156,7 +156,7 @@
   window.renderPosts(document.getElementById("posts"),3);
   window.renderReviews(document.getElementById("reviews"),6);
   var box=document.getElementById("recent");
-  window.shuffle(window.CASES).slice(0,6).forEach(function(c){
+  window.CASES.slice().sort(function(x,y){return y.id-x.id;}).slice(0,6).forEach(function(c){
     var a=document.createElement("a");a.className="case";a.href="gallery.html#case-"+c.id;a.style.textDecoration="none";a.style.color="inherit";
     a.innerHTML=window.caseMedia(c,200)+'<div class="t"><span class="real">실제 시공</span><h3>'+c.title+'</h3><span class="meta">'+c.room+' · '+c.product+'</span></div>';
     box.appendChild(a);
