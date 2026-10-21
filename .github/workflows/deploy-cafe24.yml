@@ -31,6 +31,21 @@ jobs:
         run: |
           echo "::warning::FTP_SERVER, FTP_USERNAME, FTP_PASSWORD 시크릿이 아직 없어 업로드를 건너뜁니다. 저장소 Settings → Secrets and variables → Actions에서 등록해 주세요."
 
+      - name: 카페24 서버 폴더 확인
+        if: env.HAS_SECRETS == 'true'
+        env:
+          S: ${{ secrets.FTP_SERVER }}
+          U: ${{ secrets.FTP_USERNAME }}
+          P: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          HOST="${S#ftp://}"; HOST="${HOST%/}"
+          ROOTPWD=$(curl -sS -v --user "$U:$P" "ftp://$HOST/" --list-only 2>&1 | grep -m1 '^< 257' | tr -d '\r' || true)
+          ROOT=$(curl -sS --user "$U:$P" "ftp://$HOST/" --list-only 2>&1 | tr -d '\r' | tr '\n' ' ' | cut -c1-400)
+          WWW=$(curl -sS --user "$U:$P" "ftp://$HOST/www/" --list-only 2>&1 | tr -d '\r' | tr '\n' ' ' | cut -c1-400)
+          echo "::notice title=FTP 시작 위치::${ROOTPWD:-확인 안 됨}"
+          echo "::notice title=FTP 최상위 폴더 목록::${ROOT:-비어 있음}"
+          echo "::notice title=www 폴더 목록::${WWW:-비어 있음}"
+
       - name: 저장소 내려받기
         if: env.HAS_SECRETS == 'true'
         uses: actions/checkout@v4
@@ -46,6 +61,7 @@ jobs:
           port: 21
           local-dir: ./
           server-dir: ./www/
+          log-level: verbose
           exclude: |
             **/.git*
             **/.git*/**
