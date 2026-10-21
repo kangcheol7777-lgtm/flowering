@@ -5,12 +5,11 @@
     name: "꽃피는 커튼 블라인드",
     tel: "070-8098-8555",
     telHref: "tel:07080988555",
-    kakao: "",        // 카카오톡 채널 주소 (예: "http://pf.kakao.com/_abcde")
-    email: "",        // 이메일
-    hours: "",        // 상담 시간 (예: "매일 09:00 – 20:00")
-    ceo: "",          // 대표자명
-    bizNo: "",        // 사업자등록번호 (예: "123-45-67890")
-    address: ""       // 사업장 주소
+    kakao: "",        // 카카오톡 채널 주소 — 채널을 만들면 넣으세요 (예: "http://pf.kakao.com/_abcde")
+    hours: "오전 8시 ~ 오후 8시",
+    ceo: "양인철",
+    bizNo: "438-53-00822",
+    address: "경기도 시흥시 목감둘레로 253-12, 1층 105호"
   };
   window.SITE = SITE;
 
@@ -109,7 +108,6 @@
       '<footer><div class="wrap">'
       + '<div><h4>'+SITE.name+'</h4><p style="margin-bottom:12px">창가에 피어나는 편안함을 만듭니다.</p>'
       + '<p class="tnum">📞 '+SITE.tel+'</p>'
-      + (SITE.email ? '<p>✉️ '+esc(SITE.email)+'</p>' : '')
       + (SITE.hours ? '<p>🕘 '+esc(SITE.hours)+'</p>' : '')
       + (SITE.kakao ? '<p><a href="'+SITE.kakao+'" target="_blank" rel="noopener">💬 카카오톡 채널</a></p>' : '')
       + '</div>'
