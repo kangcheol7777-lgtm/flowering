@@ -499,7 +499,7 @@ function uiContact(done){
   var er=el("div",{class:"err",hidden:"",role:"status"});
   var hint=el("p",{class:"hint"},"숫자만 입력하면 바로 다음으로 넘어가요.");
   var reopen=el("button",{class:"go",hidden:""},"계속하기 →");
-  box.append(nm,ph,er,reopen,hint,el("p",{class:"biz"},bizLine()));
+  box.append(nm,ph,er,reopen,hint);
   function okPhone(){return /^01\d-\d{3,4}-\d{4}$/.test(ph.value);}
   function check(){
     if(!nm.value.trim()){nm.classList.add("bad");er.textContent="성함을 남겨 주세요";er.hidden=false;nm.focus();return false;}
