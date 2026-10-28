@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>무료 방문 상담 예약 | 꽃피는 커튼 블라인드</title>
+<meta name="description" content="1분이면 무료 방문 상담 예약까지. 서울·경기·인천 아파트 커튼·블라인드 무료 실측, 맞춤 제작, 직접 시공.">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="꽃피는 커튼 블라인드">
+<meta property="og:title" content="무료 방문 상담 예약 | 꽃피는 커튼 블라인드">
+<meta property="og:description" content="1분이면 무료 방문 상담 예약까지. 서울·경기·인천 무료 실측·맞춤 제작·직접 시공.">
+<meta property="og:image" content="https://floweringds.kr/curtain/og-image.png">
+<meta property="og:url" content="https://floweringds.kr/curtain/booking.html">
+<link rel="canonical" href="https://floweringds.kr/curtain/booking.html">
+<meta name="theme-color" content="#6E4327">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── 채팅형 예약 랜딩 ──
+   첫 화면 = 채팅 상담(대화 + 하단 입력창) → 아래로 집구경 · 진행 과정 · 후기 · FAQ · 사업자 정보 */
+body{padding-bottom:0;background:var(--ivory)}
+.app{height:100svh;min-height:560px;display:flex;flex-direction:column;max-width:720px;margin:0 auto;background:linear-gradient(180deg,var(--paper),var(--ivory) 40%)}
+@media (min-width:760px){.app{border-left:1px solid var(--sand);border-right:1px solid var(--sand)}}
+
+.hd{flex:none;text-align:center;padding:18px 16px 12px;border-bottom:1px solid var(--sand);background:rgba(255,252,246,.9)}
+.hd .logo{height:34px;width:auto;display:block;margin:0 auto 6px}
+.hd .tt{font-family:var(--f-display);font-size:20px;font-weight:700;letter-spacing:.02em}
+.hd .tg{color:var(--umber);font-size:14px;margin-top:2px}
+.live{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:13px;color:var(--bark);background:var(--linen);padding:4px 12px;border-radius:999px}
+.live i{width:7px;height:7px;border-radius:50%;background:#3E9B5C;box-shadow:0 0 0 0 rgba(62,155,92,.5);animation:pulse 2s infinite}
+.live b{font-variant-numeric:tabular-nums}
+@keyframes pulse{70%{box-shadow:0 0 0 7px rgba(62,155,92,0)}100%{box-shadow:0 0 0 0 rgba(62,155,92,0)}}
+
+.log{flex:1;overflow-y:auto;padding:18px 16px 12px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+.who{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--umber);margin-top:4px}
+.who .av{width:28px;height:28px;border-radius:50%;background:var(--walnut);color:var(--on-walnut);display:grid;place-items:center;font-size:13px;font-weight:700;font-family:var(--f-display)}
+.b{max-width:86%;padding:11px 14px;border-radius:4px 16px 16px 16px;background:var(--paper);border:1px solid var(--sand);font-size:15px;line-height:1.55;animation:pop .25s ease-out}
+.b strong{display:block;font-size:16px}
+.b small{display:block;color:var(--umber);font-size:13px;margin-top:3px}
+.b.me{align-self:flex-end;background:var(--walnut);color:var(--on-walnut);border-color:var(--walnut);border-radius:16px 4px 16px 16px}
+.chg{align-self:flex-end;background:none;border:0;color:var(--umber);font-size:12px;cursor:pointer;padding:0 4px;margin-top:-6px;text-decoration:underline}
+.typing{display:inline-flex;gap:4px;padding:14px 16px}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--caramel);animation:blink 1s infinite}
+.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
+@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.cp{flex:none;border-top:1px solid var(--sand);background:var(--paper);padding:10px 16px calc(12px + env(safe-area-inset-bottom,0px));max-height:62svh;overflow-y:auto}
+.prog{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--umber);margin-bottom:10px}
+.prog b{color:var(--walnut);font-weight:600}
+.prog .bar{flex:1;height:4px;border-radius:4px;background:var(--linen);overflow:hidden}
+.prog .bar i{display:block;height:100%;background:var(--walnut);transition:width .4s}
+.cp input[type=text],.cp input[type=tel],.cp input[type=date],.cp textarea{width:100%;min-height:50px;border:1px solid var(--sand);border-radius:12px;padding:0 14px;background:#fff;font-size:16px}
+.cp textarea{min-height:72px;padding:12px 14px;resize:vertical}
+.cp input:focus,.cp textarea:focus{outline:none;border-color:var(--walnut)}
+.cp .bad{border-color:var(--danger)!important}
+.stack{display:grid;gap:8px}
+.row2{display:grid;grid-template-columns:1fr auto;gap:8px}
+.go{width:100%;min-height:52px;border-radius:12px;border:0;background:var(--walnut);color:var(--on-walnut);font-weight:700;font-size:16px;cursor:pointer}
+.go:hover{background:var(--walnut-dark)}
+.go:disabled{opacity:.45;cursor:default}
+.sub{width:100%;min-height:44px;border-radius:12px;border:1px solid var(--sand);background:transparent;color:var(--umber);font-size:14px;cursor:pointer}
+.hint{font-size:12px;color:var(--umber);text-align:center}
+.err{font-size:13px;color:var(--danger)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:46px;padding:0 16px;border-radius:999px;border:1.5px solid var(--sand);background:#fff;font-size:15px;font-weight:600;cursor:pointer;color:var(--bark)}
+.chip small{font-weight:400;color:var(--umber);margin-left:4px}
+.chip:hover{border-color:var(--caramel)}
+.chip[aria-pressed=true]{background:var(--walnut);border-color:var(--walnut);color:var(--on-walnut)}
+.chip[aria-pressed=true] small{color:var(--linen)}
+.chips.full .chip{flex:1 1 calc(50% - 4px)}
+.agree{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--bark);cursor:pointer}
+.agree input{width:18px;height:18px;margin:1px 0 0;accent-color:var(--walnut);flex:none}
+.agree a{color:var(--umber)}
+.perk{display:inline-block;background:#F6E7D3;color:var(--walnut);font-weight:700;font-size:12px;padding:1px 8px;border-radius:999px;margin-left:4px}
+.tiers{display:grid;gap:8px}
+.tier{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 10px;text-align:left;padding:12px 14px;border-radius:14px;border:1.5px solid var(--sand);background:#fff;cursor:pointer;color:var(--bark)}
+.tier:hover{border-color:var(--caramel)}
+.tier b{font-size:15px}.tier span{font-size:13px;color:var(--umber);grid-column:1}
+.tier em{grid-row:1/3;grid-column:2;font-style:normal;font-weight:700;color:var(--walnut);font-variant-numeric:tabular-nums;white-space:nowrap}
+.days{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.days::-webkit-scrollbar{display:none}
+.day{flex:none;width:56px;padding:8px 0;border-radius:12px;border:1.5px solid var(--sand);background:#fff;text-align:center;cursor:pointer;color:var(--bark);line-height:1.25}
+.day small{display:block;font-size:11px;color:var(--umber)}
+.day b{font-size:17px;font-variant-numeric:tabular-nums}
+.day.sun small,.day.sun b{color:var(--danger)}
+.day[aria-pressed=true]{background:var(--walnut);border-color:var(--walnut)}
+.day[aria-pressed=true] small,.day[aria-pressed=true] b{color:var(--on-walnut)}
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.slot{min-height:42px;border-radius:10px;border:1.5px solid var(--sand);background:#fff;font-size:14px;font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums;color:var(--bark)}
+.slot:disabled{opacity:.35;cursor:default;text-decoration:line-through}
+.slot[aria-pressed=true]{background:var(--walnut);border-color:var(--walnut);color:var(--on-walnut)}
+.fast{font-size:13px;color:var(--walnut);font-weight:600}
+.sum{background:#fff;border:1px solid var(--sand);border-radius:14px;padding:4px 14px;font-size:14px}
+.sum div{display:grid;grid-template-columns:76px 1fr;gap:8px;padding:9px 0;border-bottom:1px dashed var(--sand)}
+.sum div:last-child{border-bottom:0}
+.sum dt{color:var(--umber)}.sum dd{margin:0;font-weight:600}
+.okmark{width:52px;height:52px;border-radius:50%;background:var(--linen);color:var(--walnut);display:grid;place-items:center;font-size:26px;margin:4px auto 8px}
+
+/* 아래 콘텐츠 */
+.more-sec{max-width:720px;margin:0 auto;padding:56px 18px}
+.more-sec h2{font-size:clamp(22px,4.5vw,28px);margin-bottom:6px}
+.more-sec .lead{color:var(--umber);margin-bottom:20px}
+.rooms{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;margin:0 -18px;padding-left:18px;padding-right:18px}
+.room{flex:none;width:78%;max-width:300px;scroll-snap-align:start;background:var(--paper);border:1px solid var(--sand);border-radius:16px;overflow:hidden}
+.room img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.room .tx{padding:14px}
+.room .k{font-size:12px;color:var(--caramel);font-weight:700;letter-spacing:.08em}
+.room h3{font-size:18px;margin:2px 0 6px}
+.room p{font-size:14px;color:var(--umber)}
+.room .pd{margin-top:8px;font-size:13px;font-weight:600;color:var(--walnut)}
+.flow{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.flow li{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start;background:var(--paper);border:1px solid var(--sand);border-radius:14px;padding:14px}
+.flow .n{width:40px;height:40px;border-radius:50%;background:var(--walnut);color:var(--on-walnut);display:grid;place-items:center;font-weight:700}
+.flow b{display:block}.flow span{color:var(--umber);font-size:14px}
+.faq2 details{background:var(--paper);border:1px solid var(--sand);border-radius:12px;padding:0 16px;margin-bottom:8px}
+.faq2 summary{cursor:pointer;font-weight:600;padding:14px 0;list-style:none}
+.faq2 summary::after{content:"+";float:right;color:var(--caramel)}
+.faq2 details[open] summary::after{content:"–"}
+.faq2 p{padding-bottom:14px;color:var(--umber);font-size:15px}
+.back{display:flex;justify-content:center;margin-top:28px}
+.ft{border-top:1px solid var(--sand);padding:22px 18px 28px;text-align:center;font-size:12px;color:var(--umber);line-height:1.8}
+.ft a{color:var(--umber)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<main class="app" id="app">
+  <header class="hd">
+    <img class="logo" src="img/logo.png" alt="꽃피는 커튼 블라인드">
+    <div class="tt">CURTAIN &amp; BLIND STYLING</div>
+    <p class="tg">창마다 꼭 맞게, 공간을 완성합니다</p>
+    <div class="live" aria-live="off"><i></i>최근 1시간 동안 <b id="liveN">—</b>명이 상담을 시작했어요</div>
+  </header>
+  <div class="log" id="log" aria-live="polite"></div>
+  <div class="cp" id="cp"></div>
+</main>
+
+<section class="more-sec" id="rooms">
+  <span class="eyebrow">Home tour</span>
+  <h2>방문 전에 집구경하기</h2>
+  <p class="lead">꽃피는 커튼 블라인드가 직접 시공한 공간이에요. 마음에 드는 스타일을 가족과 함께 보세요.</p>
+  <div class="rooms" id="roomList"></div>
+</section>
+
+<section class="more-sec band" style="max-width:none">
+  <div style="max-width:684px;margin:0 auto">
+    <span class="eyebrow">Process</span>
+    <h2>이렇게 진행돼요</h2>
+    <p class="lead">상담 신청부터 설치까지 한 팀이 책임집니다.</p>
+    <ol class="flow">
+      <li><span class="n">1</span><div><b>상담 신청</b><span>대화창에서 몇 가지 고르고 번호만 남기면 끝나요.</span></div></li>
+      <li><span class="n">2</span><div><b>방문 실측</b><span>약속한 날 찾아가 창마다 정확히 재고, 샘플을 창에 대보며 골라요.</span></div></li>
+      <li><span class="n">3</span><div><b>현장 견적</b><span>그 자리에서 견적을 드려요. 견적을 보고 천천히 결정하셔도 돼요.</span></div></li>
+      <li><span class="n">4</span><div><b>제작·시공</b><span>실측 후 5~7일이면 제작과 설치까지 끝나요. 시공 후 1년 무상 A/S.</span></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="more-sec">
+  <span class="eyebrow">Reviews</span>
+  <h2>고객님들이 남겨주신 후기예요</h2>
+  <p class="lead">실제 시공 고객님이 게시에 동의해 주신 후기입니다.</p>
+  <div id="rvBox"></div>
+</section>
+
+<section class="more-sec faq2" style="padding-top:0">
+  <span class="eyebrow">FAQ</span>
+  <h2>자주 물어보시는 것들이에요</h2>
+  <p class="lead">더 궁금하신 건 방문 상담 때 자세히 알려드릴게요.</p>
+  <details><summary>실측 비용이 있나요?</summary><p>없어요. 방문 실측과 견적 상담은 무료예요. 제품을 결정하신 후에만 비용이 생겨요.</p></details>
+  <details><summary>실측 받으면 꼭 계약해야 하나요?</summary><p>아니요. 견적을 보고 천천히 결정하셔도 됩니다.</p></details>
+  <details><summary>입주 전에도 실측이 되나요?</summary><p>네. 입주 전 방문이 가능하면 미리 실측해서 입주일에 맞춰 시공해 드려요.</p></details>
+  <details><summary>원단을 직접 보고 고를 수 있나요?</summary><p>방문 상담 때 원단 샘플을 가져가 우리 집 빛 아래에서 직접 대보고 고르실 수 있어요.</p></details>
+  <details><summary>어느 지역까지 방문하나요?</summary><p>서울·경기·인천 지역은 신청하신 당일에도 방문할 수 있어요. 상담 시간은 오전 8시부터 오후 8시까지예요.</p></details>
+  <details><summary>설치 후 문제가 생기면요?</summary><p>시공 후 1년 동안 무상으로 A/S 해드려요.</p></details>
+  <div class="back"><a class="btn pri" href="#app" id="toTop">무료 방문 상담 신청하기 →</a></div>
+</section>
+
+<footer class="ft" id="ft"></footer>
+
+<script src="site.js"></script>
+<script src="reviews.js"></script>
+<script>
+(function(){
+/* ═══════════════════════════════════════════════
+   ▶ 설정 — 이 부분만 고치면 됩니다
+   ═══════════════════════════════════════════════ */
+var CFG = {
+  FORM_TO: "kkangcheol777@naver.com",   // 예약 접수 메일 받을 주소 (FormSubmit)
+  DISCOUNT: 5,                          // 웹 예약 할인(%) — 이벤트 소식 수신 동의 시 적용. 할인을 안 하면 0
+  LIVE_MIN: 30, LIVE_MAX: 100,          // '최근 1시간 동안 N명' 숫자 범위
+  FB_PIXEL_ID: "",                      // 메타 픽셀 ID — 넣으면 PageView / Lead(번호 입력) / Schedule(예약 완료) 전송
+  DAYS_AHEAD: 14,                       // 방문 날짜를 오늘부터 며칠까지 보여줄지
+  SLOTS: ["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00"],
+  LEAD_HOURS: 2,                        // 오늘 예약은 지금부터 몇 시간 뒤부터 가능
+  /* 예산 단계 — 평형별 금액은 실제 판매가에 맞게 꼭 바꿔주세요 (단위: 만 원) */
+  TIERS: [
+    { name:"실속형",   desc:"쉬폰·암막 커튼 + 콤비 블라인드" },
+    { name:"베이직",   desc:"린넨 커튼 + 우드·알루미늄 블라인드" },
+    { name:"프리미엄", desc:"고급 원단 · 이중 커튼 · 허니콤" },
+    { name:"하이엔드", desc:"모든 제품 · 전동 포함" }
+  ],
+  PRICES: {
+    "20평대": ["50~70만 원","70~110만 원","110~150만 원","150만 원 이상"],
+    "30평대": ["70~100만 원","100~150만 원","150~200만 원","200만 원 이상"],
+    "40평대 이상": ["100~140만 원","140~200만 원","200~280만 원","280만 원 이상"]
+  }
+};
+/* ═══════════════════════════════════════════════ */
+
+var SITE = window.SITE || {name:"꽃피는 커튼 블라인드",tel:"070-8098-8555",telHref:"tel:07080988555"};
+var $ = function(s,r){return (r||document).querySelector(s);};
+var KEY = "fl_booking_v1";
+function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k));localStorage.setItem(k,JSON.stringify(v));}catch(e){return null;}}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function el(tag,attrs,html){var e=document.createElement(tag);for(var k in attrs||{}){if(k==="on")for(var ev in attrs.on)e.addEventListener(ev,attrs.on[ev]);else e.setAttribute(k,attrs[k]);}if(html!=null)e.innerHTML=html;return e;}
+
+/* ── 실시간 상담 숫자: 방문자마다 1시간 동안 같은 숫자, 1시간이 지나면 새로 뽑음 ── */
+(function(){
+  var now=Date.now(), s=store("fl_live");
+  if(!s||now-s.t>3600e3||s.n<CFG.LIVE_MIN||s.n>CFG.LIVE_MAX){
+    s={n:CFG.LIVE_MIN+Math.floor(Math.random()*(CFG.LIVE_MAX-CFG.LIVE_MIN+1)),t:now};store("fl_live",s);
+  }
+  $("#liveN").textContent=s.n;
+})();
+
+/* ── 메타 픽셀 ── */
+function px(ev,data){if(window.fbq)window.fbq("track",ev,data||{});}
+if(CFG.FB_PIXEL_ID){
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");
+  fbq("init",CFG.FB_PIXEL_ID);fbq("track","PageView");
+}
+
+/* ── 날짜 도우미 ── */
+var WD=["일","월","화","수","목","금","토"];
+function ymd(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function today0(){var d=new Date();d.setHours(0,0,0,0);return d;}
+function parseYmd(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2]);}
+function korDate(s){var d=parseYmd(s);return (d.getMonth()+1)+"월 "+d.getDate()+"일 ("+WD[d.getDay()]+")";}
+function daysUntil(s){return Math.round((parseYmd(s)-today0())/864e5);}
+function slotOpen(day,slot){
+  var d=parseYmd(day),h=slot.split(":");d.setHours(+h[0],+h[1]);
+  return d.getTime()>=Date.now()+CFG.LEAD_HOURS*3600e3;
+}
+function earliest(){
+  for(var i=0;i<=CFG.DAYS_AHEAD;i++){var d=today0();d.setDate(d.getDate()+i);var k=ymd(d);
+    for(var j=0;j<CFG.SLOTS.length;j++)if(slotOpen(k,CFG.SLOTS[j]))return {day:k,slot:CFG.SLOTS[j],i:i};}
+  return null;
+}
+function fmtPhone(v){var d=v.replace(/\D/g,"").slice(0,11);
+  if(d.length<4)return d;if(d.length<8)return d.slice(0,3)+"-"+d.slice(3);
+  if(d.length<11)return d.slice(0,3)+"-"+d.slice(3,6)+"-"+d.slice(6);return d.slice(0,3)+"-"+d.slice(3,7)+"-"+d.slice(7);}
+
+/* ── 상태 ── */
+var S = store(KEY) || {};
+var A = S.a || {};          // 답변
+var cur = S.cur || 0;       // 현재 단계 번호(STEPS 기준)
+var resumed = !!(S.a && S.a.name && !S.done);
+function save(){store(KEY,{a:A,cur:cur,done:!!A.doneAt});}
+
+/* ── 단계 정의 ── */
+var STEPS = [
+  { id:"contact", label:"연락처",
+    q:function(){return ["<strong>성함과 번호만 알려주세요</strong><small>확인 안 하고 넘기면, 우리 집 예상 견적을 모르고 지나가요.</small>"];},
+    me:function(){return esc(A.name)+" · "+esc(A.phone);},
+    ack:function(){return esc(A.name)+" 님, 반가워요! 몇 가지만 더 여쭤볼게요.";},
+    ui:uiContact },
+  { id:"movein", label:"입주일",
+    q:function(){return ["<strong>입주 예정일이 언제세요?</strong><small>대략적인 날짜도 괜찮아요.</small>"];},
+    me:function(){return A.movein.length===10?korDate(A.movein):A.movein;},
+    ack:function(){
+      if(A.movein.length===10){var n=daysUntil(A.movein);
+        if(n<=14)return korDate(A.movein)+" 입주시군요. 얼마 안 남으셨네요! 가장 빠른 방문 일정으로 잡아드릴게요.";
+        return korDate(A.movein)+" 입주시군요. 입주일에 맞춰 시공 일정을 잡아드릴게요.";}
+      return null;},
+    ui:function(done){
+      var box=el("div",{class:"stack"}),pick=el("div",{class:"row2",hidden:""});
+      var inp=el("input",{type:"date","aria-label":"입주 예정일"});inp.min=ymd(today0());
+      var ok=el("button",{class:"go",style:"width:auto;padding:0 20px",on:{click:function(){if(!inp.value){inp.classList.add("bad");return;}done({movein:inp.value});}}},"확인");
+      pick.append(inp,ok);
+      box.append(chips([["입주 예정일 고르기",function(){pick.hidden=false;inp.focus();try{inp.showPicker();}catch(e){}}],["이미 입주했어요",function(){done({movein:"이미 입주했어요"});}],["아직 미정",function(){done({movein:"아직 미정"});}]],"full"),pick);
+      return box;} },
+  { id:"scope", label:"시공 범위",
+    q:function(){return ["<strong>전체 시공인가요, 부분 시공인가요?</strong>"];},
+    me:function(){return A.scope;},
+    ui:function(done){return chips([["전체 시공",function(){done({scope:"전체 시공"});},"집 전체 창"],["부분 시공",function(){done({scope:"부분 시공"});},"일부 공간만"]],"full");} },
+  { id:"size", label:"평형", when:function(){return A.scope==="전체 시공";},
+    q:function(){return ["<strong>몇 평대 집이세요?</strong>"];},
+    me:function(){return A.size;},
+    ui:function(done){return chips([["20평대",function(){done({size:"20평대"});},"59㎡"],["30평대",function(){done({size:"30평대"});},"84㎡"],["40평대 이상",function(){done({size:"40평대 이상"});}],["상가·사무실",function(){done({size:"상가·사무실"});}]],"full");} },
+  { id:"spaces", label:"공간 선택", when:function(){return A.scope==="부분 시공";},
+    q:function(){return ["<strong>어느 공간을 바꾸실까요?</strong><small>여러 곳을 골라도 돼요.</small>"];},
+    me:function(){return A.spaces.join(", ");},
+    ack:function(){return "부분 시공은 창 크기에 따라 금액이 달라져서, 방문 실측 후 정확히 안내드려요.";},
+    ui:function(done){
+      var sel=(A.spaces||[]).slice(),box=el("div",{class:"stack"});
+      var go=el("button",{class:"go",on:{click:function(){done({spaces:sel});}}},"다음 →");
+      var c=el("div",{class:"chips"});
+      ["거실","안방","작은방1","작은방2","아이방","주방","서재","드레스룸","베란다","기타"].forEach(function(n){
+        var b=el("button",{class:"chip","aria-pressed":sel.indexOf(n)>-1?"true":"false",on:{click:function(){
+          var i=sel.indexOf(n);if(i>-1)sel.splice(i,1);else sel.push(n);
+          b.setAttribute("aria-pressed",i>-1?"false":"true");go.disabled=!sel.length;}}},n);c.append(b);});
+      go.disabled=!sel.length;box.append(c,go);return box;} },
+  { id:"budget", label:"예산", when:function(){return A.scope==="전체 시공";},
+    q:function(){
+      var base=CFG.PRICES[A.size]?A.size+" 전체 시공 기준이에요.":"공간에 따라 금액이 달라져요.";
+      return ["<strong>생각해 두신 예산이 있으세요?</strong><small>"+base+"</small>"];},
+    me:function(){return A.budget;},
+    ack:function(){return A.budget.indexOf("방문")>-1?"좋아요. 방문 때 예산에 맞는 원단을 함께 골라드릴게요.":"정확한 금액은 방문 실측 후 확정해 드려요. 꽃피는 커튼 블라인드가 직접 제작·시공해서 가능한 가격이에요.";},
+    ui:function(done){
+      var p=CFG.PRICES[A.size],box=el("div",{class:"tiers"});
+      CFG.TIERS.forEach(function(t,i){
+        var label=t.name+(p?" · "+p[i]:"");
+        box.append(el("button",{class:"tier",on:{click:function(){done({budget:label});}}},"<b>"+t.name+"</b><span>"+t.desc+"</span>"+(p?"<em>"+p[i]+"</em>":"")));});
+      box.append(el("button",{class:"sub",on:{click:function(){done({budget:"방문 때 상담할게요"});}}},"잘 모르겠어요 · 방문 때 상담할게요"));
+      return box;} },
+  { id:"visit", label:"방문 일시",
+    q:function(){return ["<strong>방문 상담 날짜를 골라주세요.</strong><small>디자이너가 샘플을 들고 찾아가요. 상담은 무료예요.</small>"];},
+    me:function(){return A.visitDay?korDate(A.visitDay)+" "+A.visitTime:A.visitTime;},
+    ui:uiVisit },
+  { id:"addr", label:"주소",
+    q:function(){return ["<strong>방문할 주소를 알려주세요.</strong><small>아파트명과 동·호수까지 적어주시면 정확히 찾아가요.</small>"];},
+    me:function(){return esc(A.addr)+(A.addr2?" "+esc(A.addr2):"");},
+    ui:uiAddr },
+  { id:"confirm", label:"확인", nocount:true,
+    q:function(){return ["<strong>이대로 예약할까요?</strong><small>바꾸고 싶은 답은 위 대화에서 ‘이 답 바꾸기’를 눌러주세요.</small>"];},
+    ui:uiConfirm }
+];
+function active(){return STEPS.filter(function(s){return !s.when||s.when();});}
+
+/* ── 공통 UI ── */
+function chips(list,cls){
+  var c=el("div",{class:"chips "+(cls||"")});
+  list.forEach(function(x){c.append(el("button",{class:"chip",on:{click:x[1]}},esc(x[0])+(x[2]?"<small>"+esc(x[2])+"</small>":"")));});
+  return c;
+}
+var log=$("#log"),cp=$("#cp");
+function who(){log.append(el("div",{class:"who"},'<span class="av">꽃</span>꽃피는 디자이너'));}
+function bot(html){log.append(el("div",{class:"b"},html));}
+function scrollEnd(){requestAnimationFrame(function(){log.scrollTop=log.scrollHeight;});}
+
+/* ── 그리기 ── */
+var typingTimer;
+function render(animate){
+  clearTimeout(typingTimer);
+  var steps=active(),idx=steps.indexOf(STEPS[cur]);if(idx<0){cur=STEPS.indexOf(steps[0]);idx=0;}
+  log.innerHTML="";
+  who();bot("안녕하세요, 꽃피는 커튼 블라인드 디자이너예요. 몇 가지만 고르시면 <b>무료 방문 상담</b>을 잡아드릴게요. 1분이면 끝나요.");
+  for(var i=0;i<idx;i++){
+    var s=steps[i];s.q().forEach(bot);
+    if(s.me){log.append(el("div",{class:"b me"},s.me()));
+      (function(si){log.append(el("button",{class:"chg",on:{click:function(){if(A.doneAt)return;cur=STEPS.indexOf(si);save();render();}}},"이 답 바꾸기"));})(s);}
+    var ack=s.ack&&s.ack();if(ack)bot(ack);
+  }
+  if(resumed&&animate!=="fresh"&&animate!==true&&idx>0){bot("다시 오셨네요, "+esc(A.name)+" 님. 이어서 진행할게요.");}
+  var st=steps[idx];
+  if(A.doneAt){renderDone();scrollEnd();return;}
+  var total=A.scope==="부분 시공"?6:7,n=idx+1;
+  cp.innerHTML='<div class="prog"><b>'+st.label+'</b><span class="bar"><i style="width:'+Math.round((st.nocount?1:idx/total)*100)+'%"></i></span><span class="tnum">'+(st.nocount?"마지막":n+" / "+total)+'</span></div>';
+  var showQ=function(){st.q().forEach(bot);var ui=st.ui(function(patch){answer(st,patch);});if(ui)cp.append(ui);scrollEnd();
+    var f=cp.querySelector("input:not([type=checkbox])");if(f&&animate&&window.innerWidth>700)f.focus();};
+  if(animate===true){var t=el("div",{class:"b typing"},"<span></span><span></span><span></span>");log.append(t);scrollEnd();
+    typingTimer=setTimeout(function(){t.remove();showQ();},550);}
+  else showQ();
+}
+function answer(st,patch){
+  for(var k in patch)A[k]=patch[k];
+  var steps=active(),i=steps.indexOf(st);
+  cur=STEPS.indexOf(steps[Math.min(i+1,steps.length-1)]);
+  save();render(true);
+}
+
+/* ── 1. 연락처 ── */
+function uiContact(done){
+  var box=el("div",{class:"stack"});
+  var nm=el("input",{type:"text",placeholder:"성함",autocomplete:"name","aria-label":"성함"});nm.value=A.name||"";
+  var ph=el("input",{type:"tel",placeholder:"010-0000-0000",inputmode:"numeric",autocomplete:"tel",maxlength:"13","aria-label":"휴대폰 번호",class:"tnum"});ph.value=A.phone||"";
+  ph.addEventListener("input",function(){ph.value=fmtPhone(ph.value);ph.classList.remove("bad");});
+  nm.addEventListener("input",function(){nm.classList.remove("bad");});
+  var a1=el("label",{class:"agree"},'<input type="checkbox" id="ag1"><span>[필수] 개인정보 수집·이용 동의 <a href="#" id="agv">보기</a></span>');
+  var a2=CFG.DISCOUNT>0?el("label",{class:"agree"},'<input type="checkbox" id="ag2"><span>[선택] 할인·이벤트 소식을 카카오톡·문자로 받을게요<span class="perk">웹 예약 '+CFG.DISCOUNT+'% 할인</span></span>'):null;
+  var detail=el("div",{class:"hint",hidden:"",style:"text-align:left;background:var(--ivory);border-radius:10px;padding:10px 12px;line-height:1.6"},
+    "<b>개인정보 수집·이용</b><br>수집 항목: 이름, 휴대폰 번호, 방문 주소, 상담 답변<br>이용 목적: 방문 상담 연락 · 방문 일정 안내<br>보관 기간: 상담이 끝난 뒤 1년 (요청하시면 바로 삭제)"+
+    (CFG.DISCOUNT>0?"<br><br><b>광고성 정보 수신(선택)</b><br>받는 내용: 할인·이벤트, 새 시공 사례 소식 · 받는 방법: 카카오톡, 문자<br>동의하지 않아도 상담 신청은 그대로 가능하고, 언제든 수신을 거부할 수 있어요.":""));
+  var er=el("div",{class:"err",hidden:""});
+  var go=el("button",{class:"go"},"바로 상담 시작하기");
+  box.append(nm,ph,a1);if(a2)box.append(a2);box.append(detail,er,go,el("p",{class:"hint"},"숫자만 입력하면 자동으로 하이픈이 들어가요."));
+  if(A.agree)a1.querySelector("input").checked=true;
+  if(a2&&A.marketing)a2.querySelector("input").checked=true;
+  a1.querySelector("#agv").addEventListener("click",function(e){e.preventDefault();detail.hidden=!detail.hidden;});
+  function submit(){
+    var bad=[];if(!nm.value.trim())bad.push([nm,"성함을 남겨 주세요"]);
+    if(!/^01\d-\d{3,4}-\d{4}$/.test(ph.value))bad.push([ph,"휴대폰 번호를 확인해 주세요 (010-XXXX-XXXX)"]);
+    if(!a1.querySelector("input").checked)bad.push([null,"개인정보 수집·이용에 동의해 주세요"]);
+    bad.forEach(function(b){if(b[0])b[0].classList.add("bad");});
+    if(bad.length){er.textContent=bad[0][1];er.hidden=false;return;}
+    var first=!A.leadSent||A.phone!==ph.value;
+    var patch={name:nm.value.trim(),phone:ph.value,agree:true,marketing:!!(a2&&a2.querySelector("input").checked)};
+    if(first){sendLead(patch);patch.leadSent=true;px("Lead");}
+    done(patch);
+  }
+  go.addEventListener("click",submit);
+  [nm,ph].forEach(function(i){i.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();if(i===nm)ph.focus();else submit();}});});
+  return box;
+}
+
+/* ── 6. 방문 일시 ── */
+function uiVisit(done){
+  var box=el("div",{class:"stack"}),e=earliest();
+  var day=A.visitDay&&daysUntil(A.visitDay)>=0?A.visitDay:(e?e.day:ymd(today0())),slot=A.visitTime&&A.visitDay===day?A.visitTime:null;
+  if(e)box.append(el("div",{class:"fast"},"⚡ 가장 빠른 방문: "+(e.i===0?"오늘":e.i===1?"내일":korDate(e.day))+" "+e.slot));
+  var days=el("div",{class:"days",role:"group","aria-label":"방문 날짜"}),slots=el("div",{class:"slots",role:"group","aria-label":"방문 시간"});
+  var go=el("button",{class:"go",on:{click:function(){done({visitDay:day,visitTime:slot});}}});
+  function drawSlots(){
+    slots.innerHTML="";
+    CFG.SLOTS.forEach(function(s){var open=slotOpen(day,s);
+      var b=el("button",{class:"slot","aria-pressed":s===slot?"true":"false"},s);b.disabled=!open;
+      b.addEventListener("click",function(){slot=s;drawSlots();});slots.append(b);});
+    go.disabled=!slot;go.textContent=slot?korDate(day)+" "+slot+"로 할게요":"시간을 골라주세요";
+  }
+  for(var i=0;i<=CFG.DAYS_AHEAD;i++){
+    (function(i){var d=today0();d.setDate(d.getDate()+i);var k=ymd(d);
+      var any=CFG.SLOTS.some(function(s){return slotOpen(k,s);});if(!any)return;
+      var b=el("button",{class:"day"+(d.getDay()===0?" sun":""),"aria-pressed":k===day?"true":"false"},"<small>"+(i===0?"오늘":i===1?"내일":WD[d.getDay()])+"</small><b>"+d.getDate()+"</b>");
+      b.addEventListener("click",function(){day=k;slot=null;days.querySelectorAll(".day").forEach(function(x){x.setAttribute("aria-pressed","false");});b.setAttribute("aria-pressed","true");drawSlots();});
+      days.append(b);})(i);
+  }
+  drawSlots();
+  box.append(days,slots,go,el("button",{class:"sub",on:{click:function(){done({visitDay:"",visitTime:"전화로 일정 맞출게요"});}}},"날짜가 애매해요 · 전화로 일정 맞출게요"));
+  setTimeout(function(){var s=days.querySelector('[aria-pressed=true]');if(s)s.scrollIntoView({inline:"center",block:"nearest"});},50);
+  return box;
+}
+
+/* ── 7. 주소 (다음 우편번호 검색, 실패하면 직접 입력) ── */
+function uiAddr(done){
+  var box=el("div",{class:"stack"});
+  var ad=el("input",{type:"text",placeholder:"도로명 주소 또는 아파트명",autocomplete:"street-address","aria-label":"주소"});ad.value=A.addr||"";
+  var find=el("button",{class:"chip",style:"border-radius:12px"},"주소 검색");
+  var ad2=el("input",{type:"text",placeholder:"동·호수 (예: 120동 502호)","aria-label":"동·호수"});ad2.value=A.addr2||"";
+  var memo=el("textarea",{placeholder:"(선택) 원하는 제품이나 궁금한 점을 남겨주세요","aria-label":"메모"});memo.value=A.memo||"";
+  var er=el("div",{class:"err",hidden:""});
+  var go=el("button",{class:"go"},"다음 →");
+  ad.addEventListener("input",function(){ad.classList.remove("bad");er.hidden=true;});
+  find.addEventListener("click",function(){
+    function open(){new daum.Postcode({oncomplete:function(d){ad.value=d.roadAddress||d.jibunAddress;if(d.buildingName&&ad.value.indexOf(d.buildingName)<0)ad.value+=" "+d.buildingName;ad2.focus();}}).open();}
+    if(window.daum&&window.daum.Postcode)return open();
+    var s=document.createElement("script");s.src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";s.onload=open;
+    s.onerror=function(){er.textContent="주소 검색을 불러오지 못했어요. 직접 입력해 주세요.";er.hidden=false;};document.head.append(s);
+  });
+  go.addEventListener("click",function(){
+    if(ad.value.trim().length<3){ad.classList.add("bad");er.textContent="주소를 입력해 주세요";er.hidden=false;return;}
+    done({addr:ad.value.trim(),addr2:ad2.value.trim(),memo:memo.value.trim()});
+  });
+  box.append(el("div",{class:"row2"}),ad2,memo,er,go);
+  box.firstChild.append(ad,find);
+  return box;
+}
+
+/* ── 확인 · 접수 ── */
+function rows(){
+  var r=[["성함",A.name],["연락처",A.phone],["입주일",A.movein&&A.movein.length===10?korDate(A.movein):A.movein],["시공",A.scope]];
+  if(A.scope==="전체 시공")r.push(["평형",A.size],["예산",A.budget]);else r.push(["공간",(A.spaces||[]).join(", ")]);
+  r.push(["방문",A.visitDay?korDate(A.visitDay)+" "+A.visitTime:A.visitTime],["주소",A.addr+(A.addr2?" "+A.addr2:"")]);
+  if(A.memo)r.push(["메모",A.memo]);
+  if(CFG.DISCOUNT>0&&A.marketing)r.push(["혜택","웹 예약 "+CFG.DISCOUNT+"% 할인 적용"]);
+  return r;
+}
+function sumHtml(){return '<dl class="sum">'+rows().map(function(x){return "<div><dt>"+x[0]+"</dt><dd>"+esc(x[1])+"</dd></div>";}).join("")+"</dl>";}
+function uiConfirm(){
+  var box=el("div",{class:"stack"},sumHtml());
+  var er=el("div",{class:"err",hidden:""});
+  var go=el("button",{class:"go"},"방문 상담 예약하기");
+  go.addEventListener("click",function(){
+    go.disabled=true;go.textContent="보내는 중…";er.hidden=true;
+    send(finalData()).then(function(){A.doneAt=new Date().toISOString();save();px("Schedule");render();})
+    .catch(function(){go.disabled=false;go.textContent="다시 보내기";er.innerHTML='전송에 실패했어요. 잠시 후 다시 눌러 주시거나 <a href="'+SITE.telHref+'">'+SITE.tel+'</a>로 전화 주세요.';er.hidden=false;});
+  });
+  box.append(er,go);return box;
+}
+function renderDone(){
+  bot('<div class="okmark">✓</div><strong style="text-align:center">방문 상담 예약이 접수되었어요</strong><small style="text-align:center">담당 디자이너가 확인 전화로 일정을 최종 확정해 드려요.</small>');
+  var sm=el("div",{style:"width:100%"},sumHtml());log.append(sm);
+  cp.innerHTML="";
+  var box=el("div",{class:"stack"});
+  if(A.visitDay){box.append(el("button",{class:"go",on:{click:ics}},"📅 내 캘린더에 추가"));}
+  box.append(el("a",{class:"btn line tnum",href:SITE.telHref,style:"border-radius:12px;min-height:48px"},"📞 급하시면 "+SITE.tel),
+    el("button",{class:"sub",on:{click:function(){if(confirm("새 상담을 처음부터 시작할까요?")){store(KEY,{});A={};cur=0;resumed=false;render("fresh");}}}},"새 상담 시작하기"));
+  cp.append(box);
+}
+function ics(){
+  var d=A.visitDay.replace(/-/g,""),h=A.visitTime.replace(":",""),he=String(+A.visitTime.slice(0,2)+1).padStart(2,"0")+A.visitTime.slice(3);
+  var txt=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//floweringds//booking//KO","BEGIN:VEVENT","UID:"+Date.now()+"@floweringds.kr",
+    "DTSTAMP:"+new Date().toISOString().replace(/[-:]/g,"").slice(0,15)+"Z","DTSTART;TZID=Asia/Seoul:"+d+"T"+h+"00","DTEND;TZID=Asia/Seoul:"+d+"T"+he+"00",
+    "SUMMARY:"+SITE.name+" 방문 상담","LOCATION:"+(A.addr+" "+(A.addr2||"")).replace(/,/g,"\\,"),"DESCRIPTION:문의 "+SITE.tel,"END:VEVENT","END:VCALENDAR"].join("\r\n");
+  var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([txt],{type:"text/calendar"}));a.download="방문상담.ics";a.click();
+}
+
+/* ── 메일 보내기 (FormSubmit) ── */
+function stamp(){return new Date().toLocaleString("ko-KR",{timeZone:"Asia/Seoul"});}
+function send(data){
+  return fetch("https://formsubmit.co/ajax/"+CFG.FORM_TO,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(data)})
+    .then(function(r){return r.json().then(function(j){if(!r.ok||String(j.success)!=="true")throw new Error(j.message||r.status);});});
+}
+function src(){var p=new URLSearchParams(location.search);return ["utm_source","utm_medium","utm_campaign","utm_content"].map(function(k){return p.get(k);}).filter(Boolean).join(" / ")||(p.get("fbclid")?"메타 광고":"직접 방문");}
+/* 1단계에서 번호를 받자마자 먼저 보냄 → 중간에 나가도 연락처는 남음 */
+function sendLead(p){
+  send({"_subject":"[상담 시작] "+p.name+" / "+p.phone+" (예약 미완료)","_template":"table","_captcha":"false",
+    "성함":p.name,"연락처":p.phone,"이벤트 수신 동의":p.marketing?"동의 (할인 적용)":"미동의",
+    "유입":src(),"안내":"채팅 예약을 시작한 고객입니다. 예약 완료 메일이 안 오면 먼저 연락해 보세요.","접수 시각":stamp()}).catch(function(){});
+}
+function finalData(){
+  var d={"_subject":"[방문 예약] "+A.name+" / "+(A.visitDay?korDate(A.visitDay)+" "+A.visitTime:"전화 조율")+" / "+(A.size||A.scope),"_template":"table","_captcha":"false"};
+  rows().forEach(function(x){d[x[0]]=x[1]||"-";});
+  d["이벤트 수신 동의"]=A.marketing?"동의":"미동의";d["유입"]=src();d["접수 시각"]=stamp();
+  return d;
+}
+
+/* ── 아래 콘텐츠: 집구경 · 후기 · 푸터 ── */
+var ROOMS=[
+  ["거실","빛이 머무는 자리","넓은 창으로 들어오는 햇살을 부드럽게 걸러, 낮에는 환하고 저녁에는 아늑하게.","쉬폰 · 린넨 커튼","w24"],
+  ["거실","간접조명과 어울리는 쉬폰","천장 간접조명 아래 창 전체를 감싸면 저녁 조명이 원단 위로 은은하게 번져요.","차르르 쉬폰 커튼","w26"],
+  ["안방","가장 깊은 휴식을 위한 어둠","빛을 단단히 막아, 늦은 아침까지 방해받지 않는 잠을.","암막 커튼","w19"],
+  ["아이방","낮잠도, 놀이도 편안한 빛","낮잠 시간엔 포근하게 어둡게, 놀 때는 밝고 부드럽게.","암막 콤비 블라인드","w28"],
+  ["서재","선으로 정돈한 단정한 창","빛의 양을 손끝으로 조절하는 블라인드가 잘 어울려요.","우드 · 알루미늄 블라인드","w27"],
+  ["베란다","햇빛과 단열을 한 번에","벌집 구조가 공기층을 만들어 여름엔 시원하게, 겨울엔 따뜻하게.","허니콤 블라인드","w20"]
+];
+$("#roomList").innerHTML=ROOMS.map(function(r){return '<article class="room"><img loading="lazy" src="img/works/t/'+r[4]+'.jpg" alt="'+r[0]+' '+r[3]+' 시공 사진"><div class="tx"><span class="k">'+r[0]+'</span><h3>'+r[1]+'</h3><p>'+r[2]+'</p><div class="pd">'+r[3]+'</div></div></article>';}).join("");
+if(window.renderReviews)window.renderReviews($("#rvBox"),3);
+$("#rvBox").querySelectorAll('a[href="inquiry.html"]').forEach(function(a){a.href="#app";a.textContent="무료 방문 상담 신청하기";});
+$("#toTop").addEventListener("click",function(e){e.preventDefault();$("#app").scrollIntoView({behavior:"smooth"});});
+$("#ft").innerHTML=esc(SITE.name)+(SITE.ceo?" · 대표 "+esc(SITE.ceo):"")+(SITE.bizNo?" · 사업자등록번호 "+esc(SITE.bizNo):"")+"<br>"+(SITE.address?esc(SITE.address)+"<br>":"")+
+  '📞 <a class="tnum" href="'+SITE.telHref+'">'+SITE.tel+'</a>'+(SITE.hours?" · "+esc(SITE.hours):"")+'<br><a href="privacy.html">개인정보처리방침</a> · <a href="./">홈페이지</a>';
+
+render(false);
+})();
+</script>
+</body>
+</html>
