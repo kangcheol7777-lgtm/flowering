@@ -237,6 +237,7 @@ body{background:#fff;color:var(--k-ink)}
 .tour .pics figcaption{font-size:12px;color:#8B95A1;margin-top:4px}
 .tour .pd{font-size:13px;font-weight:600;margin-bottom:10px}
 .tour .go{min-height:48px;font-size:15px}
+.pcbox{height:420px;max-height:52svh;border:1px solid var(--k-line);border-radius:12px;overflow:hidden;background:#fff}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -542,26 +543,47 @@ function uiVisit(done){
 
 /* ── 7. 주소 (다음 우편번호 검색, 실패하면 직접 입력) ── */
 function uiAddr(done){
+  /* 주소 검색: 다음(카카오) 우편번호 서비스 — 팝업 대신 입력창 안에 바로 펼침(인스타·페북 앱 안 브라우저 대응) */
   var box=el("div",{class:"stack"});
   var ad=el("input",{type:"text",placeholder:"도로명 주소 또는 아파트명",autocomplete:"street-address","aria-label":"주소"});ad.value=A.addr||"";
   var find=el("button",{class:"chip",style:"border-radius:12px"},"주소 검색");
+  var pc=el("div",{class:"pcbox",hidden:""});
+  var pcClose=el("button",{class:"sub",hidden:""},"검색 닫기");
   var ad2=el("input",{type:"text",placeholder:"동·호수 (예: 120동 502호)","aria-label":"동·호수"});ad2.value=A.addr2||"";
   var memo=el("textarea",{placeholder:"(선택) 원하는 제품이나 궁금한 점을 남겨주세요","aria-label":"메모"});memo.value=A.memo||"";
   var er=el("div",{class:"err",hidden:""});
   var go=el("button",{class:"go"},"다음 →");
   ad.addEventListener("input",function(){ad.classList.remove("bad");er.hidden=true;});
+  function hide(){pc.hidden=true;pcClose.hidden=true;pc.innerHTML="";}
+  function show(){
+    pc.hidden=false;pcClose.hidden=false;pc.innerHTML="";
+    new daum.Postcode({
+      oncomplete:function(d){
+        var v=d.roadAddress||d.jibunAddress;
+        if(d.buildingName&&v.indexOf(d.buildingName)<0)v+=" "+d.buildingName;
+        ad.value=v;ad.classList.remove("bad");er.hidden=true;hide();ad2.focus();
+      },
+      width:"100%",height:"100%"
+    }).embed(pc,{q:ad.value.trim(),autoClose:false});
+    setTimeout(function(){pc.scrollIntoView({block:"nearest"});},50);
+  }
   find.addEventListener("click",function(){
-    function open(){new daum.Postcode({oncomplete:function(d){ad.value=d.roadAddress||d.jibunAddress;if(d.buildingName&&ad.value.indexOf(d.buildingName)<0)ad.value+=" "+d.buildingName;ad2.focus();}}).open();}
-    if(window.daum&&window.daum.Postcode)return open();
-    var s=document.createElement("script");s.src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";s.onload=open;
-    s.onerror=function(){er.textContent="주소 검색을 불러오지 못했어요. 직접 입력해 주세요.";er.hidden=false;};document.head.append(s);
+    if(!pc.hidden)return hide();
+    if(window.daum&&window.daum.Postcode)return show();
+    find.disabled=true;find.textContent="불러오는 중…";
+    var sc=document.createElement("script");sc.src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    sc.onload=function(){find.disabled=false;find.textContent="주소 검색";show();};
+    sc.onerror=function(){find.disabled=false;find.textContent="주소 검색";er.textContent="주소 검색을 불러오지 못했어요. 직접 입력해 주세요.";er.hidden=false;};
+    document.head.append(sc);
   });
+  ad.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();find.click();}});
+  pcClose.addEventListener("click",hide);
   go.addEventListener("click",function(){
     if(ad.value.trim().length<3){ad.classList.add("bad");er.textContent="주소를 입력해 주세요";er.hidden=false;return;}
     done({addr:ad.value.trim(),addr2:ad2.value.trim(),memo:memo.value.trim()});
   });
-  box.append(el("div",{class:"row2"}),ad2,memo,er,go);
-  box.firstChild.append(ad,find);
+  var row=el("div",{class:"row2"});row.append(ad,find);
+  box.append(row,pc,pcClose,ad2,memo,er,go);
   return box;
 }
 
