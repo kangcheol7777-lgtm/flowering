@@ -14,3 +14,10 @@ RewriteCond %{HTTP_HOST} ^floweringds\.kr$ [NC]
 RewriteCond %{HTTPS} off
 RewriteCond %{HTTP:X-Forwarded-Proto} !https
 RewriteRule ^(.*)$ https://floweringds.kr/$1 [R=301,L]
+
+# 4) HTML·JS·CSS는 브라우저가 매번 새 버전이 있는지 확인 (후기·시공사례 수정이 바로 보이도록)
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|js|css)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
