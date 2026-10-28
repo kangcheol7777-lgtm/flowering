@@ -168,6 +168,10 @@ body{background:#fff;color:var(--k-ink)}
 .rv-stars{color:#F5B400}.rv-stars span{color:#E5E5E5}.rv-text,.rv-who{color:#6B7684}.rv-who{border-top-color:#EFEFEF}
 .btn.pri{background:var(--k-yel);color:var(--k-ink)}.btn.pri:hover{background:var(--k-yel-h)}
 .ft{border-top-color:var(--k-line);color:#8B95A1}.ft a{color:#8B95A1}
+.gowrap{position:relative;margin-top:14px}
+.tip{position:absolute;right:14px;top:-15px;z-index:1;background:var(--k-ink);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap;animation:bob 1.6s ease-in-out infinite}
+.tip::after{content:"";position:absolute;left:50%;bottom:-5px;margin-left:-5px;border:5px solid transparent;border-bottom:0;border-top-color:var(--k-ink)}
+@keyframes bob{50%{transform:translateY(-3px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -236,7 +240,7 @@ body{background:#fff;color:var(--k-ink)}
    ═══════════════════════════════════════════════ */
 var CFG = {
   FORM_TO: "kkangcheol777@naver.com",   // 예약 접수 메일 받을 주소 (FormSubmit)
-  DISCOUNT: 5,                          // 웹 예약 할인(%) — 이벤트 소식 수신 동의 시 적용. 할인을 안 하면 0
+  DISCOUNT: 5,                          // 웹 예약 할인(%) — 웹으로 예약한 모든 고객에게 적용. 할인을 안 하면 0
   LIVE_MIN: 30, LIVE_MAX: 100,          // '최근 1시간 동안 N명' 숫자 범위
   FB_PIXEL_ID: "",                      // 메타 픽셀 ID — 넣으면 PageView / Lead(번호 입력) / Schedule(예약 완료) 전송
   DAYS_AHEAD: 14,                       // 방문 날짜를 오늘부터 며칠까지 보여줄지
@@ -427,15 +431,14 @@ function uiContact(done){
   ph.addEventListener("input",function(){ph.value=fmtPhone(ph.value);ph.classList.remove("bad");});
   nm.addEventListener("input",function(){nm.classList.remove("bad");});
   var a1=el("label",{class:"agree"},'<input type="checkbox" id="ag1"><span>[필수] 개인정보 수집·이용 동의 <a href="#" id="agv">보기</a></span>');
-  var a2=CFG.DISCOUNT>0?el("label",{class:"agree"},'<input type="checkbox" id="ag2"><span>[선택] 할인·이벤트 소식을 카카오톡·문자로 받을게요<span class="perk">웹 예약 '+CFG.DISCOUNT+'% 할인</span></span>'):null;
   var detail=el("div",{class:"hint",hidden:"",style:"text-align:left;background:var(--ivory);border-radius:10px;padding:10px 12px;line-height:1.6"},
-    "<b>개인정보 수집·이용</b><br>수집 항목: 이름, 휴대폰 번호, 방문 주소, 상담 답변<br>이용 목적: 방문 상담 연락 · 방문 일정 안내<br>보관 기간: 상담이 끝난 뒤 1년 (요청하시면 바로 삭제)"+
-    (CFG.DISCOUNT>0?"<br><br><b>광고성 정보 수신(선택)</b><br>받는 내용: 할인·이벤트, 새 시공 사례 소식 · 받는 방법: 카카오톡, 문자<br>동의하지 않아도 상담 신청은 그대로 가능하고, 언제든 수신을 거부할 수 있어요.":""));
+    "<b>개인정보 수집·이용</b><br>수집 항목: 이름, 휴대폰 번호, 방문 주소, 상담 답변<br>이용 목적: 방문 상담 연락 · 방문 일정 안내<br>보관 기간: 상담이 끝난 뒤 1년 (요청하시면 바로 삭제)"
+    );
   var er=el("div",{class:"err",hidden:""});
   var go=el("button",{class:"go"},"바로 상담 시작하기");
-  box.append(nm,ph,a1);if(a2)box.append(a2);box.append(detail,er,go,el("p",{class:"hint"},"숫자만 입력하면 자동으로 하이픈이 들어가요."));
+  var gw=el("div",{class:"gowrap"});if(CFG.DISCOUNT>0)gw.append(el("span",{class:"tip"},"🎁 웹 예약 "+CFG.DISCOUNT+"% 할인"));gw.append(go);
+  box.append(nm,ph,a1,detail,er,gw,el("p",{class:"hint"},"숫자만 입력하면 자동으로 하이픈이 들어가요."));
   if(A.agree)a1.querySelector("input").checked=true;
-  if(a2&&A.marketing)a2.querySelector("input").checked=true;
   a1.querySelector("#agv").addEventListener("click",function(e){e.preventDefault();detail.hidden=!detail.hidden;});
   function submit(){
     var bad=[];if(!nm.value.trim())bad.push([nm,"성함을 남겨 주세요"]);
@@ -444,7 +447,7 @@ function uiContact(done){
     bad.forEach(function(b){if(b[0])b[0].classList.add("bad");});
     if(bad.length){er.textContent=bad[0][1];er.hidden=false;return;}
     var first=!A.leadSent||A.phone!==ph.value;
-    var patch={name:nm.value.trim(),phone:ph.value,agree:true,marketing:!!(a2&&a2.querySelector("input").checked)};
+    var patch={name:nm.value.trim(),phone:ph.value,agree:true};
     if(first){sendLead(patch);patch.leadSent=true;px("Lead");}
     done(patch);
   }
@@ -511,7 +514,7 @@ function rows(){
   if(A.scope==="전체 시공")r.push(["평형",A.size],["예산",A.budget]);else r.push(["공간",(A.spaces||[]).join(", ")]);
   r.push(["방문",A.visitDay?korDate(A.visitDay)+" "+A.visitTime:A.visitTime],["주소",A.addr+(A.addr2?" "+A.addr2:"")]);
   if(A.memo)r.push(["메모",A.memo]);
-  if(CFG.DISCOUNT>0&&A.marketing)r.push(["혜택","웹 예약 "+CFG.DISCOUNT+"% 할인 적용"]);
+  if(CFG.DISCOUNT>0)r.push(["혜택","웹 예약 "+CFG.DISCOUNT+"% 할인 적용"]);
   return r;
 }
 function sumHtml(){return '<dl class="sum">'+rows().map(function(x){return "<div><dt>"+x[0]+"</dt><dd>"+esc(x[1])+"</dd></div>";}).join("")+"</dl>";}
@@ -554,13 +557,13 @@ function src(){var p=new URLSearchParams(location.search);return ["utm_source","
 /* 1단계에서 번호를 받자마자 먼저 보냄 → 중간에 나가도 연락처는 남음 */
 function sendLead(p){
   send({"_subject":"[상담 시작] "+p.name+" / "+p.phone+" (예약 미완료)","_template":"table","_captcha":"false",
-    "성함":p.name,"연락처":p.phone,"이벤트 수신 동의":p.marketing?"동의 (할인 적용)":"미동의",
+    "성함":p.name,"연락처":p.phone,"혜택":CFG.DISCOUNT>0?"웹 예약 "+CFG.DISCOUNT+"% 할인":"-",
     "유입":src(),"안내":"채팅 예약을 시작한 고객입니다. 예약 완료 메일이 안 오면 먼저 연락해 보세요.","접수 시각":stamp()}).catch(function(){});
 }
 function finalData(){
   var d={"_subject":"[방문 예약] "+A.name+" / "+(A.visitDay?korDate(A.visitDay)+" "+A.visitTime:"전화 조율")+" / "+(A.size||A.scope),"_template":"table","_captcha":"false"};
   rows().forEach(function(x){d[x[0]]=x[1]||"-";});
-  d["이벤트 수신 동의"]=A.marketing?"동의":"미동의";d["유입"]=src();d["접수 시각"]=stamp();
+  d["유입"]=src();d["접수 시각"]=stamp();
   return d;
 }
 
