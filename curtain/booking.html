@@ -429,12 +429,14 @@ function chips(list,cls){
 }
 var log=$("#log"),cp=$("#cp");
 function who(){log.append(el("div",{class:"who"},'<span class="av">꽃</span>꽃피는 디자이너'));}
-function bot(html){log.append(el("div",{class:"b"},html));}
+/* 상담 말풍선: 마침표·느낌표 뒤에는 무조건 줄바꿈 (태그 안은 건드리지 않음) */
+function brk(html){return String(html).replace(/([.!])[ \u00a0]+(?![^<]*>)/g,"$1<br>");}
+function bot(html){log.append(el("div",{class:"b"},brk(html)));}
 /* 진행 중에 둘러보기(집구경·시공과정·FAQ)로 나눈 대화 — 해당 단계 질문 뒤에 그대로 다시 그려줌 */
 var side=[];
 function sideNode(it){
   if(it.k==="me")return el("div",{class:"b me"},esc(it.t));
-  if(it.k==="bot")return el("div",{class:"b"},it.h);
+  if(it.k==="bot")return el("div",{class:"b"},brk(it.h));
   return el("div",{class:it.cls||"card"},it.h);
 }
 function drawSide(id){side.forEach(function(it){if(it.step===id)log.append(sideNode(it));});}
