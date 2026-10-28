@@ -172,6 +172,18 @@ body{background:#fff;color:var(--k-ink)}
 .tip{position:absolute;right:14px;top:-15px;z-index:1;background:var(--k-ink);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap;animation:bob 1.6s ease-in-out infinite}
 .tip::after{content:"";position:absolute;left:50%;bottom:-5px;margin-left:-5px;border:5px solid transparent;border-bottom:0;border-top-color:var(--k-ink)}
 @keyframes bob{50%{transform:translateY(-3px)}}
+.sheet{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,0);display:flex;align-items:flex-end;justify-content:center;transition:background .2s}
+.sheet.on{background:rgba(0,0,0,.45)}
+.sheet .panel{position:relative;width:100%;max-width:720px;background:#fff;border-radius:20px 20px 0 0;padding:26px 18px calc(20px + env(safe-area-inset-bottom,0px));transform:translateY(100%);transition:transform .22s ease-out}
+.sheet.on .panel{transform:none}
+.sheet .x{position:absolute;right:10px;top:8px;width:40px;height:40px;border:0;background:none;font-size:26px;color:#8B95A1;cursor:pointer}
+.sheet .st{font-weight:700;font-size:17px;margin-bottom:22px}
+.sheet .gowrap{margin-top:0}
+.sheet .go{min-height:56px;font-size:17px}
+.sheet .ci{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding:12px 2px;border-top:1px solid #EFEFEF;font-size:14px}
+.sheet .ci b{color:#E5483B;font-weight:600}
+.sheet .more{background:none;border:0;color:#8B95A1;text-decoration:underline;cursor:pointer;font-size:13px}
+.sheet .terms{background:var(--k-soft);border-radius:10px;padding:10px 12px;font-size:13px;color:#6B7684;line-height:1.7}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -182,7 +194,7 @@ body{background:#fff;color:var(--k-ink)}
     <img class="logo" src="img/logo.png" alt="꽃피는 커튼 블라인드">
     <div class="tt">CURTAIN &amp; BLIND STYLING</div>
     <p class="tg">창마다 꼭 맞게, 공간을 완성합니다</p>
-    <div class="live" aria-live="off"><i></i>최근 1시간 동안 <b id="liveN">—</b>명이 상담을 시작했어요</div>
+    <div class="live" aria-live="off"><i></i><span>최근 1시간 동안 <b id="liveN">—</b>명이 상담을 시작했어요</span></div>
   </header>
   <div class="log" id="log" aria-live="polite"></div>
   <div class="cp" id="cp"></div>
@@ -425,35 +437,53 @@ function answer(st,patch){
 
 /* ── 1. 연락처 ── */
 function uiContact(done){
+  /* 모프스튜디오와 같은 방식: 입력창엔 성함·번호만 → 번호 11자리가 채워지면 동의 시트가 자동으로 올라옴 */
   var box=el("div",{class:"stack"});
-  var nm=el("input",{type:"text",placeholder:"성함",autocomplete:"name","aria-label":"성함"});nm.value=A.name||"";
-  var ph=el("input",{type:"tel",placeholder:"010-0000-0000",inputmode:"numeric",autocomplete:"tel",maxlength:"13","aria-label":"휴대폰 번호",class:"tnum"});ph.value=A.phone||"";
-  ph.addEventListener("input",function(){ph.value=fmtPhone(ph.value);ph.classList.remove("bad");});
-  nm.addEventListener("input",function(){nm.classList.remove("bad");});
-  var a1=el("label",{class:"agree"},'<input type="checkbox" id="ag1"><span>[필수] 개인정보 수집·이용 동의 <a href="#" id="agv">보기</a></span>');
-  var detail=el("div",{class:"hint",hidden:"",style:"text-align:left;background:var(--ivory);border-radius:10px;padding:10px 12px;line-height:1.6"},
-    "<b>개인정보 수집·이용</b><br>수집 항목: 이름, 휴대폰 번호, 방문 주소, 상담 답변<br>이용 목적: 방문 상담 연락 · 방문 일정 안내<br>보관 기간: 상담이 끝난 뒤 1년 (요청하시면 바로 삭제)"
-    );
-  var er=el("div",{class:"err",hidden:""});
-  var go=el("button",{class:"go"},"바로 상담 시작하기");
-  var gw=el("div",{class:"gowrap"});if(CFG.DISCOUNT>0)gw.append(el("span",{class:"tip"},"🎁 웹 예약 "+CFG.DISCOUNT+"% 할인"));gw.append(go);
-  box.append(nm,ph,a1,detail,er,gw,el("p",{class:"hint"},"숫자만 입력하면 자동으로 하이픈이 들어가요."));
-  if(A.agree)a1.querySelector("input").checked=true;
-  a1.querySelector("#agv").addEventListener("click",function(e){e.preventDefault();detail.hidden=!detail.hidden;});
+  var nm=el("input",{type:"text",placeholder:"성함",autocomplete:"name","aria-label":"성함",enterkeyhint:"next",maxlength:"30"});nm.value=A.name||"";
+  var ph=el("input",{type:"tel",placeholder:"010-0000-0000",inputmode:"numeric",autocomplete:"tel",maxlength:"13","aria-label":"휴대폰 번호",class:"tnum",enterkeyhint:"send"});ph.value=A.phone||"";
+  var er=el("div",{class:"err",hidden:"",role:"status"});
+  var hint=el("p",{class:"hint"},"숫자만 입력하면 바로 다음으로 넘어가요.");
+  var reopen=el("button",{class:"go",hidden:""},"계속하기 →");
+  box.append(nm,ph,er,reopen,hint);
+  function okPhone(){return /^01\d-\d{3,4}-\d{4}$/.test(ph.value);}
+  function check(){
+    if(!nm.value.trim()){nm.classList.add("bad");er.textContent="성함을 남겨 주세요";er.hidden=false;nm.focus();return false;}
+    if(!okPhone()){ph.classList.add("bad");er.textContent="휴대폰 번호를 확인해 주세요 (010-XXXX-XXXX)";er.hidden=false;ph.focus();return false;}
+    er.hidden=true;return true;
+  }
   function submit(){
-    var bad=[];if(!nm.value.trim())bad.push([nm,"성함을 남겨 주세요"]);
-    if(!/^01\d-\d{3,4}-\d{4}$/.test(ph.value))bad.push([ph,"휴대폰 번호를 확인해 주세요 (010-XXXX-XXXX)"]);
-    if(!a1.querySelector("input").checked)bad.push([null,"개인정보 수집·이용에 동의해 주세요"]);
-    bad.forEach(function(b){if(b[0])b[0].classList.add("bad");});
-    if(bad.length){er.textContent=bad[0][1];er.hidden=false;return;}
     var first=!A.leadSent||A.phone!==ph.value;
     var patch={name:nm.value.trim(),phone:ph.value,agree:true};
     if(first){sendLead(patch);patch.leadSent=true;px("Lead");}
     done(patch);
   }
-  go.addEventListener("click",submit);
-  [nm,ph].forEach(function(i){i.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();if(i===nm)ph.focus();else submit();}});});
+  function open(){if(!check())return;document.activeElement&&document.activeElement.blur();openSheet(submit,function(){reopen.hidden=false;hint.hidden=true;});}
+  var t;
+  ph.addEventListener("input",function(){ph.value=fmtPhone(ph.value);ph.classList.remove("bad");er.hidden=true;clearTimeout(t);
+    if(ph.value.replace(/\D/g,"").length===11)t=setTimeout(function(){if(!nm.value.trim()){nm.focus();return;}if(okPhone())open();else check();},300);});
+  nm.addEventListener("input",function(){nm.classList.remove("bad");er.hidden=true;});
+  nm.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();if(okPhone()&&nm.value.trim())open();else ph.focus();}});
+  ph.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();open();}});
+  reopen.addEventListener("click",open);
   return box;
+}
+/* 상담 시작 전 동의 시트 */
+function openSheet(onAgree,onDismiss){
+  var old=$(".sheet");if(old)old.remove();
+  var sh=el("div",{class:"sheet",role:"dialog","aria-modal":"true","aria-label":"상담 시작 전에 확인해 주세요"});
+  sh.innerHTML='<div class="panel"><button class="x" aria-label="닫기">×</button>'
+    +'<p class="st">상담 시작 전에 확인해 주세요</p>'
+    +'<div class="gowrap">'+(CFG.DISCOUNT>0?'<span class="tip">🎁 웹 예약 '+CFG.DISCOUNT+'% 할인</span>':'')+'<button class="go" id="shGo">동의하고 바로 상담 시작하기 →</button></div>'
+    +'<div class="ci"><span>개인정보 수집·이용 <b>(필수)</b></span><button class="more" aria-expanded="false">보기</button></div>'
+    +'<div class="terms" hidden><p>수집 항목: 이름, 휴대폰 번호, 방문 주소, 상담 답변</p><p>이용 목적: 방문 상담 연락 · 방문 일정 안내</p><p>보관 기간: 상담이 끝난 뒤 1년 (요청하시면 바로 삭제)</p></div></div>';
+  document.body.append(sh);
+  requestAnimationFrame(function(){sh.classList.add("on");});
+  function close(agreed){sh.classList.remove("on");setTimeout(function(){sh.remove();},200);if(agreed)onAgree();else onDismiss();}
+  sh.addEventListener("click",function(e){if(e.target===sh)close(false);});
+  $(".x",sh).addEventListener("click",function(){close(false);});
+  $("#shGo",sh).addEventListener("click",function(){close(true);});
+  var m=$(".more",sh),tm=$(".terms",sh);
+  m.addEventListener("click",function(){tm.hidden=!tm.hidden;m.textContent=tm.hidden?"보기":"닫기";m.setAttribute("aria-expanded",String(!tm.hidden));});
 }
 
 /* ── 6. 방문 일시 ── */
