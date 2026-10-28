@@ -725,10 +725,10 @@ function processCard(){
 }
 function maskName(n){n=String(n||"").trim();if(n.length<=1)return n||"고객";if(n.length===2)return n[0]+"*";return n[0]+"*".repeat(n.length-2)+n[n.length-1];}
 function reviewsCard(){
-  var list=(window.REVIEWS||[]).slice().sort(function(a,b){return String(b.date||"").localeCompare(String(a.date||""));}).slice(0,12);
+  var list=(window.REVIEWS||[]).filter(function(r){return r.text;}).sort(function(a,b){return String(b.date||"").localeCompare(String(a.date||""));}).slice(0,12);
   if(!list.length)return null;
   return '<div class="rvs">'+list.map(function(r){var n=Math.max(0,Math.min(5,Math.round(+r.rating||0)));
-    return '<div class="rvc"><span class="st">'+"★".repeat(n)+'</span>'+(r.title?'<b>'+esc(r.title)+'</b>':'')+'<p>'+esc(r.text)+'</p><small>'+(r.name?esc(maskName(r.name))+' 고객님':'고객님')+' · '+esc(r.region||"")+(r.source?' · '+esc(r.source)+' 후기':'')+'</small></div>';}).join("")+'</div>';
+    return '<div class="rvc"><span class="st">'+"★".repeat(n)+'</span>'+(r.title?'<b>'+esc(r.title)+'</b>':'')+'<p>'+esc(r.text)+'</p><small>'+(r.name?esc(maskName(r.name))+' 고객님':'고객님')+' · '+esc(r.region||"")+' · '+esc(r.source||"홈페이지")+' 후기'+'</small></div>';}).join("")+'</div>';
 }
 function resumeItems(){
   if(A.doneAt)return [];

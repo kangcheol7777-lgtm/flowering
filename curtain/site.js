@@ -17,7 +17,8 @@
   window.renderReviews = function(box, limit){
     function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
     function mask(n){n=String(n||"").trim();if(n.length<=1)return n||"고객";if(n.length===2)return n[0]+"*";return n[0]+"*".repeat(n.length-2)+n[n.length-1];}
-    var list=(window.REVIEWS||[]).slice().sort(function(a,b){return String(b.date||"").localeCompare(String(a.date||""));});
+    /* 글 있는 후기 먼저(최신순), 글 없이 별점만 남긴 후기는 그 뒤(최신순) */
+    var list=(window.REVIEWS||[]).slice().sort(function(a,b){var x=(b.text?1:0)-(a.text?1:0);return x||String(b.date||"").localeCompare(String(a.date||""));});
     if(limit) list=list.slice(0,limit);
     if(!list.length){
       box.innerHTML='<div class="rv-empty"><p class="rv-empty-t">아직 등록된 후기가 없어요</p><p>시공을 마친 고객님들의 이야기가 곧 이곳에 채워집니다.<br>첫 후기의 주인공이 되어 주세요.</p><a class="btn pri" href="inquiry.html">무료 견적 신청</a></div>';
@@ -28,8 +29,8 @@
       var n=Math.max(0,Math.min(5,Math.round(+r.rating||0)));
       return '<article class="rv">'
         +'<div class="rv-stars" aria-label="별점 '+n+'점">'+"★".repeat(n)+'<span>'+"★".repeat(5-n)+'</span></div>'
-        +(r.title?'<h3>'+esc(r.title)+'</h3>':'')+'<p class="rv-text">'+esc(r.text)+'</p>'
-        +'<p class="rv-who">'+(r.name?esc(mask(r.name))+' 고객님':'고객님')+' · '+esc(r.region)+(r.product?' · '+esc(r.product):'')+(r.date?'<span class="tnum"> · '+esc(r.date)+'</span>':'')+(r.source?'<span class="rv-src">'+esc(r.source)+' 후기</span>':'')+'</p>'
+        +(r.title?'<h3>'+esc(r.title)+'</h3>':'')+(r.text?'<p class="rv-text">'+esc(r.text)+'</p>':'<p class="rv-text rv-only">'+((r.tags&&r.tags.length)?'<span class="rv-tags">'+r.tags.map(function(t){return '<span>👍 '+esc(t)+'</span>';}).join("")+'</span>':'')+'<small>글 없이 별점'+((r.tags&&r.tags.length)?'과 칭찬 항목':'')+'만 남겨주신 후기예요</small></p>')
+        +'<p class="rv-who">'+(r.name?esc(mask(r.name))+' 고객님':'고객님')+' · '+esc(r.region)+(r.product?' · '+esc(r.product):'')+(r.date?'<span class="tnum"> · '+esc(r.date)+'</span>':'')+'<span class="rv-src">'+esc(r.source||"홈페이지")+' 후기</span>'+'</p>'
         +'</article>';
     }).join("");
   };

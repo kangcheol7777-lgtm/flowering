@@ -131,6 +131,9 @@ footer .flogo{height:64px;width:auto;display:block}
 .rv h3{font-size:18px}
 .rv-text{color:var(--umber);font-size:15px;white-space:pre-line;overflow-wrap:anywhere;flex:1}
 .rv-who{font-size:13px;color:var(--umber);border-top:1px solid var(--linen);padding-top:10px}
+.rv-only small{display:block;font-size:12px;opacity:.8;margin-top:8px}
+.rv-tags{display:flex;flex-wrap:wrap;gap:6px}
+.rv-tags span{padding:3px 10px;border-radius:999px;background:var(--linen);color:var(--walnut);font-size:13px;font-weight:600}
 .rv-src{display:inline-block;margin-left:6px;padding:0 7px;border-radius:999px;background:var(--linen);color:var(--walnut);font-size:11px;font-weight:600;vertical-align:1px}
 .rv-empty{text-align:center;background:var(--paper);border:1.5px dashed var(--sand);border-radius:16px;padding:40px 20px;color:var(--umber);display:grid;gap:10px;justify-items:center}
 .rv-empty .rv-empty-t{font-family:var(--f-display);font-size:20px;color:var(--bark)}
