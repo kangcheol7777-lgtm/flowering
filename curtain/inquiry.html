@@ -17,7 +17,7 @@
 <meta name="theme-color" content="#BACEE0">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="style.css?v=20261028b">
+<link rel="stylesheet" href="style.css?v=20261028c">
 <style>
 /* ── 채팅형 예약 랜딩 ──
    첫 화면 = 채팅 상담(대화 + 하단 입력창) → 아래로 집구경 · 진행 과정 · 후기 · FAQ · 사업자 정보 */
@@ -237,8 +237,7 @@ body{background:#fff;color:var(--k-ink)}
 .tour .pics img{-webkit-user-drag:none;user-select:none;pointer-events:none}
 .tour .pnav{position:absolute;top:calc(50% - 26px);width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,252,246,.92);color:var(--walnut);font-size:20px;line-height:1;display:grid;place-items:center;box-shadow:0 2px 8px rgba(58,42,31,.25);cursor:pointer;z-index:1}
 .tour .pnav.l{left:8px}.tour .pnav.r{right:8px}
-.tour .pnav[disabled]{opacity:0;pointer-events:none}
-.tour .pcount{position:absolute;left:28px;top:10px;background:rgba(58,42,31,.6);color:#fff;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;pointer-events:none}
+
 .tour .pics::-webkit-scrollbar{display:none}
 .tour .pics figure{flex:none;width:82%;margin:0;scroll-snap-align:start}
 .tour .pics img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;display:block;background:var(--k-soft)}
@@ -318,8 +317,8 @@ body{background:#fff;color:var(--k-ink)}
 
 <div class="tour" id="tour" hidden role="dialog" aria-modal="true" aria-label="집구경하기"></div>
 
-<script src="site.js?v=20261028b"></script>
-<script src="reviews.js?v=20261028b"></script>
+<script src="site.js?v=20261028c"></script>
+<script src="reviews.js?v=20261028c"></script>
 <script>
 (function(){
 /* ═══════════════════════════════════════════════
@@ -744,29 +743,39 @@ function openTour(){
     +'<nav class="tabs">'+TOUR.map(function(r,i){return '<button data-k="'+r.key+'" aria-pressed="'+(i===0)+'">'+r.label+'</button>';}).join("")+'</nav>'
     +TOUR.map(function(r){return '<section id="tr-'+r.key+'"><span class="k">'+r.en+'</span><h3>'+r.label+' · '+r.title+'</h3><p>'+r.desc+'</p>'
       +'<div class="pw"><div class="pics">'+r.pics.map(function(p){return '<figure><img loading="lazy" draggable="false" src="img/works/t/'+p[0]+'.jpg" alt="'+r.label+' '+p[1]+' 시공 사진"><figcaption>'+p[1]+'</figcaption></figure>';}).join("")+'</div>'
-      +(r.pics.length>1?'<button class="pnav l" data-pn="-1" aria-label="이전 사진">‹</button><button class="pnav r" data-pn="1" aria-label="다음 사진">›</button><span class="pcount">1 / '+r.pics.length+'</span>':'')+'</div>'
+      +(r.pics.length>1?'<button class="pnav l" data-pn="-1" aria-label="이전 사진">‹</button><button class="pnav r" data-pn="1" aria-label="다음 사진">›</button>':'')+'</div>'
       +'<div class="pd">추천 제품 · '+r.products+'</div><button class="go" data-room="'+r.label+'">'+r.label+' 스타일링 방문 상담 받기</button></section>';}).join("")
     +'</div>';
   showPanel();
   tourEl.querySelectorAll(".pics").forEach(initSlider);
 }
-/* 사진 넘기기: 손가락 스와이프 + 마우스 끌기 + 좌우 화살표 */
+/* 사진 넘기기: 손가락 스와이프 + 마우스 끌기 + 좌우 화살표 — 끝에서 더 넘기면 처음으로(처음에서 뒤로 넘기면 마지막으로) */
 function initSlider(row){
-  var w=row.parentNode,l=$(".pnav.l",w),r=$(".pnav.r",w),c=$(".pcount",w),figs=row.children;
-  function step(){return figs.length>1?figs[1].offsetLeft-figs[0].offsetLeft:row.clientWidth;}
-  function idx(){return Math.round(row.scrollLeft/step());}
-  function upd(){if(!c)return;var i=Math.min(figs.length-1,Math.max(0,idx()));c.textContent=(i+1)+" / "+figs.length;
-    l.disabled=row.scrollLeft<4;r.disabled=row.scrollLeft>=row.scrollWidth-row.clientWidth-4;}
-  row.addEventListener("scroll",upd,{passive:true});
-  if(l){l.addEventListener("click",function(){row.scrollBy({left:-step(),behavior:"smooth"});});
-        r.addEventListener("click",function(){row.scrollBy({left:step(),behavior:"smooth"});});}
-  var down=false,sx=0,sl=0,moved=false;
-  row.addEventListener("pointerdown",function(e){if(e.pointerType!=="mouse")return;down=true;moved=false;sx=e.clientX;sl=row.scrollLeft;row.classList.add("drag");});
+  var w=row.parentNode,l=$(".pnav.l",w),r=$(".pnav.r",w),figs=row.children;
+  if(figs.length<2)return;
+  function step(){return figs[1].offsetLeft-figs[0].offsetLeft;}
+  function max(){return row.scrollWidth-row.clientWidth;}
+  function atEnd(){return row.scrollLeft>=max()-4;}
+  function atStart(){return row.scrollLeft<=4;}
+  function toFirst(){row.scrollTo({left:0,behavior:"smooth"});}
+  function toLast(){row.scrollTo({left:max(),behavior:"smooth"});}
+  function next(){if(atEnd())toFirst();else row.scrollBy({left:step(),behavior:"smooth"});}
+  function prev(){if(atStart())toLast();else row.scrollBy({left:-step(),behavior:"smooth"});}
+  l.addEventListener("click",prev);r.addEventListener("click",next);
+  /* 손가락: 끝에서 더 밀면 처음으로 */
+  var tx=0,ty=0,tEnd=false,tStart=false;
+  row.addEventListener("touchstart",function(e){var t=e.touches[0];tx=t.clientX;ty=t.clientY;tEnd=atEnd();tStart=atStart();},{passive:true});
+  row.addEventListener("touchend",function(e){var t=e.changedTouches[0],dx=t.clientX-tx,dy=t.clientY-ty;
+    if(Math.abs(dx)<40||Math.abs(dx)<Math.abs(dy))return;
+    if(dx<0&&tEnd)toFirst();else if(dx>0&&tStart)toLast();},{passive:true});
+  /* 마우스 끌기 */
+  var down=false,sx=0,sl=0,moved=false,mEnd=false,mStart=false;
+  row.addEventListener("pointerdown",function(e){if(e.pointerType!=="mouse")return;down=true;moved=false;sx=e.clientX;sl=row.scrollLeft;mEnd=atEnd();mStart=atStart();row.classList.add("drag");});
   window.addEventListener("pointermove",function(e){if(!down)return;var d=e.clientX-sx;if(Math.abs(d)>3)moved=true;row.scrollLeft=sl-d;});
-  window.addEventListener("pointerup",function(){if(!down)return;down=false;row.classList.remove("drag");
-    var i=Math.round(row.scrollLeft/step());row.scrollTo({left:i*step(),behavior:"smooth"});});
+  window.addEventListener("pointerup",function(e){if(!down)return;down=false;row.classList.remove("drag");var d=e.clientX-sx;
+    if(d<-40&&mEnd)return toFirst();if(d>40&&mStart)return toLast();
+    row.scrollTo({left:Math.round(row.scrollLeft/step())*step(),behavior:"smooth"});});
   row.addEventListener("click",function(e){if(moved){e.preventDefault();e.stopPropagation();}},true);
-  setTimeout(upd,50);
 }
 function showPanel(){
   tourEl.hidden=false;document.body.style.overflow="hidden";tourEl.scrollTop=0;
