@@ -28,8 +28,8 @@
       var n=Math.max(0,Math.min(5,Math.round(+r.rating||0)));
       return '<article class="rv">'
         +'<div class="rv-stars" aria-label="별점 '+n+'점">'+"★".repeat(n)+'<span>'+"★".repeat(5-n)+'</span></div>'
-        +'<h3>'+esc(r.title)+'</h3><p class="rv-text">'+esc(r.text)+'</p>'
-        +'<p class="rv-who">'+esc(mask(r.name))+' 고객님 · '+esc(r.region)+(r.product?' · '+esc(r.product):'')+(r.date?'<span class="tnum"> · '+esc(r.date)+'</span>':'')+'</p>'
+        +(r.title?'<h3>'+esc(r.title)+'</h3>':'')+'<p class="rv-text">'+esc(r.text)+'</p>'
+        +'<p class="rv-who">'+(r.name?esc(mask(r.name))+' 고객님':'고객님')+' · '+esc(r.region)+(r.product?' · '+esc(r.product):'')+(r.date?'<span class="tnum"> · '+esc(r.date)+'</span>':'')+(r.source?'<span class="rv-src">'+esc(r.source)+' 후기</span>':'')+'</p>'
         +'</article>';
     }).join("");
   };

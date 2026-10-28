@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="style.css">
 <style>
-.summary{display:flex;justify-content:center;align-items:center;gap:14px;margin-bottom:28px;color:var(--umber)}
+.summary{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px;margin-bottom:28px;color:var(--umber)}
 .summary b{font-family:var(--f-display);font-size:34px;color:var(--bark)}
 .summary .rv-stars{font-size:20px}
 </style>
@@ -59,6 +59,8 @@
     var avg=R.reduce(function(s,r){return s+(+r.rating||0);},0)/R.length, n=Math.round(avg);
     var s=document.getElementById("summary");
     s.innerHTML='<b class="tnum">'+avg.toFixed(1)+'</b><div><div class="rv-stars">'+"★".repeat(n)+'<span>'+"★".repeat(5-n)+'</span></div><div class="tnum">후기 '+R.length+'개</div></div>';
+    var src=(window.REVIEW_SOURCES||[]).map(function(x){return '<a href="'+x.url+'" target="_blank" rel="noopener" style="color:var(--walnut)">'+x.name+' 평점 '+x.rating+' · 후기 '+x.count+'건</a>';}).join(" · ");
+    if(src)s.innerHTML+='<div style="flex-basis:100%;text-align:center;font-size:13px">'+src+' <span style="opacity:.75">(별점만 남긴 후기 포함)</span></div>';
     s.hidden=false;
   }
 })();

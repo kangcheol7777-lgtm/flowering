@@ -203,7 +203,7 @@ body{background:#fff;color:var(--k-ink)}
 .rvs{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px;scrollbar-width:none}
 .rvs::-webkit-scrollbar{display:none}
 .rvc{flex:none;width:240px;background:var(--k-soft);border-radius:12px;padding:12px;font-size:13px}
-.rvc .st{color:#F5B400;letter-spacing:1px}.rvc b{display:block;margin:2px 0 4px;font-size:14px}.rvc p{color:#6B7684;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}.rvc small{display:block;margin-top:6px;color:#8B95A1}
+.rvc .st{color:#F5B400;letter-spacing:1px}.rvc b{display:block;margin:2px 0 4px;font-size:14px}.rvc p{color:#6B7684;white-space:pre-line;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}.rvc small{display:block;margin-top:6px;color:#8B95A1}
 .replies{display:flex;flex-wrap:wrap;gap:6px;align-self:flex-start}
 .reply{min-height:38px;padding:0 14px;border-radius:999px;border:1px solid var(--k-line);background:#fff;font-size:14px;font-weight:600;cursor:pointer;color:var(--k-ink)}
 .tourcard{display:block;width:100%;text-align:left;background:#fff;border:0;border-radius:14px;padding:14px;cursor:pointer;color:var(--k-ink);font:inherit}
@@ -725,10 +725,10 @@ function processCard(){
 }
 function maskName(n){n=String(n||"").trim();if(n.length<=1)return n||"고객";if(n.length===2)return n[0]+"*";return n[0]+"*".repeat(n.length-2)+n[n.length-1];}
 function reviewsCard(){
-  var list=(window.REVIEWS||[]).slice().sort(function(a,b){return String(b.date||"").localeCompare(String(a.date||""));}).slice(0,6);
+  var list=(window.REVIEWS||[]).slice().sort(function(a,b){return String(b.date||"").localeCompare(String(a.date||""));}).slice(0,12);
   if(!list.length)return null;
   return '<div class="rvs">'+list.map(function(r){var n=Math.max(0,Math.min(5,Math.round(+r.rating||0)));
-    return '<div class="rvc"><span class="st">'+"★".repeat(n)+'</span><b>'+esc(r.title)+'</b><p>'+esc(r.text)+'</p><small>'+esc(maskName(r.name))+' · '+esc(r.region||"")+(r.product?' · '+esc(r.product):'')+'</small></div>';}).join("")+'</div>';
+    return '<div class="rvc"><span class="st">'+"★".repeat(n)+'</span>'+(r.title?'<b>'+esc(r.title)+'</b>':'')+'<p>'+esc(r.text)+'</p><small>'+(r.name?esc(maskName(r.name))+' 고객님':'고객님')+' · '+esc(r.region||"")+(r.source?' · '+esc(r.source)+' 후기':'')+'</small></div>';}).join("")+'</div>';
 }
 function resumeItems(){
   if(A.doneAt)return [];
@@ -792,7 +792,8 @@ function onAct(e){
   if(act==="process"){var items=[{k:"me",t:"시공과정"},{k:"bot",h:"이렇게 진행돼요. 첫 단계인 방문 상담은 무료예요."},{k:"html",h:processCard()}];
     addSide(items.concat(resumeItems()));return;}
   if(act==="reviews"){var rv=reviewsCard();
-    addSide([{k:"me",t:"고객 후기"}].concat(rv?[{k:"bot",h:"고객님들이 남겨주신 후기예요. 시공을 마친 고객님이 게시에 동의해 주신 실제 후기예요."},{k:"html",cls:"card",h:rv}]:[{k:"bot",h:"시공을 마친 고객님들의 후기가 곧 이곳에 채워져요."}]).concat(resumeItems()));return;}
+    var srcs=(window.REVIEW_SOURCES||[]).map(function(x){return esc(x.name)+" 평점 <b>"+x.rating+"</b> · 후기 "+x.count+"건";}).join(", ");
+    addSide([{k:"me",t:"고객 후기"}].concat(rv?[{k:"bot",h:"고객님들이 남겨주신 실제 후기예요."+(srcs?" "+srcs+"이에요.":"")},{k:"html",cls:"card",h:rv}]:[{k:"bot",h:"시공을 마친 고객님들의 후기가 곧 이곳에 채워져요."}]).concat(resumeItems()));return;}
   if(act==="faq"){addSide([{k:"me",t:"자주 묻는 질문"},{k:"bot",h:"자주 물어보시는 것들이에요."},{k:"html",h:faqCard()}]);return;}
   if(act==="ask"){if(askCount>=2){addSide([{k:"bot",h:"더 궁금하신 건 방문 상담 때 자세히 알려드릴게요."}]);return;}
     addSide([{k:"me",t:"다른 질문 남기기"},{k:"bot",h:"궁금한 점을 짧게 남겨주세요."}]);askMode=true;redrawComposer();return;}
