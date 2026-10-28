@@ -185,8 +185,8 @@ body{background:#fff;color:var(--k-ink)}
 .sheet .more{background:none;border:0;color:#8B95A1;text-decoration:underline;cursor:pointer;font-size:13px}
 .sheet .terms{background:var(--k-soft);border-radius:10px;padding:10px 12px;font-size:13px;color:#6B7684;line-height:1.7}
 /* 둘러보기 버튼 (입력창 위) */
-.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
-.cat{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 4px 8px;border-radius:14px;border:1px solid var(--k-line);background:var(--k-soft);font-size:13px;font-weight:600;color:var(--k-ink);cursor:pointer}
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.cat{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 2px 8px;border-radius:14px;border:1px solid var(--k-line);background:var(--k-soft);font-size:12.5px;letter-spacing:-.02em;white-space:nowrap;font-weight:600;color:var(--k-ink);cursor:pointer}
 .cat .ic{font-size:19px;line-height:1.1}
 .cat .bd{position:absolute;top:-7px;right:8px;background:#E5483B;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;font-style:normal}
 .cat:hover{border-color:var(--k-yel-h)}
@@ -684,7 +684,8 @@ function bizLine(){return esc(SITE.name)+(SITE.ceo?" · 대표 "+esc(SITE.ceo):"
 function catsHtml(){return '<nav class="cats" aria-label="둘러보기">'
   +'<button class="cat" data-act="tour"><em class="bd">추천</em><span class="ic">🏠</span>집구경하기</button>'
   +'<button class="cat" data-act="process"><span class="ic">🧵</span>시공과정</button>'
-  +'<button class="cat" data-act="faq"><span class="ic">💬</span>자주 묻는 질문</button></nav>';}
+  +'<button class="cat" data-act="faq"><span class="ic">💬</span>자주 묻는 질문</button>'
+  +'<button class="cat" data-act="reviews"><span class="ic">⭐</span>고객 후기</button></nav>';}
 
 /* 집구경 사진 — 사진은 img/works/t/ (cases.js와 같은 사진) */
 var TOUR=[
@@ -803,8 +804,9 @@ function onAct(e){
   if(t.dataset.faq!=null){var f=FAQ[+t.dataset.faq];addSide([{k:"me",t:f.q},{k:"bot",h:esc(f.a)}].concat(resumeItems()));return;}
   if(act==="tour")return openTour();
   if(act==="process"){var items=[{k:"me",t:"시공과정"},{k:"bot",h:"이렇게 진행돼요. 첫 단계인 방문 상담은 무료예요."},{k:"html",h:processCard()}];
-    var rv=reviewsCard();if(rv)items.push({k:"bot",h:"고객님들이 남겨주신 후기예요."},{k:"html",cls:"card",h:rv});
     addSide(items.concat(resumeItems()));return;}
+  if(act==="reviews"){var rv=reviewsCard();
+    addSide([{k:"me",t:"고객 후기"}].concat(rv?[{k:"bot",h:"고객님들이 남겨주신 후기예요. 시공을 마친 고객님이 게시에 동의해 주신 실제 후기예요."},{k:"html",cls:"card",h:rv}]:[{k:"bot",h:"시공을 마친 고객님들의 후기가 곧 이곳에 채워져요."}]).concat(resumeItems()));return;}
   if(act==="faq"){addSide([{k:"me",t:"자주 묻는 질문"},{k:"bot",h:"자주 물어보시는 것들이에요."},{k:"html",h:faqCard()}]);return;}
   if(act==="ask"){if(askCount>=2){addSide([{k:"bot",h:"더 궁금하신 건 방문 상담 때 자세히 알려드릴게요."}]);return;}
     addSide([{k:"me",t:"다른 질문 남기기"},{k:"bot",h:"궁금한 점을 짧게 남겨주세요."}]);askMode=true;redrawComposer();return;}
