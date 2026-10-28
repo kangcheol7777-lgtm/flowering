@@ -17,7 +17,7 @@
 <meta name="theme-color" content="#BACEE0">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="style.css?v=20261028">
+<link rel="stylesheet" href="style.css?v=20261028b">
 <style>
 /* ── 채팅형 예약 랜딩 ──
    첫 화면 = 채팅 상담(대화 + 하단 입력창) → 아래로 집구경 · 진행 과정 · 후기 · FAQ · 사업자 정보 */
@@ -231,7 +231,14 @@ body{background:#fff;color:var(--k-ink)}
 .tour section .k{font-size:11px;letter-spacing:.14em;color:#8B95A1;font-weight:700}
 .tour section h3{font-family:var(--f-body);font-size:20px;margin:2px 0 4px}
 .tour section p{color:#6B7684;font-size:14px}
-.tour .pics{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;margin:12px -18px 10px;padding:0 18px;scrollbar-width:none}
+.tour .pw{position:relative;margin:12px -18px 10px}
+.tour .pics{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;padding:0 18px;scroll-padding:0 18px;scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;overscroll-behavior-x:contain;cursor:grab}
+.tour .pics.drag{cursor:grabbing;scroll-snap-type:none;scroll-behavior:auto}
+.tour .pics img{-webkit-user-drag:none;user-select:none;pointer-events:none}
+.tour .pnav{position:absolute;top:calc(50% - 26px);width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,252,246,.92);color:var(--walnut);font-size:20px;line-height:1;display:grid;place-items:center;box-shadow:0 2px 8px rgba(58,42,31,.25);cursor:pointer;z-index:1}
+.tour .pnav.l{left:8px}.tour .pnav.r{right:8px}
+.tour .pnav[disabled]{opacity:0;pointer-events:none}
+.tour .pcount{position:absolute;left:28px;top:10px;background:rgba(58,42,31,.6);color:#fff;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;pointer-events:none}
 .tour .pics::-webkit-scrollbar{display:none}
 .tour .pics figure{flex:none;width:82%;margin:0;scroll-snap-align:start}
 .tour .pics img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;display:block;background:var(--k-soft)}
@@ -311,8 +318,8 @@ body{background:#fff;color:var(--k-ink)}
 
 <div class="tour" id="tour" hidden role="dialog" aria-modal="true" aria-label="집구경하기"></div>
 
-<script src="site.js?v=20261028"></script>
-<script src="reviews.js?v=20261028"></script>
+<script src="site.js?v=20261028b"></script>
+<script src="reviews.js?v=20261028b"></script>
 <script>
 (function(){
 /* ═══════════════════════════════════════════════
@@ -736,10 +743,30 @@ function openTour(){
     +'<header class="hero"><em>HOME TOUR</em><h2>꽃피는 커튼 블라인드가<br>직접 시공한 집이에요</h2><p>공간별로 둘러보고, 마음에 드는 스타일로 방문 상담을 받아보세요.</p></header>'
     +'<nav class="tabs">'+TOUR.map(function(r,i){return '<button data-k="'+r.key+'" aria-pressed="'+(i===0)+'">'+r.label+'</button>';}).join("")+'</nav>'
     +TOUR.map(function(r){return '<section id="tr-'+r.key+'"><span class="k">'+r.en+'</span><h3>'+r.label+' · '+r.title+'</h3><p>'+r.desc+'</p>'
-      +'<div class="pics">'+r.pics.map(function(p){return '<figure><img loading="lazy" src="img/works/t/'+p[0]+'.jpg" alt="'+r.label+' '+p[1]+' 시공 사진"><figcaption>'+p[1]+'</figcaption></figure>';}).join("")+'</div>'
+      +'<div class="pw"><div class="pics">'+r.pics.map(function(p){return '<figure><img loading="lazy" draggable="false" src="img/works/t/'+p[0]+'.jpg" alt="'+r.label+' '+p[1]+' 시공 사진"><figcaption>'+p[1]+'</figcaption></figure>';}).join("")+'</div>'
+      +(r.pics.length>1?'<button class="pnav l" data-pn="-1" aria-label="이전 사진">‹</button><button class="pnav r" data-pn="1" aria-label="다음 사진">›</button><span class="pcount">1 / '+r.pics.length+'</span>':'')+'</div>'
       +'<div class="pd">추천 제품 · '+r.products+'</div><button class="go" data-room="'+r.label+'">'+r.label+' 스타일링 방문 상담 받기</button></section>';}).join("")
     +'</div>';
   showPanel();
+  tourEl.querySelectorAll(".pics").forEach(initSlider);
+}
+/* 사진 넘기기: 손가락 스와이프 + 마우스 끌기 + 좌우 화살표 */
+function initSlider(row){
+  var w=row.parentNode,l=$(".pnav.l",w),r=$(".pnav.r",w),c=$(".pcount",w),figs=row.children;
+  function step(){return figs.length>1?figs[1].offsetLeft-figs[0].offsetLeft:row.clientWidth;}
+  function idx(){return Math.round(row.scrollLeft/step());}
+  function upd(){if(!c)return;var i=Math.min(figs.length-1,Math.max(0,idx()));c.textContent=(i+1)+" / "+figs.length;
+    l.disabled=row.scrollLeft<4;r.disabled=row.scrollLeft>=row.scrollWidth-row.clientWidth-4;}
+  row.addEventListener("scroll",upd,{passive:true});
+  if(l){l.addEventListener("click",function(){row.scrollBy({left:-step(),behavior:"smooth"});});
+        r.addEventListener("click",function(){row.scrollBy({left:step(),behavior:"smooth"});});}
+  var down=false,sx=0,sl=0,moved=false;
+  row.addEventListener("pointerdown",function(e){if(e.pointerType!=="mouse")return;down=true;moved=false;sx=e.clientX;sl=row.scrollLeft;row.classList.add("drag");});
+  window.addEventListener("pointermove",function(e){if(!down)return;var d=e.clientX-sx;if(Math.abs(d)>3)moved=true;row.scrollLeft=sl-d;});
+  window.addEventListener("pointerup",function(){if(!down)return;down=false;row.classList.remove("drag");
+    var i=Math.round(row.scrollLeft/step());row.scrollTo({left:i*step(),behavior:"smooth"});});
+  row.addEventListener("click",function(e){if(moved){e.preventDefault();e.stopPropagation();}},true);
+  setTimeout(upd,50);
 }
 function showPanel(){
   tourEl.hidden=false;document.body.style.overflow="hidden";tourEl.scrollTop=0;
@@ -787,6 +814,7 @@ tourEl.addEventListener("click",function(e){
   var t=e.target.closest("button");if(!t)return;
   if(t.classList.contains("x")||t.dataset.close)return closeTour();
   if(t.dataset.ask){closeTour();return startAsk();}
+  if(t.dataset.pn)return;
   if(t.dataset.k){$("#tr-"+t.dataset.k,tourEl).scrollIntoView({behavior:"smooth"});tourEl.querySelectorAll(".tabs button").forEach(function(b){b.setAttribute("aria-pressed",String(b===t));});return;}
   if(t.dataset.room){closeTour();
     if(!A.doneAt){A.memo=(A.memo?A.memo+" / ":"")+t.dataset.room+" 스타일 관심";save();
