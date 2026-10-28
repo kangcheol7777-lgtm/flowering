@@ -266,6 +266,35 @@ body{background:#fff;color:var(--k-ink)}
 .log .rvc{font-size:11.7px}.log .rvc b{font-size:12.6px}
 .log .sum{font-size:12.6px}
 .log .tourcard strong{font-size:14.4px}.log .tourcard .d{font-size:11.7px}.log .tourcard .go2{font-size:12.6px}.log .tourcard em{font-size:9.9px}
+/* ── 시공과정·FAQ·후기 전체화면 (집구경과 같은 브랜드 배색) ── */
+.tour .pflow{list-style:none;margin:8px 0 0;padding:0 18px;display:grid;gap:12px}
+.tour .pflow li{display:grid;grid-template-columns:40px 1fr;gap:14px;background:var(--paper);border:1px solid var(--sand);border-radius:16px;padding:16px}
+.tour .pflow .n{width:40px;height:40px;border-radius:50%;background:var(--walnut);color:var(--on-walnut);display:grid;place-items:center;font-weight:700;font-size:16px}
+.tour .pflow b{display:block;font-family:var(--f-display);font-size:18px}
+.tour .pflow p{color:var(--umber);font-size:14px;margin-top:2px}
+.tour .pflow em{display:inline-block;margin-top:8px;font-style:normal;font-size:12px;font-weight:700;color:var(--walnut);background:var(--linen);padding:2px 10px;border-radius:999px}
+.tour .pfaq{padding:8px 18px 0}
+.tour .pfaq details{background:var(--paper);border:1px solid var(--sand);border-radius:14px;padding:0 16px;margin-bottom:8px}
+.tour .pfaq summary{cursor:pointer;font-weight:600;padding:15px 24px 15px 0;list-style:none;position:relative}
+.tour .pfaq summary::-webkit-details-marker{display:none}
+.tour .pfaq summary::after{content:"+";position:absolute;right:0;top:13px;font-size:20px;color:var(--caramel)}
+.tour .pfaq details[open] summary::after{content:"–"}
+.tour .pfaq p{color:var(--umber);font-size:15px;padding-bottom:15px;line-height:1.65}
+.tour .srcs{margin-top:10px}.tour .srcs a{color:var(--walnut)}
+.tour .prvs{padding:8px 18px 0;display:grid;gap:10px}
+@media (min-width:640px){.tour .prvs{grid-template-columns:1fr 1fr}}
+.tour .prv{background:var(--paper);border:1px solid var(--sand);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.tour .prv .st{color:var(--caramel);letter-spacing:2px}.tour .prv .st i{font-style:normal;color:var(--sand)}
+.tour .prv b{font-family:var(--f-display);font-size:17px}
+.tour .prv .t{color:var(--umber);font-size:14px;white-space:pre-line;line-height:1.65}
+.tour .prv .tg{display:flex;flex-wrap:wrap;gap:6px}
+.tour .prv .tg span{padding:3px 10px;border-radius:999px;background:var(--linen);color:var(--walnut);font-size:13px;font-weight:600}
+.tour .prv .no{font-size:12px;color:var(--umber);opacity:.8}
+.tour .prv small{font-size:12px;color:var(--umber);border-top:1px solid var(--linen);padding-top:8px;margin-top:2px}
+.tour .prv .src{display:inline-block;margin-left:6px;padding:0 7px;border-radius:999px;background:var(--linen);color:var(--walnut);font-size:11px;font-weight:600}
+.tour .pend{padding:18px 18px 0}
+.tour .sub2{width:100%;min-height:48px;border-radius:12px;border:1.5px dashed var(--sand);background:transparent;color:var(--umber);font-size:15px;cursor:pointer}
+.tour .pempty{padding:20px 18px;color:var(--umber)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -710,8 +739,44 @@ function openTour(){
       +'<div class="pics">'+r.pics.map(function(p){return '<figure><img loading="lazy" src="img/works/t/'+p[0]+'.jpg" alt="'+r.label+' '+p[1]+' 시공 사진"><figcaption>'+p[1]+'</figcaption></figure>';}).join("")+'</div>'
       +'<div class="pd">추천 제품 · '+r.products+'</div><button class="go" data-room="'+r.label+'">'+r.label+' 스타일링 방문 상담 받기</button></section>';}).join("")
     +'</div>';
+  showPanel();
+}
+function showPanel(){
   tourEl.hidden=false;document.body.style.overflow="hidden";tourEl.scrollTop=0;
   try{history.pushState({tour:1},"");}catch(e){}
+}
+function panelEnd(){return '<div class="pend"><button class="go" data-close="1">'+(A.doneAt?'닫기':'무료 방문 상담 이어서 하기')+'</button></div>';}
+/* 시공과정 전체화면 */
+function openProcess(){
+  var steps=[["상담 신청","대화창에서 몇 가지 고르고 번호만 남기면 끝나요.","1분"],["방문 실측","약속한 날 디자이너가 찾아가 창마다 정확히 재고, 원단 샘플을 우리 집 창에 대보며 골라요.","무료"],["현장 견적","그 자리에서 견적을 드려요. 견적을 보고 천천히 결정하셔도 돼요.","계약 강요 없음"],["제작·시공","실측 후 5~7일이면 제작과 설치까지 끝나요.","시공 후 1년 무상 A/S"]];
+  tourEl.innerHTML='<div class="in"><button class="x" aria-label="닫기">×</button>'
+    +'<header class="hero"><em>PROCESS</em><h2>상담부터 설치까지<br>이렇게 진행돼요</h2><p>첫 단계인 방문 상담은 무료예요.</p></header>'
+    +'<ol class="pflow">'+steps.map(function(x,i){return '<li><span class="n">'+(i+1)+'</span><div><b>'+x[0]+'</b><p>'+x[1]+'</p><em>'+x[2]+'</em></div></li>';}).join("")+'</ol>'
+    +panelEnd()+'</div>';
+  showPanel();
+}
+/* 자주 묻는 질문 전체화면 */
+function openFaq(){
+  tourEl.innerHTML='<div class="in"><button class="x" aria-label="닫기">×</button>'
+    +'<header class="hero"><em>FAQ</em><h2>자주 물어보시는 것들이에요</h2><p>질문을 누르면 답이 펼쳐져요.</p></header>'
+    +'<div class="pfaq">'+FAQ.map(function(f){return '<details><summary>'+esc(f.q)+'</summary><p>'+brk(esc(f.a))+'</p></details>';}).join("")+'</div>'
+    +(A.doneAt||askCount>=2?'':'<div class="pend"><button class="sub2" data-ask="1">✏️ 찾는 답이 없으면 직접 질문 남기기</button></div>')
+    +panelEnd()+'</div>';
+  showPanel();
+}
+/* 고객 후기 전체화면 */
+function openReviews(){
+  var R=(window.REVIEWS||[]).slice().sort(function(a,b){var x=(b.text?1:0)-(a.text?1:0);return x||String(b.date||"").localeCompare(String(a.date||""));});
+  var srcs=(window.REVIEW_SOURCES||[]).map(function(x){return '<a href="'+x.url+'" target="_blank" rel="noopener">'+esc(x.name)+' 평점 <b>'+x.rating+'</b> · 후기 '+x.count+'건</a>';}).join(" · ");
+  function card(r){var n=Math.max(0,Math.min(5,Math.round(+r.rating||0)));
+    var body=r.text?'<p class="t">'+esc(r.text)+'</p>':'<div class="tg">'+(r.tags||[]).map(function(t){return '<span>👍 '+esc(t)+'</span>';}).join("")+'</div><p class="no">글 없이 별점'+((r.tags&&r.tags.length)?'과 칭찬 항목':'')+'만 남겨주신 후기예요</p>';
+    return '<article class="prv"><span class="st">'+"★".repeat(n)+'<i>'+"★".repeat(5-n)+'</i></span>'+(r.title?'<b>'+esc(r.title)+'</b>':'')+body
+      +'<small>'+(r.name?esc(maskName(r.name))+' 고객님':'고객님')+' · '+esc(r.region||"")+(r.date?' · '+esc(r.date):'')+'<span class="src">'+esc(r.source||"홈페이지")+' 후기</span></small></article>';}
+  tourEl.innerHTML='<div class="in"><button class="x" aria-label="닫기">×</button>'
+    +'<header class="hero"><em>REVIEWS</em><h2>고객님들이 남겨주신<br>실제 후기예요</h2>'+(srcs?'<p class="srcs">'+srcs+'</p>':'')+'</header>'
+    +(R.length?'<div class="prvs">'+R.map(card).join("")+'</div>':'<p class="pempty">시공을 마친 고객님들의 후기가 곧 이곳에 채워져요.</p>')
+    +panelEnd()+'</div>';
+  showPanel();
 }
 function closeTour(fromPop){
   if(tourEl.hidden)return;tourEl.hidden=true;document.body.style.overflow="";
@@ -720,7 +785,8 @@ function closeTour(fromPop){
 window.addEventListener("popstate",function(){closeTour(true);});
 tourEl.addEventListener("click",function(e){
   var t=e.target.closest("button");if(!t)return;
-  if(t.classList.contains("x"))return closeTour();
+  if(t.classList.contains("x")||t.dataset.close)return closeTour();
+  if(t.dataset.ask){closeTour();return startAsk();}
   if(t.dataset.k){$("#tr-"+t.dataset.k,tourEl).scrollIntoView({behavior:"smooth"});tourEl.querySelectorAll(".tabs button").forEach(function(b){b.setAttribute("aria-pressed",String(b===t));});return;}
   if(t.dataset.room){closeTour();
     if(!A.doneAt){A.memo=(A.memo?A.memo+" / ":"")+t.dataset.room+" 스타일 관심";save();
@@ -800,15 +866,16 @@ function onAct(e){
   var act=t.dataset.act;
   if(t.dataset.faq!=null){var f=FAQ[+t.dataset.faq];addSide([{k:"me",t:f.q},{k:"bot",h:esc(f.a)}].concat(resumeItems()));return;}
   if(act==="tour")return openTour();
-  if(act==="process"){var items=[{k:"me",t:"시공과정"},{k:"bot",h:"이렇게 진행돼요. 첫 단계인 방문 상담은 무료예요."},{k:"html",h:processCard()}];
-    addSide(items.concat(resumeItems()));return;}
-  if(act==="reviews"){var rv=reviewsCard();
-    var srcs=(window.REVIEW_SOURCES||[]).map(function(x){return esc(x.name)+" 평점 <b>"+x.rating+"</b> · 후기 "+x.count+"건";}).join(", ");
-    addSide([{k:"me",t:"고객 후기"}].concat(rv?[{k:"bot",h:"고객님들이 남겨주신 실제 후기예요."+(srcs?" "+srcs+"이에요.":"")},{k:"html",cls:"card",h:rv}]:[{k:"bot",h:"시공을 마친 고객님들의 후기가 곧 이곳에 채워져요."}]).concat(resumeItems()));return;}
-  if(act==="faq"){addSide([{k:"me",t:"자주 묻는 질문"},{k:"bot",h:"자주 물어보시는 것들이에요."},{k:"html",h:faqCard()}]);return;}
-  if(act==="ask"){if(askCount>=2){addSide([{k:"bot",h:"더 궁금하신 건 방문 상담 때 자세히 알려드릴게요."}]);return;}
-    addSide([{k:"me",t:"다른 질문 남기기"},{k:"bot",h:"궁금한 점을 짧게 남겨주세요."}]);askMode=true;redrawComposer();return;}
+  if(act==="process")return openProcess();
+  if(act==="reviews")return openReviews();
+  if(act==="faq")return openFaq();
+  if(act==="ask")return startAsk();
   if(act==="resume"){var st=STEPS[cur];addSide([{k:"bot",h:st.q()[0]}]);return;}
+}
+function startAsk(){
+  if(A.doneAt)return;
+  if(askCount>=2){addSide([{k:"bot",h:"더 궁금하신 건 방문 상담 때 자세히 알려드릴게요."}]);return;}
+  addSide([{k:"me",t:"다른 질문 남기기"},{k:"bot",h:"궁금한 점을 짧게 남겨주세요."}]);askMode=true;redrawComposer();
 }
 log.addEventListener("click",onAct);cp.addEventListener("click",onAct);
 
