@@ -266,6 +266,20 @@ body{background:#fff;color:var(--k-ink)}
 .log .rvc{font-size:11.7px}.log .rvc b{font-size:12.6px}
 .log .sum{font-size:12.6px}
 .log .tourcard strong{font-size:14.4px}.log .tourcard .d{font-size:11.7px}.log .tourcard .go2{font-size:12.6px}.log .tourcard em{font-size:9.9px}
+/* ── 말풍선 없는 레이아웃: 질문·입력이 위, 열어본 정보는 아래 ── */
+.app{height:auto;min-height:100svh}
+.cp{border-top:0;border-bottom:1px solid var(--k-line);max-height:none;overflow:visible;padding-bottom:16px}
+.log{flex:1;overflow:visible;padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+.prog{gap:8px}
+.prog .back{width:28px;height:28px;margin-left:-6px;border:0;border-radius:8px;background:none;font-size:18px;color:var(--k-ink);cursor:pointer}
+.prog .back:hover{background:var(--k-soft)}
+.qh{margin:2px 0 14px}
+.qh .hi{font-size:14px;color:#3D4A57;line-height:1.6;margin-bottom:10px}
+.qh .ack{font-size:13px;line-height:1.55;background:#FFF9C4;border-radius:10px;padding:8px 12px;margin-bottom:10px}
+.qh .qq strong{display:block;font-size:18px;line-height:1.4}
+.qh .qq small{display:block;font-size:13px;color:#6B7684;margin-top:4px;line-height:1.5}
+.qh.done{text-align:center;margin-top:8px}
+.qh.done .okmark{margin:0 auto 8px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -276,8 +290,8 @@ body{background:#fff;color:var(--k-ink)}
     <div class="tt">CURTAIN &amp; BLIND STYLING</div>
     <div class="live" aria-live="off"><i></i><span>최근 1시간 동안 <b id="liveN">—</b>명이 상담을 시작했어요</span></div>
   </header>
-  <div class="log" id="log" aria-live="polite"></div>
-  <div class="cp" id="cp"></div>
+  <div class="cp" id="cp" aria-live="polite"></div>
+  <div class="log" id="log" hidden></div>
 </main>
 
 <div class="tour" id="tour" hidden role="dialog" aria-modal="true" aria-label="집구경하기"></div>
@@ -452,37 +466,43 @@ function sideNode(it){
 }
 function drawSide(id){side.forEach(function(it){if(it.step===id)log.append(sideNode(it));});}
 function addSide(items){
-  var id=A.doneAt?"done":STEPS[cur].id;
-  items.forEach(function(it){it.step=id;side.push(it);log.append(sideNode(it));});
-  scrollEnd();
+  var id=A.doneAt?"done":STEPS[cur].id,first=null;
+  if(!log.children.length)who();
+  items.forEach(function(it){it.step=id;side.push(it);var n=sideNode(it);log.append(n);first=first||n;});
+  log.hidden=false;
+  if(first)requestAnimationFrame(function(){first.scrollIntoView({block:"start",behavior:"smooth"});});
 }
 function scrollEnd(){requestAnimationFrame(function(){log.scrollTop=log.scrollHeight;});}
 
 /* ── 그리기 ── */
 var typingTimer;
+/* 말풍선 없이: 위 = 현재 질문 + 입력, 아래 = 둘러보기(시공과정·FAQ·후기)로 열어본 내용 */
+var resumeShown=false;
 function render(animate){
   clearTimeout(typingTimer);
   var steps=active(),idx=steps.indexOf(STEPS[cur]);if(idx<0){cur=STEPS.indexOf(steps[0]);idx=0;}
   log.innerHTML="";
-  who();bot("안녕하세요, 꽃피는 커튼 블라인드 디자이너예요. 몇 가지만 고르시면 <b>무료 방문 상담</b>을 잡아드릴게요. 1분이면 끝나요.");
-  for(var i=0;i<idx;i++){
-    var s=steps[i];s.q().forEach(bot);drawSide(s.id);
-    if(s.me){log.append(el("div",{class:"b me"},s.me()));
-      (function(si){log.append(el("button",{class:"chg",on:{click:function(){if(A.doneAt)return;cur=STEPS.indexOf(si);save();render();}}},"이 답 바꾸기"));})(s);}
-    var ack=s.ack&&s.ack();if(ack)bot(ack);
-  }
-  if(resumed&&animate!=="fresh"&&animate!==true&&idx>0){bot("다시 오셨네요, "+esc(A.name)+" 님. 이어서 진행할게요.");}
+  if(A.doneAt){renderDone();drawSide("done");log.hidden=!log.children.length;return;}
   var st=steps[idx];
-  if(A.doneAt){renderDone();drawSide("done");scrollEnd();return;}
+  if(side.some(function(it){return it.step===st.id;}))who();
+  drawSide(st.id);log.hidden=!log.children.length;
   var total=A.scope==="부분 시공"?6:7,n=idx+1;
-  cp.innerHTML=(idx>0?catsHtml():"")+'<div class="prog"><b>'+st.label+'</b><span class="bar"><i style="width:'+Math.round((st.nocount?1:idx/total)*100)+'%"></i></span><span class="tnum">'+(st.nocount?"마지막":n+" / "+total)+'</span></div>';
-  var showQ=function(){st.q().forEach(bot);drawSide(st.id);
-    if(askMode){cp.append(uiAsk());scrollEnd();return;}
-    var ui=st.ui(function(patch){answer(st,patch);});if(ui)cp.append(ui);scrollEnd();
-    var f=cp.querySelector("input:not([type=checkbox])");if(f&&animate&&window.innerWidth>700)f.focus();};
-  if(animate===true){var t=el("div",{class:"b typing"},"<span></span><span></span><span></span>");log.append(t);scrollEnd();
-    typingTimer=setTimeout(function(){t.remove();showQ();},550);}
-  else showQ();
+  var head='';
+  if(idx===0)head+='<p class="hi">'+brk('안녕하세요, 꽃피는 커튼 블라인드 디자이너예요. 몇 가지만 고르시면 <b>무료 방문 상담</b>을 잡아드릴게요. 1분이면 끝나요.')+'</p>';
+  var note='';
+  if(resumed&&!resumeShown&&animate!=="fresh"&&idx>0){note='다시 오셨네요, '+esc(A.name)+' 님. 이어서 진행할게요.';resumeShown=true;}
+  else{var pv=steps[idx-1],ack=pv&&pv.ack&&pv.ack();if(ack&&animate===true)note=ack;}
+  if(note)head+='<p class="ack">'+brk(note)+'</p>';
+  cp.innerHTML=(idx>0?catsHtml():"")
+    +'<div class="prog">'+(idx>0?'<button class="back" data-back="1" aria-label="이전 질문">←</button>':'')+'<b>'+st.label+'</b><span class="bar"><i style="width:'+Math.round((st.nocount?1:idx/total)*100)+'%"></i></span><span class="tnum">'+(st.nocount?"마지막":n+" / "+total)+'</span></div>'
+    +'<div class="qh">'+head+'<div class="qq">'+brk(st.q().join(""))+'</div></div>';
+  cp.append(askMode?uiAsk():st.ui(function(patch){answer(st,patch);}));
+  var f=cp.querySelector("input:not([type=checkbox])");if(f&&animate===true&&window.innerWidth>700)f.focus();
+  if(animate===true)window.scrollTo({top:0,behavior:"smooth"});
+}
+function goBack(){
+  var steps=active(),idx=steps.indexOf(STEPS[cur]);if(idx<=0)return;
+  askMode=false;cur=STEPS.indexOf(steps[idx-1]);save();render(false);
 }
 function answer(st,patch){
   for(var k in patch)A[k]=patch[k];
@@ -637,10 +657,9 @@ function uiConfirm(){
   box.append(er,go);return box;
 }
 function renderDone(){
-  bot('<div class="okmark">✓</div><strong style="text-align:center">방문 상담 예약이 접수되었어요</strong><small style="text-align:center">담당 디자이너가 확인 전화로 일정을 최종 확정해 드려요.</small>');
-  var sm=el("div",{style:"width:100%"},sumHtml());log.append(sm);
+  log.append(el("div",{style:"width:100%"},sumHtml()));
   log.append(tourCard());
-  cp.innerHTML=catsHtml();
+  cp.innerHTML=catsHtml()+'<div class="qh done"><div class="okmark">✓</div><div class="qq">'+brk('<strong>방문 상담 예약이 접수되었어요</strong><small>담당 디자이너가 확인 전화로 일정을 최종 확정해 드려요.</small>')+'</div></div>';
   var box=el("div",{class:"stack"});
   if(A.visitDay){box.append(el("button",{class:"go",on:{click:ics}},"📅 내 캘린더에 추가"));}
   box.append(el("a",{class:"btn line tnum",href:SITE.telHref,style:"border-radius:12px;min-height:48px"},"📞 급하시면 "+SITE.tel),
@@ -787,7 +806,7 @@ function sendQuestion(q){
 }
 /* 입력창만 다시 그리기(대화는 그대로) */
 function redrawComposer(){
-  if(A.doneAt)return;
+  if(A.doneAt)return;render(false);return;
   var steps=active(),idx=steps.indexOf(STEPS[cur]),st=steps[idx];
   var total=A.scope==="부분 시공"?6:7;
   cp.innerHTML=(idx>0?catsHtml():"")+'<div class="prog"><b>'+st.label+'</b><span class="bar"><i style="width:'+Math.round((st.nocount?1:idx/total)*100)+'%"></i></span><span class="tnum">'+(st.nocount?"마지막":(idx+1)+" / "+total)+'</span></div>';
@@ -796,6 +815,7 @@ function redrawComposer(){
 
 /* 버튼 클릭 처리 (대화창 + 입력창) */
 function onAct(e){
+  if(e.target.closest("[data-back]"))return goBack();
   var t=e.target.closest("[data-act],[data-faq]");if(!t)return;
   var act=t.dataset.act;
   if(t.dataset.faq!=null){var f=FAQ[+t.dataset.faq];addSide([{k:"me",t:f.q},{k:"bot",h:esc(f.a)}].concat(resumeItems()));return;}
@@ -808,7 +828,7 @@ function onAct(e){
   if(act==="faq"){addSide([{k:"me",t:"자주 묻는 질문"},{k:"bot",h:"자주 물어보시는 것들이에요."},{k:"html",h:faqCard()}]);return;}
   if(act==="ask"){if(askCount>=2){addSide([{k:"bot",h:"더 궁금하신 건 방문 상담 때 자세히 알려드릴게요."}]);return;}
     addSide([{k:"me",t:"다른 질문 남기기"},{k:"bot",h:"궁금한 점을 짧게 남겨주세요."}]);askMode=true;redrawComposer();return;}
-  if(act==="resume"){var st=STEPS[cur];addSide([{k:"bot",h:st.q()[0]}]);return;}
+  if(act==="resume"){var sid=STEPS[cur].id;side=side.filter(function(it){return it.step!==sid;});render(false);window.scrollTo({top:0,behavior:"smooth"});return;}
 }
 log.addEventListener("click",onAct);cp.addEventListener("click",onAct);
 
