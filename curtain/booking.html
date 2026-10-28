@@ -184,6 +184,59 @@ body{background:#fff;color:var(--k-ink)}
 .sheet .ci b{color:#E5483B;font-weight:600}
 .sheet .more{background:none;border:0;color:#8B95A1;text-decoration:underline;cursor:pointer;font-size:13px}
 .sheet .terms{background:var(--k-soft);border-radius:10px;padding:10px 12px;font-size:13px;color:#6B7684;line-height:1.7}
+/* 둘러보기 버튼 (입력창 위) */
+.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.cat{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 4px 8px;border-radius:14px;border:1px solid var(--k-line);background:var(--k-soft);font-size:13px;font-weight:600;color:var(--k-ink);cursor:pointer}
+.cat .ic{font-size:19px;line-height:1.1}
+.cat .bd{position:absolute;top:-7px;right:8px;background:#E5483B;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;font-style:normal}
+.cat:hover{border-color:var(--k-yel-h)}
+/* 채팅 안 콘텐츠 카드 */
+.card{width:100%;max-width:100%;background:#fff;border-radius:14px;padding:6px 14px;font-size:14px;animation:pop .25s ease-out}
+.card ol{list-style:none;margin:0;padding:0}
+.card li{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid #EFEFEF}
+.card li:last-child{border-bottom:0}
+.card .n{width:28px;height:28px;border-radius:50%;background:var(--k-yel);display:grid;place-items:center;font-weight:700;font-size:13px}
+.card li b{display:block}.card li span{color:#6B7684;font-size:13px}
+.qlist{display:grid;gap:6px;padding:8px 0}
+.qbtn{text-align:left;padding:11px 12px;border-radius:10px;border:1px solid var(--k-line);background:var(--k-soft);font-size:14px;cursor:pointer;color:var(--k-ink)}
+.qbtn.ask{background:#fff;border-style:dashed;color:#6B7684}
+.rvs{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px;scrollbar-width:none}
+.rvs::-webkit-scrollbar{display:none}
+.rvc{flex:none;width:240px;background:var(--k-soft);border-radius:12px;padding:12px;font-size:13px}
+.rvc .st{color:#F5B400;letter-spacing:1px}.rvc b{display:block;margin:2px 0 4px;font-size:14px}.rvc p{color:#6B7684;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}.rvc small{display:block;margin-top:6px;color:#8B95A1}
+.replies{display:flex;flex-wrap:wrap;gap:6px;align-self:flex-start}
+.reply{min-height:38px;padding:0 14px;border-radius:999px;border:1px solid var(--k-line);background:#fff;font-size:14px;font-weight:600;cursor:pointer;color:var(--k-ink)}
+.tourcard{display:block;width:100%;text-align:left;background:#fff;border:0;border-radius:14px;padding:14px;cursor:pointer;color:var(--k-ink);font:inherit}
+.tourcard em{font-style:normal;font-size:11px;letter-spacing:.12em;color:#8B95A1;font-weight:700}
+.tourcard em.bd{letter-spacing:0;background:#E5483B;color:#fff;padding:1px 6px;border-radius:999px;margin-left:6px;font-size:10px}
+.tourcard strong{display:block;font-size:16px;margin-top:4px}.tourcard .d{display:block;color:#6B7684;font-size:13px}
+.tourcard .th{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:10px 0}.tourcard .th img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;display:block}
+.tourcard .go2{font-weight:700;font-size:14px}
+.biz{font-size:11px;color:#8B95A1;text-align:center;line-height:1.7;margin-top:4px}.biz a{color:#8B95A1}
+.askrow{display:grid;grid-template-columns:1fr auto;gap:8px}
+/* 집구경 전체화면 */
+.tour{position:fixed;inset:0;z-index:60;background:#fff;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.tour .in{max-width:720px;margin:0 auto;padding:0 0 calc(24px + env(safe-area-inset-bottom,0px))}
+.tour .x{position:sticky;top:0;float:right;z-index:2;width:48px;height:48px;border:0;background:rgba(255,255,255,.9);border-radius:0 0 0 14px;font-size:28px;color:#555;cursor:pointer}
+.tour .hero{padding:40px 18px 14px}
+.tour .hero em{font-style:normal;font-size:11px;letter-spacing:.16em;color:#8B95A1;font-weight:700}
+.tour .hero h2{font-family:var(--f-body);font-size:24px;margin-top:6px}
+.tour .hero p{color:#6B7684;font-size:14px;margin-top:4px}
+.tour .tabs{position:sticky;top:0;z-index:1;display:flex;gap:6px;overflow-x:auto;padding:10px 60px 10px 18px;background:#fff;border-bottom:1px solid #EFEFEF;scrollbar-width:none}
+.tour .tabs::-webkit-scrollbar{display:none}
+.tour .tabs button{flex:none;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--k-line);background:#fff;font-weight:600;font-size:14px;cursor:pointer;color:var(--k-ink)}
+.tour .tabs button[aria-pressed=true]{background:var(--k-yel);border-color:var(--k-yel)}
+.tour section{padding:22px 18px 6px;scroll-margin-top:60px}
+.tour section .k{font-size:11px;letter-spacing:.14em;color:#8B95A1;font-weight:700}
+.tour section h3{font-family:var(--f-body);font-size:20px;margin:2px 0 4px}
+.tour section p{color:#6B7684;font-size:14px}
+.tour .pics{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;margin:12px -18px 10px;padding:0 18px;scrollbar-width:none}
+.tour .pics::-webkit-scrollbar{display:none}
+.tour .pics figure{flex:none;width:82%;margin:0;scroll-snap-align:start}
+.tour .pics img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;display:block;background:var(--k-soft)}
+.tour .pics figcaption{font-size:12px;color:#8B95A1;margin-top:4px}
+.tour .pd{font-size:13px;font-weight:600;margin-bottom:10px}
+.tour .go{min-height:48px;font-size:15px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -200,48 +253,7 @@ body{background:#fff;color:var(--k-ink)}
   <div class="cp" id="cp"></div>
 </main>
 
-<section class="more-sec" id="rooms">
-  <span class="eyebrow">Home tour</span>
-  <h2>방문 전에 집구경하기</h2>
-  <p class="lead">꽃피는 커튼 블라인드가 직접 시공한 공간이에요. 마음에 드는 스타일을 가족과 함께 보세요.</p>
-  <div class="rooms" id="roomList"></div>
-</section>
-
-<section class="more-sec band" style="max-width:none">
-  <div style="max-width:684px;margin:0 auto">
-    <span class="eyebrow">Process</span>
-    <h2>이렇게 진행돼요</h2>
-    <p class="lead">상담 신청부터 설치까지 한 팀이 책임집니다.</p>
-    <ol class="flow">
-      <li><span class="n">1</span><div><b>상담 신청</b><span>대화창에서 몇 가지 고르고 번호만 남기면 끝나요.</span></div></li>
-      <li><span class="n">2</span><div><b>방문 실측</b><span>약속한 날 찾아가 창마다 정확히 재고, 샘플을 창에 대보며 골라요.</span></div></li>
-      <li><span class="n">3</span><div><b>현장 견적</b><span>그 자리에서 견적을 드려요. 견적을 보고 천천히 결정하셔도 돼요.</span></div></li>
-      <li><span class="n">4</span><div><b>제작·시공</b><span>실측 후 5~7일이면 제작과 설치까지 끝나요. 시공 후 1년 무상 A/S.</span></div></li>
-    </ol>
-  </div>
-</section>
-
-<section class="more-sec">
-  <span class="eyebrow">Reviews</span>
-  <h2>고객님들이 남겨주신 후기예요</h2>
-  <p class="lead">실제 시공 고객님이 게시에 동의해 주신 후기입니다.</p>
-  <div id="rvBox"></div>
-</section>
-
-<section class="more-sec faq2" style="padding-top:0">
-  <span class="eyebrow">FAQ</span>
-  <h2>자주 물어보시는 것들이에요</h2>
-  <p class="lead">더 궁금하신 건 방문 상담 때 자세히 알려드릴게요.</p>
-  <details><summary>실측 비용이 있나요?</summary><p>없어요. 방문 실측과 견적 상담은 무료예요. 제품을 결정하신 후에만 비용이 생겨요.</p></details>
-  <details><summary>실측 받으면 꼭 계약해야 하나요?</summary><p>아니요. 견적을 보고 천천히 결정하셔도 됩니다.</p></details>
-  <details><summary>입주 전에도 실측이 되나요?</summary><p>네. 입주 전 방문이 가능하면 미리 실측해서 입주일에 맞춰 시공해 드려요.</p></details>
-  <details><summary>원단을 직접 보고 고를 수 있나요?</summary><p>방문 상담 때 원단 샘플을 가져가 우리 집 빛 아래에서 직접 대보고 고르실 수 있어요.</p></details>
-  <details><summary>어느 지역까지 방문하나요?</summary><p>서울·경기·인천 지역은 신청하신 당일에도 방문할 수 있어요. 상담 시간은 오전 8시부터 오후 8시까지예요.</p></details>
-  <details><summary>설치 후 문제가 생기면요?</summary><p>시공 후 1년 동안 무상으로 A/S 해드려요.</p></details>
-  <div class="back"><a class="btn pri" href="#app" id="toTop">무료 방문 상담 신청하기 →</a></div>
-</section>
-
-<footer class="ft" id="ft"></footer>
+<div class="tour" id="tour" hidden role="dialog" aria-modal="true" aria-label="집구경하기"></div>
 
 <script src="site.js"></script>
 <script src="reviews.js"></script>
@@ -402,6 +414,19 @@ function chips(list,cls){
 var log=$("#log"),cp=$("#cp");
 function who(){log.append(el("div",{class:"who"},'<span class="av">꽃</span>꽃피는 디자이너'));}
 function bot(html){log.append(el("div",{class:"b"},html));}
+/* 진행 중에 둘러보기(집구경·시공과정·FAQ)로 나눈 대화 — 해당 단계 질문 뒤에 그대로 다시 그려줌 */
+var side=[];
+function sideNode(it){
+  if(it.k==="me")return el("div",{class:"b me"},esc(it.t));
+  if(it.k==="bot")return el("div",{class:"b"},it.h);
+  return el("div",{class:it.cls||"card"},it.h);
+}
+function drawSide(id){side.forEach(function(it){if(it.step===id)log.append(sideNode(it));});}
+function addSide(items){
+  var id=A.doneAt?"done":STEPS[cur].id;
+  items.forEach(function(it){it.step=id;side.push(it);log.append(sideNode(it));});
+  scrollEnd();
+}
 function scrollEnd(){requestAnimationFrame(function(){log.scrollTop=log.scrollHeight;});}
 
 /* ── 그리기 ── */
@@ -412,17 +437,19 @@ function render(animate){
   log.innerHTML="";
   who();bot("안녕하세요, 꽃피는 커튼 블라인드 디자이너예요. 몇 가지만 고르시면 <b>무료 방문 상담</b>을 잡아드릴게요. 1분이면 끝나요.");
   for(var i=0;i<idx;i++){
-    var s=steps[i];s.q().forEach(bot);
+    var s=steps[i];s.q().forEach(bot);drawSide(s.id);
     if(s.me){log.append(el("div",{class:"b me"},s.me()));
       (function(si){log.append(el("button",{class:"chg",on:{click:function(){if(A.doneAt)return;cur=STEPS.indexOf(si);save();render();}}},"이 답 바꾸기"));})(s);}
     var ack=s.ack&&s.ack();if(ack)bot(ack);
   }
   if(resumed&&animate!=="fresh"&&animate!==true&&idx>0){bot("다시 오셨네요, "+esc(A.name)+" 님. 이어서 진행할게요.");}
   var st=steps[idx];
-  if(A.doneAt){renderDone();scrollEnd();return;}
+  if(A.doneAt){renderDone();drawSide("done");scrollEnd();return;}
   var total=A.scope==="부분 시공"?6:7,n=idx+1;
-  cp.innerHTML='<div class="prog"><b>'+st.label+'</b><span class="bar"><i style="width:'+Math.round((st.nocount?1:idx/total)*100)+'%"></i></span><span class="tnum">'+(st.nocount?"마지막":n+" / "+total)+'</span></div>';
-  var showQ=function(){st.q().forEach(bot);var ui=st.ui(function(patch){answer(st,patch);});if(ui)cp.append(ui);scrollEnd();
+  cp.innerHTML=(idx>0?catsHtml():"")+'<div class="prog"><b>'+st.label+'</b><span class="bar"><i style="width:'+Math.round((st.nocount?1:idx/total)*100)+'%"></i></span><span class="tnum">'+(st.nocount?"마지막":n+" / "+total)+'</span></div>';
+  var showQ=function(){st.q().forEach(bot);drawSide(st.id);
+    if(askMode){cp.append(uiAsk());scrollEnd();return;}
+    var ui=st.ui(function(patch){answer(st,patch);});if(ui)cp.append(ui);scrollEnd();
     var f=cp.querySelector("input:not([type=checkbox])");if(f&&animate&&window.innerWidth>700)f.focus();};
   if(animate===true){var t=el("div",{class:"b typing"},"<span></span><span></span><span></span>");log.append(t);scrollEnd();
     typingTimer=setTimeout(function(){t.remove();showQ();},550);}
@@ -444,7 +471,7 @@ function uiContact(done){
   var er=el("div",{class:"err",hidden:"",role:"status"});
   var hint=el("p",{class:"hint"},"숫자만 입력하면 바로 다음으로 넘어가요.");
   var reopen=el("button",{class:"go",hidden:""},"계속하기 →");
-  box.append(nm,ph,er,reopen,hint);
+  box.append(nm,ph,er,reopen,hint,el("p",{class:"biz"},bizLine()));
   function okPhone(){return /^01\d-\d{3,4}-\d{4}$/.test(ph.value);}
   function check(){
     if(!nm.value.trim()){nm.classList.add("bad");er.textContent="성함을 남겨 주세요";er.hidden=false;nm.focus();return false;}
@@ -562,7 +589,8 @@ function uiConfirm(){
 function renderDone(){
   bot('<div class="okmark">✓</div><strong style="text-align:center">방문 상담 예약이 접수되었어요</strong><small style="text-align:center">담당 디자이너가 확인 전화로 일정을 최종 확정해 드려요.</small>');
   var sm=el("div",{style:"width:100%"},sumHtml());log.append(sm);
-  cp.innerHTML="";
+  log.append(tourCard());
+  cp.innerHTML=catsHtml();
   var box=el("div",{class:"stack"});
   if(A.visitDay){box.append(el("button",{class:"go",on:{click:ics}},"📅 내 캘린더에 추가"));}
   box.append(el("a",{class:"btn line tnum",href:SITE.telHref,style:"border-radius:12px;min-height:48px"},"📞 급하시면 "+SITE.tel),
@@ -593,25 +621,143 @@ function sendLead(p){
 function finalData(){
   var d={"_subject":"[방문 예약] "+A.name+" / "+(A.visitDay?korDate(A.visitDay)+" "+A.visitTime:"전화 조율")+" / "+(A.size||A.scope),"_template":"table","_captcha":"false"};
   rows().forEach(function(x){d[x[0]]=x[1]||"-";});
+  if(A.questions&&A.questions.length)d["남긴 질문"]=A.questions.join(" / ");
   d["유입"]=src();d["접수 시각"]=stamp();
   return d;
 }
 
-/* ── 아래 콘텐츠: 집구경 · 후기 · 푸터 ── */
-var ROOMS=[
-  ["거실","빛이 머무는 자리","넓은 창으로 들어오는 햇살을 부드럽게 걸러, 낮에는 환하고 저녁에는 아늑하게.","쉬폰 · 린넨 커튼","w24"],
-  ["거실","간접조명과 어울리는 쉬폰","천장 간접조명 아래 창 전체를 감싸면 저녁 조명이 원단 위로 은은하게 번져요.","차르르 쉬폰 커튼","w26"],
-  ["안방","가장 깊은 휴식을 위한 어둠","빛을 단단히 막아, 늦은 아침까지 방해받지 않는 잠을.","암막 커튼","w19"],
-  ["아이방","낮잠도, 놀이도 편안한 빛","낮잠 시간엔 포근하게 어둡게, 놀 때는 밝고 부드럽게.","암막 콤비 블라인드","w28"],
-  ["서재","선으로 정돈한 단정한 창","빛의 양을 손끝으로 조절하는 블라인드가 잘 어울려요.","우드 · 알루미늄 블라인드","w27"],
-  ["베란다","햇빛과 단열을 한 번에","벌집 구조가 공기층을 만들어 여름엔 시원하게, 겨울엔 따뜻하게.","허니콤 블라인드","w20"]
+/* ═══ 둘러보기: 집구경하기 · 시공과정(+후기) · 자주 묻는 질문 — 채팅 입력창 위 버튼 ═══ */
+function bizLine(){return esc(SITE.name)+(SITE.ceo?" · 대표 "+esc(SITE.ceo):"")+(SITE.bizNo?" · 사업자등록번호 "+esc(SITE.bizNo):"")+'<br><a href="privacy.html">개인정보처리방침</a> · <a href="./">홈페이지</a> · <a class="tnum" href="'+SITE.telHref+'">'+SITE.tel+'</a>';}
+function catsHtml(){return '<nav class="cats" aria-label="둘러보기">'
+  +'<button class="cat" data-act="tour"><em class="bd">추천</em><span class="ic">🏠</span>집구경하기</button>'
+  +'<button class="cat" data-act="process"><span class="ic">🧵</span>시공과정</button>'
+  +'<button class="cat" data-act="faq"><span class="ic">💬</span>자주 묻는 질문</button></nav>';}
+
+/* 집구경 사진 — 사진은 img/works/t/ (cases.js와 같은 사진) */
+var TOUR=[
+  {key:"living",label:"거실",en:"LIVING ROOM",title:"빛이 머무는 자리",desc:"넓은 창으로 들어오는 햇살을 부드럽게 걸러, 낮에는 환하고 저녁에는 아늑하게.",products:"쉬폰 · 린넨 · 이중 커튼",
+   pics:[["w24","쉬폰 커튼"],["w26","차르르 쉬폰 커튼"],["w25","린넨 커튼"],["w18","쉬폰 커튼"]]},
+  {key:"master",label:"안방",en:"BEDROOM",title:"가장 깊은 휴식을 위한 어둠",desc:"빛을 단단히 막아, 늦은 아침까지 방해받지 않는 잠을.",products:"암막 커튼 · 허니콤 블라인드",
+   pics:[["w19","암막 커튼"],["w12","쉬폰 커튼"],["w17","허니콤 블라인드"]]},
+  {key:"kids",label:"아이방",en:"KIDS ROOM",title:"낮잠도, 놀이도 편안한 빛",desc:"낮잠 시간엔 포근하게 어둡게, 놀 때는 밝고 부드럽게.",products:"암막 콤비 블라인드 · 쉬폰 커튼",
+   pics:[["w28","암막 콤비 블라인드"],["w10","쉬폰 커튼"],["w14","콤비 블라인드"]]},
+  {key:"study",label:"작은방·서재",en:"STUDY ROOM",title:"선으로 정돈한 단정한 창",desc:"서재나 작업실엔 빛의 양을 손끝으로 조절하는 블라인드가 잘 어울려요.",products:"우드 · 알루미늄 블라인드 · 이중 커튼",
+   pics:[["w27","우드 블라인드"],["w21","이중 커튼"],["w13","암막 커튼"]]},
+  {key:"veranda",label:"베란다",en:"VERANDA",title:"햇빛과 단열을 한 번에",desc:"벌집 구조가 공기층을 만들어 여름엔 시원하게, 겨울엔 따뜻하게.",products:"허니콤 · 콤비 블라인드",
+   pics:[["w20","허니콤 블라인드"],["w30","암막 콤비 블라인드"]]}
 ];
-$("#roomList").innerHTML=ROOMS.map(function(r){return '<article class="room"><img loading="lazy" src="img/works/t/'+r[4]+'.jpg" alt="'+r[0]+' '+r[3]+' 시공 사진"><div class="tx"><span class="k">'+r[0]+'</span><h3>'+r[1]+'</h3><p>'+r[2]+'</p><div class="pd">'+r[3]+'</div></div></article>';}).join("");
-if(window.renderReviews)window.renderReviews($("#rvBox"),3);
-$("#rvBox").querySelectorAll('a[href="inquiry.html"]').forEach(function(a){a.href="#app";a.textContent="무료 방문 상담 신청하기";});
-$("#toTop").addEventListener("click",function(e){e.preventDefault();$("#app").scrollIntoView({behavior:"smooth"});});
-$("#ft").innerHTML=esc(SITE.name)+(SITE.ceo?" · 대표 "+esc(SITE.ceo):"")+(SITE.bizNo?" · 사업자등록번호 "+esc(SITE.bizNo):"")+"<br>"+(SITE.address?esc(SITE.address)+"<br>":"")+
-  '📞 <a class="tnum" href="'+SITE.telHref+'">'+SITE.tel+'</a>'+(SITE.hours?" · "+esc(SITE.hours):"")+'<br><a href="privacy.html">개인정보처리방침</a> · <a href="./">홈페이지</a>';
+function tourCard(){
+  var th=[TOUR[0].pics[0][0],TOUR[1].pics[0][0],TOUR[2].pics[0][0]].map(function(p){return '<img src="img/works/t/'+p+'.jpg" alt="" loading="lazy">';}).join("");
+  return el("button",{class:"tourcard","data-act":"tour"},'<em>HOME TOUR</em><em class="bd">추천</em><strong>방문 전에 집구경하기</strong><span class="d">마음에 드는 스타일을 가족과 함께 보세요</span><span class="th">'+th+'</span><span class="go2">구경하러 가기 →</span>');
+}
+var tourEl=$("#tour");
+function openTour(){
+  tourEl.innerHTML='<div class="in"><button class="x" aria-label="닫기">×</button>'
+    +'<header class="hero"><em>HOME TOUR</em><h2>꽃피는 커튼 블라인드가<br>직접 시공한 집이에요</h2><p>공간별로 둘러보고, 마음에 드는 스타일로 방문 상담을 받아보세요.</p></header>'
+    +'<nav class="tabs">'+TOUR.map(function(r,i){return '<button data-k="'+r.key+'" aria-pressed="'+(i===0)+'">'+r.label+'</button>';}).join("")+'</nav>'
+    +TOUR.map(function(r){return '<section id="tr-'+r.key+'"><span class="k">'+r.en+'</span><h3>'+r.label+' · '+r.title+'</h3><p>'+r.desc+'</p>'
+      +'<div class="pics">'+r.pics.map(function(p){return '<figure><img loading="lazy" src="img/works/t/'+p[0]+'.jpg" alt="'+r.label+' '+p[1]+' 시공 사진"><figcaption>'+p[1]+'</figcaption></figure>';}).join("")+'</div>'
+      +'<div class="pd">추천 제품 · '+r.products+'</div><button class="go" data-room="'+r.label+'">'+r.label+' 스타일링 방문 상담 받기</button></section>';}).join("")
+    +'</div>';
+  tourEl.hidden=false;document.body.style.overflow="hidden";tourEl.scrollTop=0;
+  try{history.pushState({tour:1},"");}catch(e){}
+}
+function closeTour(fromPop){
+  if(tourEl.hidden)return;tourEl.hidden=true;document.body.style.overflow="";
+  if(!fromPop){try{if(history.state&&history.state.tour)history.back();}catch(e){}}
+}
+window.addEventListener("popstate",function(){closeTour(true);});
+tourEl.addEventListener("click",function(e){
+  var t=e.target.closest("button");if(!t)return;
+  if(t.classList.contains("x"))return closeTour();
+  if(t.dataset.k){$("#tr-"+t.dataset.k,tourEl).scrollIntoView({behavior:"smooth"});tourEl.querySelectorAll(".tabs button").forEach(function(b){b.setAttribute("aria-pressed",String(b===t));});return;}
+  if(t.dataset.room){closeTour();
+    if(!A.doneAt){A.memo=(A.memo?A.memo+" / ":"")+t.dataset.room+" 스타일 관심";save();
+      addSide([{k:"me",t:t.dataset.room+" 스타일이 마음에 들어요"},{k:"bot",h:"좋아요! 방문 상담 때 우리 집 창에 맞춰 "+esc(t.dataset.room)+" 스타일을 제안드릴게요. 이어서 진행해 주세요."}]);
+      var f=cp.querySelector("input,button.chip,button.tier,button.day,button.go");if(f&&f.tagName==="INPUT")f.focus();}
+  }
+});
+
+/* 시공과정 + 후기 */
+function processCard(){
+  var steps=[["상담 신청","대화창에서 몇 가지 고르고 번호만 남기면 끝나요."],["방문 실측","약속한 날 찾아가 창마다 정확히 재고, 샘플을 창에 대보며 골라요."],["현장 견적","그 자리에서 견적을 드려요. 견적을 보고 천천히 결정하셔도 돼요."],["제작·시공","실측 후 5~7일이면 제작과 설치까지 끝나요. 시공 후 1년 무상 A/S."]];
+  return '<ol>'+steps.map(function(x,i){return '<li><span class="n">'+(i+1)+'</span><div><b>'+x[0]+'</b><span>'+x[1]+'</span></div></li>';}).join("")+'</ol>';
+}
+function maskName(n){n=String(n||"").trim();if(n.length<=1)return n||"고객";if(n.length===2)return n[0]+"*";return n[0]+"*".repeat(n.length-2)+n[n.length-1];}
+function reviewsCard(){
+  var list=(window.REVIEWS||[]).slice().sort(function(a,b){return String(b.date||"").localeCompare(String(a.date||""));}).slice(0,6);
+  if(!list.length)return null;
+  return '<div class="rvs">'+list.map(function(r){var n=Math.max(0,Math.min(5,Math.round(+r.rating||0)));
+    return '<div class="rvc"><span class="st">'+"★".repeat(n)+'</span><b>'+esc(r.title)+'</b><p>'+esc(r.text)+'</p><small>'+esc(maskName(r.name))+' · '+esc(r.region||"")+(r.product?' · '+esc(r.product):'')+'</small></div>';}).join("")+'</div>';
+}
+function resumeItems(){
+  if(A.doneAt)return [];
+  return [{k:"html",cls:"replies",h:'<button class="reply" data-act="resume">이어서 상담하기</button>'}];
+}
+
+/* 자주 묻는 질문 — kw: 직접 질문했을 때 이 단어가 들어 있으면 이 답을 보여줌 */
+var FAQ=[
+  {q:"실측 비용이 있나요?",a:"없어요. 방문 실측과 견적 상담은 무료예요. 제품을 결정하신 후에만 비용이 생겨요.",kw:["실측비","비용","방문비","출장비","무료","유료","돈"]},
+  {q:"실측 받으면 꼭 계약해야 하나요?",a:"아니요. 견적을 보고 천천히 결정하셔도 됩니다.",kw:["계약","부담","안해도","거절","강요"]},
+  {q:"입주 전에도 실측이 되나요?",a:"네. 입주 전 방문이 가능하면 미리 실측해서 입주일에 맞춰 시공해 드려요.",kw:["입주","이사","신축","빈집"]},
+  {q:"원단을 직접 보고 고를 수 있나요?",a:"방문 상담 때 원단 샘플을 가져가 우리 집 빛 아래에서 직접 대보고 고르실 수 있어요.",kw:["원단","샘플","색상","컬러","색깔"]},
+  {q:"어떤 제품이 있나요?",a:"린넨·쉬폰·암막 커튼과 콤비·우드·알루미늄·허니콤 블라인드, 롤스크린이 있어요. 공간에 맞게 추천해 드려요.",kw:["제품","종류","커튼","블라인드","콤비","롤스크린","허니콤","우드"]},
+  {q:"제작·시공은 얼마나 걸리나요?",a:"실측 후 5~7일이면 제작과 설치까지 끝나요. 정확한 설치 날짜는 실측하는 날 안내해 드려요.",kw:["기간","며칠","걸리","걸려","언제","소요","빨리"]},
+  {q:"어느 지역까지 방문하나요?",a:"서울·경기·인천 지역은 신청하신 당일에도 방문할 수 있어요. 상담 시간은 오전 8시부터 오후 8시까지예요.",kw:["지역","서울","경기","인천","어디","방문 가능"]},
+  {q:"전세·월세 집에도 설치할 수 있나요?",a:"가능해요. 벽 손상을 줄이는 설치 방식도 있으니 상담 때 말씀해 주세요.",kw:["전세","월세","벽","구멍","타공"]},
+  {q:"설치 후 문제가 생기면요?",a:"시공 후 1년 동안 무상으로 A/S 해드려요.",kw:["as","a/s","고장","수리","하자","보증"]}
+];
+var PRICE_KW=["가격","얼마","견적","비싸","저렴","금액","만원"];
+function faqCard(){
+  return '<div class="qlist">'+FAQ.map(function(f,i){return '<button class="qbtn" data-faq="'+i+'">'+f.q+'</button>';}).join("")
+    +(A.doneAt||askCount>=2?'':'<button class="qbtn ask" data-act="ask">✏️ 다른 질문 남기기</button>')+'</div>';
+}
+var askMode=false,askCount=0;
+function uiAsk(){
+  var box=el("div",{class:"stack"});
+  var inp=el("input",{type:"text",placeholder:"궁금한 점을 짧게 남겨주세요",maxlength:"300","aria-label":"질문"});
+  var go=el("button",{class:"go",style:"width:auto;padding:0 18px"},"보내기");
+  var row=el("div",{class:"askrow"});row.append(inp,go);
+  function submit(){var q=inp.value.trim();if(!q)return;askCount++;askMode=false;
+    A.questions=(A.questions||[]).concat([q]);save();
+    var low=q.toLowerCase(),hit=null;
+    FAQ.forEach(function(f){if(!hit&&f.kw.some(function(k){return low.indexOf(k)>-1;}))hit=f.a;});
+    if(!hit&&PRICE_KW.some(function(k){return low.indexOf(k)>-1;}))hit="정확한 금액은 창 크기에 따라 달라져서, 방문 실측 후 바로 확정해 드려요.";
+    if(A.leadSent)sendQuestion(q);
+    addSide([{k:"me",t:q},{k:"bot",h:(hit?esc(hit)+"<br><br>":"")+(hit?"더 궁금하신 건 방문 상담 때 자세히 알려드릴게요.":"이 부분은 담당 디자이너가 정확히 알려드릴게요. 남겨주신 질문은 상담 때 꼭 답변드릴게요.")}].concat(resumeItems()));
+    redrawComposer();}
+  go.addEventListener("click",submit);inp.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();submit();}});
+  box.append(row,el("button",{class:"sub",on:{click:function(){askMode=false;redrawComposer();}}},"취소"));
+  setTimeout(function(){inp.focus();},30);
+  return box;
+}
+function sendQuestion(q){
+  send({"_subject":"[고객 질문] "+A.name+" / "+A.phone,"_template":"table","_captcha":"false","성함":A.name,"연락처":A.phone,"질문":q,"접수 시각":stamp()}).catch(function(){});
+}
+/* 입력창만 다시 그리기(대화는 그대로) */
+function redrawComposer(){
+  if(A.doneAt)return;
+  var steps=active(),idx=steps.indexOf(STEPS[cur]),st=steps[idx];
+  var total=A.scope==="부분 시공"?6:7;
+  cp.innerHTML=(idx>0?catsHtml():"")+'<div class="prog"><b>'+st.label+'</b><span class="bar"><i style="width:'+Math.round((st.nocount?1:idx/total)*100)+'%"></i></span><span class="tnum">'+(st.nocount?"마지막":(idx+1)+" / "+total)+'</span></div>';
+  cp.append(askMode?uiAsk():st.ui(function(patch){answer(st,patch);}));
+}
+
+/* 버튼 클릭 처리 (대화창 + 입력창) */
+function onAct(e){
+  var t=e.target.closest("[data-act],[data-faq]");if(!t)return;
+  var act=t.dataset.act;
+  if(t.dataset.faq!=null){var f=FAQ[+t.dataset.faq];addSide([{k:"me",t:f.q},{k:"bot",h:esc(f.a)}].concat(resumeItems()));return;}
+  if(act==="tour")return openTour();
+  if(act==="process"){var items=[{k:"me",t:"시공과정"},{k:"bot",h:"이렇게 진행돼요. 첫 단계인 방문 상담은 무료예요."},{k:"html",h:processCard()}];
+    var rv=reviewsCard();if(rv)items.push({k:"bot",h:"고객님들이 남겨주신 후기예요."},{k:"html",cls:"card",h:rv});
+    addSide(items.concat(resumeItems()));return;}
+  if(act==="faq"){addSide([{k:"me",t:"자주 묻는 질문"},{k:"bot",h:"자주 물어보시는 것들이에요."},{k:"html",h:faqCard()}]);return;}
+  if(act==="ask"){if(askCount>=2){addSide([{k:"bot",h:"더 궁금하신 건 방문 상담 때 자세히 알려드릴게요."}]);return;}
+    addSide([{k:"me",t:"다른 질문 남기기"},{k:"bot",h:"궁금한 점을 짧게 남겨주세요."}]);askMode=true;redrawComposer();return;}
+  if(act==="resume"){var st=STEPS[cur];addSide([{k:"bot",h:st.q()[0]}]);return;}
+}
+log.addEventListener("click",onAct);cp.addEventListener("click",onAct);
 
 render(false);
 })();
